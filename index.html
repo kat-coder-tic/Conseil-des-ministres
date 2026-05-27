@@ -114,10 +114,82 @@
         .phase-title {
             font-size: 1.8em;
             color: #2a5298;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             padding-bottom: 10px;
             border-bottom: 3px solid #667eea;
         }
+
+        /* ── Barre de filtres ── */
+        .filters-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+            padding: 14px 18px;
+            background: #f0f2ff;
+            border-radius: 12px;
+            border: 1.5px solid #d0d8ff;
+        }
+        .filters-bar .filter-label {
+            font-size: 0.8em;
+            font-weight: 700;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .filter-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-btn {
+            padding: 5px 13px;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            font-size: 0.78em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s;
+            background: white;
+            color: #555;
+            border-color: #ddd;
+        }
+        .filter-btn:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.12); }
+        .filter-btn.active { color: white; border-color: transparent; }
+        .filter-btn.fb-all.active         { background: #2a5298; }
+        .filter-btn.fb-active.active      { background: #28a745; }
+        .filter-btn.fb-passive.active     { background: #6c757d; }
+        .filter-btn.fb-demande.active     { background: #007bff; }
+        .filter-btn.fb-offre.active       { background: #e6a800; color:#333; }
+        .filter-btn.fb-economie.active    { background: #17a2b8; }
+        .filter-btn.fb-social.active      { background: #dc3545; }
+        .filter-btn.fb-education.active   { background: #fd7e14; }
+        .filter-btn.fb-affordable.active  { background: #20c997; }
+        .filter-btn.fb-selected.active    { background: #6f42c1; }
+
+        .sort-select {
+            padding: 5px 10px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: #333;
+            background: white;
+            cursor: pointer;
+        }
+        .sort-select:focus { outline: none; border-color: #667eea; }
+
+        .filters-count {
+            margin-left: auto;
+            font-size: 0.8em;
+            color: #888;
+            white-space: nowrap;
+        }
+
+        .policy-card.hidden { display: none; }
 
         .policies-grid {
             display: grid;
@@ -461,24 +533,278 @@
             font-weight: bold;
         }
 
+        /* ── Panneau objectifs ── */
+        .objectives-panel {
+            margin: 0 30px 10px 30px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .objectives-panel .obj-title {
+            font-weight: 700;
+            font-size: 1em;
+            opacity: 0.85;
+            white-space: nowrap;
+        }
+        .obj-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.9em;
+        }
+        .obj-item.achieved {
+            background: rgba(40,167,69,0.5);
+            border: 1.5px solid #28a745;
+        }
+        .obj-item.danger {
+            background: rgba(220,53,69,0.4);
+            border: 1.5px solid #dc3545;
+        }
+
+        /* ── Layout principal jeu ── */
+        .playing-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 0;
+        }
+        .playing-main { min-width: 0; }
+        .playing-sidebar {
+            border-left: 2px solid #e0e0e0;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Journal des actions ── */
+        .journal-panel {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+            max-height: 700px;
+        }
+        .journal-panel h3 {
+            color: #2a5298;
+            font-size: 1em;
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #667eea;
+        }
+        .journal-entry {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid #667eea;
+            font-size: 0.82em;
+        }
+        .journal-entry.has-event {
+            border-left-color: #dc3545;
+        }
+        .journal-quarter-label {
+            font-weight: 700;
+            color: #2a5298;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+        }
+        .journal-policy-tag {
+            display: inline-block;
+            background: #e8ecff;
+            color: #2a5298;
+            border-radius: 4px;
+            padding: 2px 7px;
+            margin: 2px 2px 2px 0;
+            font-size: 0.85em;
+        }
+        .journal-event-tag {
+            display: inline-block;
+            background: #fde8e8;
+            color: #c0392b;
+            border-radius: 4px;
+            padding: 2px 7px;
+            margin-top: 4px;
+            font-size: 0.85em;
+        }
+        .journal-indicators {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px 8px;
+            margin-top: 6px;
+            color: #555;
+        }
+        .journal-ind-item { font-size: 0.82em; }
+        .ind-up { color: #28a745; }
+        .ind-down { color: #dc3545; }
+
+        /* ── Mini graphique SVG ── */
+        .chart-panel {
+            padding: 16px 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+        .chart-panel h3 {
+            color: #2a5298;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+        .chart-tabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .chart-tab {
+            padding: 3px 10px;
+            border-radius: 12px;
+            border: none;
+            font-size: 0.75em;
+            cursor: pointer;
+            background: #e0e0e0;
+            color: #555;
+            font-weight: 600;
+        }
+        .chart-tab.active {
+            background: #2a5298;
+            color: white;
+        }
+
+        @media (max-width: 900px) {
+            .playing-layout { grid-template-columns: 1fr; }
+            .playing-sidebar { border-left: none; border-top: 2px solid #e0e0e0; }
+            .journal-panel { max-height: 300px; }
+        }
+
         @media (max-width: 768px) {
-            .game-header h1 {
-                font-size: 1.8em;
-            }
+            .game-header h1 { font-size: 1.8em; }
+            .dashboard { grid-template-columns: repeat(2, 1fr); padding: 15px; gap: 10px; }
+            .policies-grid { grid-template-columns: 1fr; }
+            .action-buttons { flex-direction: column; }
+            .ministers-bar { flex-wrap: nowrap; }
+            .minister-tab { padding: 10px 12px; font-size: 0.8em; }
+            .glossary-btn { bottom: 15px; right: 15px; padding: 10px 16px; font-size: 0.85em; }
+        }
 
-            .dashboard {
-                grid-template-columns: repeat(2, 1fr);
-                padding: 15px;
-                gap: 10px;
-            }
+        /* ── Glossaire modal ── */
+        .glossary-btn {
+            position: fixed; bottom: 30px; right: 30px;
+            background: linear-gradient(135deg, #2a5298 0%, #667eea 100%);
+            color: white; border: none; border-radius: 50px;
+            padding: 12px 22px; font-size: 0.95em; font-weight: 700;
+            cursor: pointer; box-shadow: 0 4px 20px rgba(42,82,152,0.4);
+            z-index: 500; display: flex; align-items: center; gap: 8px; transition: all 0.2s;
+        }
+        .glossary-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(42,82,152,0.5); }
+        .glossary-overlay {
+            position: fixed; top:0; left:0; right:0; bottom:0;
+            background: rgba(0,0,0,0.65); z-index: 1100;
+            display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
+        .glossary-modal {
+            background: white; border-radius: 20px; width: 100%; max-width: 820px;
+            max-height: 88vh; display: flex; flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideIn 0.25s ease-out;
+        }
+        .glossary-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white; padding: 24px 30px; border-radius: 20px 20px 0 0;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .glossary-header h2 { font-size: 1.4em; margin: 0; }
+        .glossary-close {
+            background: rgba(255,255,255,0.2); border: none; color: white;
+            font-size: 1.3em; cursor: pointer; border-radius: 50%;
+            width: 36px; height: 36px; display:flex; align-items:center; justify-content:center;
+        }
+        .glossary-search {
+            padding: 16px 24px; border-bottom: 2px solid #f0f0f0;
+            display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+        }
+        .glossary-search input {
+            flex: 1; min-width: 180px; padding: 8px 14px;
+            border: 2px solid #e0e0e0; border-radius: 20px; font-size: 0.9em;
+        }
+        .glossary-search input:focus { outline:none; border-color:#667eea; }
+        .gloss-cat-btn {
+            padding: 5px 12px; border-radius: 15px; border: 2px solid #e0e0e0;
+            background: white; font-size: 0.78em; font-weight: 700; cursor: pointer; color: #555;
+        }
+        .gloss-cat-btn.active { background: #2a5298; color: white; border-color: #2a5298; }
+        .glossary-body { overflow-y: auto; padding: 20px 24px; flex: 1; }
+        .gloss-entry {
+            background: #f8f9ff; border-radius: 12px; padding: 18px 20px;
+            margin-bottom: 14px; border-left: 4px solid #667eea;
+        }
+        .gloss-entry-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .gloss-term { font-size: 1.1em; font-weight: 800; color: #2a5298; }
+        .gloss-theme { font-size: 0.72em; font-weight: 700; background: #e8ecff; color: #2a5298; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+        .gloss-def { color: #333; line-height: 1.6; margin-bottom: 8px; }
+        .gloss-example { font-size: 0.88em; color: #555; background: white; border-radius: 8px; padding: 8px 12px; border-left: 3px solid #20c997; font-style: italic; }
+        .gloss-example::before { content: '💡 Exemple : '; font-style: normal; font-weight: 700; color: #20c997; }
 
-            .policies-grid {
-                grid-template-columns: 1fr;
-            }
+        /* ── Ministres tabs ── */
+        .ministers-bar {
+            display: flex; gap: 0; background: #f0f2ff;
+            border-bottom: 3px solid #e0e0e0; overflow-x: auto;
+        }
+        .minister-tab {
+            padding: 14px 20px; border: none; background: transparent; cursor: pointer;
+            font-size: 0.88em; font-weight: 700; color: #666;
+            border-bottom: 3px solid transparent; margin-bottom: -3px;
+            white-space: nowrap; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+        }
+        .minister-tab:hover { background: rgba(102,126,234,0.08); }
+        .minister-tab.active { color: white; border-bottom-color: transparent; }
+        .minister-tab .minister-quota { background: rgba(0,0,0,0.18); border-radius: 10px; padding: 1px 6px; font-size: 0.82em; }
+        .minister-context {
+            padding: 10px 20px; font-size: 0.85em; color: #555;
+            display: flex; align-items: center; gap: 8px;
+            background: #fafbff; border-bottom: 1px solid #e8e8f0;
+        }
 
-            .action-buttons {
-                flex-direction: column;
-            }
+        /* ── Multi-objectives ── */
+        .multi-obj-panel {
+            display: flex; gap: 10px; flex-wrap: wrap;
+            padding: 12px 24px; background: #1e3c72;
+        }
+        .multi-obj-item {
+            display: flex; align-items: center; gap: 7px;
+            background: rgba(255,255,255,0.12); border-radius: 20px;
+            padding: 5px 13px; color: white; font-size: 0.85em;
+        }
+        .multi-obj-item.achieved { background: rgba(40,167,69,0.5); border: 1.5px solid #28a745; }
+        .multi-obj-item.danger   { background: rgba(220,53,69,0.4);  border: 1.5px solid #dc3545; }
+
+        /* ── Scenario grid 6 ── */
+        .scenario-grid-6 {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px; max-width: 1100px; margin: 0 auto;
+        }
+        .scenario-card {
+            background: white; border: 3px solid #e0e0e0; border-radius: 16px;
+            padding: 20px; cursor: pointer; transition: all 0.25s; position: relative; text-align: left;
+        }
+        .scenario-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+        .scenario-card .sc-name { font-size: 1.15em; font-weight: 800; margin-bottom: 6px; }
+        .scenario-card .sc-desc { font-size: 0.85em; color: #666; line-height: 1.5; margin-bottom: 10px; }
+        .scenario-card .sc-obj  { font-size: 0.82em; background: #f8f9fa; border-radius: 8px; padding: 8px 10px; margin-bottom: 10px; }
+        .sc-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 0.82em; }
+        .sc-stat { background: #f0f0f0; border-radius: 6px; padding: 5px 8px; }
+        .sc-stat strong { display: block; font-size: 1.2em; }
+        .focus-row { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 10px; }
+        .focus-badge { font-size: 0.7em; font-weight: 700; padding: 2px 7px; border-radius: 10px; }
+        .focus-haute   { background: #f8d7da; color: #721c24; }
+        .focus-moyenne { background: #fff3cd; color: #856404; }
+        .focus-faible  { background: #d4edda; color: #155724; }
+        .sc-done-badge {
+            position: absolute; top: 10px; right: 10px;
+            background: #28a745; color: white; padding: 3px 10px;
+            border-radius: 20px; font-size: 0.75em; font-weight: 700;
         }
     </style>
 </head>
@@ -1114,27 +1440,234 @@
             }
         ];
 
+        /* ═══════════════════════════════════════
+           MINISTRES — Conseil des ministres
+           ═══════════════════════════════════════ */
+        const MINISTERS = [
+            {
+                id: 'travail',
+                name: 'Ministre du Travail',
+                icon: '💼',
+                color: '#28a745',
+                description: 'Politiques de l\'emploi, formation professionnelle, droit du travail',
+                policyTypes: ['active', 'passive'],
+                maxPolicies: 2
+            },
+            {
+                id: 'economie',
+                name: 'Ministre de l\'Économie',
+                icon: '💰',
+                color: '#17a2b8',
+                description: 'Croissance, budget, fiscalité, politique industrielle, concurrence',
+                policyTypes: ['demande', 'offre', 'economie'],
+                maxPolicies: 2
+            },
+            {
+                id: 'social',
+                name: 'Ministre des Affaires Sociales',
+                icon: '🏥',
+                color: '#dc3545',
+                description: 'Protection sociale, lutte contre la pauvreté, logement, retraites',
+                policyTypes: ['social'],
+                maxPolicies: 1
+            },
+            {
+                id: 'education',
+                name: 'Ministre de l\'Éducation',
+                icon: '🎓',
+                color: '#fd7e14',
+                description: 'Investissement éducatif, apprentissage, insertion des jeunes',
+                policyTypes: ['education'],
+                maxPolicies: 1
+            }
+        ];
+
+        /* ═══════════════════════════════════════
+           GLOSSAIRE ÉCONOMIQUE
+           ═══════════════════════════════════════ */
+        const GLOSSARY = [
+            {
+                term: 'Taux de chômage',
+                category: 'emploi',
+                definition: 'Part des actifs (personnes souhaitant travailler) qui sont sans emploi. En France, le seuil d\'alerte est à 10%. L\'objectif européen est autour de 7-8%.',
+                example: 'Si 100 personnes veulent travailler et 12 sont sans emploi → taux de chômage = 12%.',
+                theme: 'Thème 7'
+            },
+            {
+                term: 'Taux d\'emploi',
+                category: 'emploi',
+                definition: 'Part de la population en âge de travailler (15-64 ans) qui a un emploi. Indicateur plus large que le taux de chômage, car il inclut aussi les inactifs.',
+                example: 'Un taux d\'emploi de 70% signifie que 70% des 15-64 ans travaillent.',
+                theme: 'Thème 7'
+            },
+            {
+                term: 'Taux d\'activité',
+                category: 'emploi',
+                definition: 'Part de la population en âge de travailler qui est "active" (emploi + chômage). Mesure la participation au marché du travail.',
+                example: 'Si des femmes sortent du marché du travail, le taux d\'activité baisse même si le chômage reste stable.',
+                theme: 'Thème 7'
+            },
+            {
+                term: 'Chômage structurel',
+                category: 'emploi',
+                definition: 'Chômage durable dû à des déséquilibres profonds entre les compétences des chômeurs et les besoins des entreprises. Ne disparaît pas avec la reprise économique.',
+                example: 'Un ouvrier métallurgiste dont l\'usine a fermé : ses compétences ne correspondent plus aux emplois disponibles.',
+                theme: 'Thème 7'
+            },
+            {
+                term: 'Chômage conjoncturel',
+                category: 'emploi',
+                definition: 'Chômage lié au ralentissement de l\'activité économique. Il augmente en récession et diminue quand la croissance repart.',
+                example: 'Lors de la crise de 2008, le chômage conjoncturel a explosé car les entreprises ont réduit leurs effectifs.',
+                theme: 'Thème 7'
+            },
+            {
+                term: 'Chômage frictionnel',
+                category: 'emploi',
+                definition: 'Chômage temporaire lié au temps nécessaire pour trouver un emploi lors d\'une transition (changement de poste, fin d\'études). Inévitable et sain dans une économie dynamique.',
+                example: 'Un diplômé qui cherche son premier emploi pendant 2 mois est en chômage frictionnel.',
+                theme: 'Thème 7'
+            },
+            {
+                term: 'Politique active de l\'emploi',
+                category: 'emploi',
+                definition: 'Mesure qui agit directement sur l\'employabilité des chômeurs : formation, aides à l\'embauche, accompagnement. Vise à améliorer l\'adéquation offre/demande de travail.',
+                example: 'Un plan de formation aux métiers du numérique pour reconvertir des ouvriers = politique active.',
+                theme: 'Thème 7'
+            },
+            {
+                term: 'Politique passive de l\'emploi',
+                category: 'emploi',
+                definition: 'Mesure qui atténue les effets du chômage sans agir sur ses causes : indemnisation, préretraites. Protège les revenus mais ne crée pas d\'emplois.',
+                example: 'L\'allocation chômage (ARE) = politique passive : elle aide les chômeurs mais ne les remet pas en emploi directement.',
+                theme: 'Thème 7'
+            },
+            {
+                term: 'Politique de demande',
+                category: 'economie',
+                definition: 'Politique qui stimule l\'économie en augmentant la demande globale (consommation + investissement). D\'inspiration keynésienne. Relance l\'emploi en période de récession.',
+                example: 'Investissement public dans des autoroutes → commandes aux entreprises → embauches → consommation → effet multiplicateur.',
+                theme: 'Thème 6.3 / 7'
+            },
+            {
+                term: 'Politique d\'offre',
+                category: 'economie',
+                definition: 'Politique qui améliore la compétitivité des entreprises en réduisant leurs coûts ou en levant les obstacles à la production. Vise à stimuler l\'investissement privé.',
+                example: 'Baisse des charges patronales → coût du travail réduit → les entreprises embauchent davantage.',
+                theme: 'Thème 6.3 / 7'
+            },
+            {
+                term: 'Effet multiplicateur',
+                category: 'economie',
+                definition: 'Mécanisme par lequel une dépense publique initiale génère une hausse de revenus et de consommation supérieure à la dépense elle-même. Théorie de Keynes.',
+                example: '1€ investi par l\'État peut générer 1,5€ de richesse si les bénéficiaires dépensent leur revenu supplémentaire.',
+                theme: 'Thème 6.3'
+            },
+            {
+                term: 'Déficit public',
+                category: 'budget',
+                definition: 'Situation où les dépenses de l\'État dépassent ses recettes fiscales sur une année. Exprimé en % du PIB. La règle européenne fixe un plafond à 3% du PIB.',
+                example: 'Si l\'État encaisse 1000 Md€ et dépense 1060 Md€ → déficit de 60 Md€, soit environ 2,5% du PIB.',
+                theme: 'Thème 6.3'
+            },
+            {
+                term: 'Dette publique',
+                category: 'budget',
+                definition: 'Cumul de tous les déficits passés que l\'État doit rembourser à ses créanciers. Le traité de Maastricht fixe un objectif de 60% du PIB, difficile à tenir pour la plupart des États.',
+                example: 'La France a une dette d\'environ 110% du PIB en 2024, soit plus de 3 000 milliards d\'euros.',
+                theme: 'Thème 6.3'
+            },
+            {
+                term: 'Politique d\'austérité',
+                category: 'budget',
+                definition: 'Ensemble de mesures visant à réduire les dépenses publiques et/ou augmenter les recettes pour réduire le déficit. Peut freiner la croissance à court terme.',
+                example: 'Gel des embauches dans la fonction publique, réduction des subventions = mesures d\'austérité.',
+                theme: 'Thème 6.3'
+            },
+            {
+                term: 'Inflation',
+                category: 'economie',
+                definition: 'Hausse générale et durable des prix. Réduit le pouvoir d\'achat. La BCE vise une inflation d\'environ 2% comme optimale pour l\'économie de la zone euro.',
+                example: 'Une inflation de 5% signifie que ce qui coûtait 100€ coûte 105€ un an après. Les salaires doivent augmenter autant pour maintenir le pouvoir d\'achat.',
+                theme: 'Thème 6.3'
+            },
+            {
+                term: 'BCE (Banque Centrale Européenne)',
+                category: 'europe',
+                definition: 'Institution qui gère la politique monétaire de la zone euro. Elle fixe les taux d\'intérêt et régule la masse monétaire. Son objectif principal est la stabilité des prix.',
+                example: 'En 2022-2023, la BCE a relevé ses taux d\'intérêt pour freiner l\'inflation due à la guerre en Ukraine.',
+                theme: 'Thème 6.3'
+            },
+            {
+                term: 'Taux de pauvreté',
+                category: 'social',
+                definition: 'Pourcentage de personnes vivant sous le seuil de pauvreté, fixé à 60% du revenu médian. En France, il est d\'environ 14%. Mesure les inégalités de revenus.',
+                example: 'Si le revenu médian est 1800€/mois, le seuil de pauvreté est à 1080€. Toute personne gagnant moins est considérée pauvre.',
+                theme: 'Thème 6.4'
+            },
+            {
+                term: 'État-providence',
+                category: 'social',
+                definition: 'Système où l\'État assure la protection sociale des citoyens : santé, retraites, chômage, famille. Financé par des cotisations sociales et des impôts.',
+                example: 'La France a l\'un des systèmes d\'État-providence les plus développés au monde, avec des dépenses sociales autour de 31% du PIB.',
+                theme: 'Thème 6.4'
+            },
+            {
+                term: 'Redistribution',
+                category: 'social',
+                definition: 'Mécanisme par lequel l\'État prélève des ressources (impôts progressifs, cotisations) et les reverse sous forme de prestations sociales pour réduire les inégalités.',
+                example: 'L\'impôt sur le revenu est progressif : un cadre paie 30% tandis qu\'un salarié au SMIC paie 0%. La différence finance des aides sociales.',
+                theme: 'Thème 6.4'
+            },
+            {
+                term: 'RSA (Revenu de Solidarité Active)',
+                category: 'social',
+                definition: 'Allocation versée aux personnes sans ressources ou à faibles ressources pour garantir un revenu minimum. Remplace l\'ancien RMI. Financé par l\'État et les départements.',
+                example: 'En 2024, le RSA est d\'environ 635€/mois pour une personne seule. Il complète les revenus d\'activité en dessous d\'un seuil.',
+                theme: 'Thème 6.4'
+            },
+            {
+                term: 'Indice de Gini / Inégalités',
+                category: 'social',
+                definition: 'Mesure de la concentration des revenus dans une société. Va de 0 (égalité parfaite) à 100 (inégalité absolue). Plus l\'indice est élevé, plus les inégalités sont fortes.',
+                example: 'La France a un Gini d\'environ 32, l\'un des plus bas d\'Europe grâce à la redistribution. Les États-Unis ont un Gini d\'environ 41.',
+                theme: 'Thème 6.4'
+            },
+            {
+                term: 'Croissance économique',
+                category: 'economie',
+                definition: 'Augmentation de la production de richesses (PIB) sur une période. En dessous de 0% = récession. Entre 0 et 1,5% = croissance faible. Au-delà de 2,5% = croissance forte.',
+                example: 'En 2021, la France a connu +7% de croissance après la récession de 2020 (-8%) due au Covid.',
+                theme: 'Thème 6.3'
+            },
+            {
+                term: 'PIB (Produit Intérieur Brut)',
+                category: 'economie',
+                definition: 'Valeur totale de tous les biens et services produits sur le territoire national pendant une année. Principal indicateur de la richesse d\'un pays.',
+                example: 'Le PIB de la France est d\'environ 2 800 milliards d\'euros. La croissance du PIB = croissance économique.',
+                theme: 'Thème 6.3'
+            }
+        ];
+
         const SCENARIOS = {
             crise: {
                 id: 'crise',
                 name: '🔴 Crise Économique',
+                emoji: '🔴',
                 description: 'Le pays est en pleine récession. Le chômage explose, les entreprises ferment.',
+                context: 'La France vient de traverser une crise financière mondiale. Les banques sont fragilisées, les entreprises réduisent leurs effectifs, et les ménages restreignent leur consommation. Le gouvernement doit agir vite pour éviter une spirale récessive.',
                 difficulty: 'Très difficile',
                 objectives: 'Ramener le chômage sous 10% en 8 trimestres',
+                multiObjectives: [
+                    { label: 'Chômage', target: '< 10%', key: 'chomage', threshold: 10, inverse: true },
+                    { label: 'Croissance', target: '> 1%', key: 'croissance', threshold: 1, inverse: false },
+                    { label: 'Pauvreté', target: '< 12%', key: 'pauvrete', threshold: 12, inverse: true }
+                ],
+                ministerFocus: { travail: 'haute', economie: 'haute', social: 'moyenne', education: 'faible' },
                 initialState: {
-                    chomage: 14,
-                    emploi: 62,
-                    activite: 72,
-                    budget: 80,
-                    croissance: -0.5,
-                    deficit: 6,
-                    dette: 95,
-                    inflation: 0.5,
-                    pauvrete: 14,
-                    inegalites: 38,
-                    entreprises: 35,
-                    salaries: 40,
-                    popularite: 35
+                    chomage: 14, emploi: 62, activite: 72, budget: 80,
+                    croissance: -0.5, deficit: 6, dette: 95, inflation: 0.5,
+                    pauvrete: 14, inegalites: 38, entreprises: 35, salaries: 40, popularite: 35
                 },
                 eventProbability: 0.65,
                 targetChomage: 10,
@@ -1143,23 +1676,21 @@
             normale: {
                 id: 'normale',
                 name: '🟡 Situation Standard',
+                emoji: '🟡',
                 description: 'Situation économique moyenne. Chômage élevé mais économie stable.',
+                context: 'L\'économie française est en phase de stabilisation après plusieurs années difficiles. Le chômage reste au-dessus des normes européennes, les inégalités se creusent légèrement, mais les fondamentaux économiques tiennent. Il faut engager des réformes structurelles sans déstabiliser l\'existant.',
                 difficulty: 'Moyen',
                 objectives: 'Ramener le chômage sous 8% en 8 trimestres',
+                multiObjectives: [
+                    { label: 'Chômage', target: '< 8%', key: 'chomage', threshold: 8, inverse: true },
+                    { label: 'Déficit', target: '< 3%', key: 'deficit', threshold: 3, inverse: true },
+                    { label: 'Popularité', target: '> 55', key: 'popularite', threshold: 55, inverse: false }
+                ],
+                ministerFocus: { travail: 'haute', economie: 'moyenne', social: 'moyenne', education: 'haute' },
                 initialState: {
-                    chomage: 12,
-                    emploi: 65,
-                    activite: 74,
-                    budget: 100,
-                    croissance: 1.5,
-                    deficit: 3,
-                    dette: 85,
-                    inflation: 1.5,
-                    pauvrete: 10,
-                    inegalites: 30,
-                    entreprises: 50,
-                    salaries: 50,
-                    popularite: 50
+                    chomage: 12, emploi: 65, activite: 74, budget: 100,
+                    croissance: 1.5, deficit: 3, dette: 85, inflation: 1.5,
+                    pauvrete: 10, inegalites: 30, entreprises: 50, salaries: 50, popularite: 50
                 },
                 eventProbability: 0.60,
                 targetChomage: 8,
@@ -1168,23 +1699,21 @@
             croissance: {
                 id: 'croissance',
                 name: '🟢 Boom Économique',
+                emoji: '🟢',
                 description: 'L\'économie est en forte croissance. Optimisez l\'emploi et évitez la surchauffe.',
+                context: 'La France profite d\'un cycle de croissance exceptionnel dopé par le numérique et la transition écologique. Le risque principal est la surchauffe inflationniste et le creusement des inégalités entre ceux qui profitent du boom et ceux qui en sont exclus. Il faut capitaliser sans laisser personne de côté.',
                 difficulty: 'Facile',
                 objectives: 'Ramener le chômage sous 6% en 8 trimestres',
+                multiObjectives: [
+                    { label: 'Chômage', target: '< 6%', key: 'chomage', threshold: 6, inverse: true },
+                    { label: 'Inflation', target: '< 2.5%', key: 'inflation', threshold: 2.5, inverse: true },
+                    { label: 'Inégalités', target: '< 25', key: 'inegalites', threshold: 25, inverse: true }
+                ],
+                ministerFocus: { travail: 'moyenne', economie: 'haute', social: 'haute', education: 'moyenne' },
                 initialState: {
-                    chomage: 9,
-                    emploi: 68,
-                    activite: 75,
-                    budget: 120,
-                    croissance: 3.5,
-                    deficit: 1,
-                    dette: 75,
-                    inflation: 2.5,
-                    pauvrete: 7,
-                    inegalites: 25,
-                    entreprises: 65,
-                    salaries: 60,
-                    popularite: 62
+                    chomage: 9, emploi: 68, activite: 75, budget: 120,
+                    croissance: 3.5, deficit: 1, dette: 75, inflation: 2.5,
+                    pauvrete: 7, inegalites: 25, entreprises: 65, salaries: 60, popularite: 62
                 },
                 eventProbability: 0.55,
                 targetChomage: 6,
@@ -1193,27 +1722,71 @@
             desindustrialisation: {
                 id: 'desindustrialisation',
                 name: '🏭 Désindustrialisation',
+                emoji: '🏭',
                 description: 'Fermetures d\'usines massives. Chômage structurel élevé, reconversion nécessaire.',
+                context: 'Le tissu industriel régional s\'effondre sous l\'effet des délocalisations et de l\'automatisation. Des bassins entiers d\'emplois disparaissent. Les travailleurs peu qualifiés sont en première ligne. La réponse exige une stratégie coordonnée sur le long terme : reconversion, réindustrialisation, soutien social.',
                 difficulty: 'Très difficile',
                 objectives: 'Ramener le chômage sous 9% malgré les délocalisations',
+                multiObjectives: [
+                    { label: 'Chômage', target: '< 9%', key: 'chomage', threshold: 9, inverse: true },
+                    { label: 'Emploi industriel', target: '> 62%', key: 'emploi', threshold: 62, inverse: false },
+                    { label: 'Pauvreté', target: '< 10%', key: 'pauvrete', threshold: 10, inverse: true }
+                ],
+                ministerFocus: { travail: 'haute', economie: 'haute', social: 'haute', education: 'haute' },
                 initialState: {
-                    chomage: 15,
-                    emploi: 60,
-                    activite: 71,
-                    budget: 90,
-                    croissance: 0.5,
-                    deficit: 5,
-                    dette: 92,
-                    inflation: 1,
-                    pauvrete: 13,
-                    inegalites: 36,
-                    entreprises: 40,
-                    salaries: 35,
-                    popularite: 38
+                    chomage: 15, emploi: 60, activite: 71, budget: 90,
+                    croissance: 0.5, deficit: 5, dette: 92, inflation: 1,
+                    pauvrete: 13, inegalites: 36, entreprises: 40, salaries: 35, popularite: 38
                 },
                 eventProbability: 0.70,
                 targetChomage: 9,
                 color: '#6c757d'
+            },
+            inegalites: {
+                id: 'inegalites',
+                name: '⚖️ Fracture Sociale',
+                emoji: '⚖️',
+                description: 'Économie en croissance mais inégalités record. Les 10% les plus riches captent tout.',
+                context: 'La France connaît une croissance solide, mais elle profite essentiellement aux plus aisés. Le taux de pauvreté remonte, les banlieues s\'appauvrissent, les déserts médicaux s\'étendent. La cohésion sociale est en jeu. Le gouvernement doit redistribuer sans tuer la compétitivité.',
+                difficulty: 'Difficile',
+                objectives: 'Réduire les inégalités sous 22 et la pauvreté sous 8%',
+                multiObjectives: [
+                    { label: 'Inégalités', target: '< 22', key: 'inegalites', threshold: 22, inverse: true },
+                    { label: 'Pauvreté', target: '< 8%', key: 'pauvrete', threshold: 8, inverse: true },
+                    { label: 'Popularité', target: '> 60', key: 'popularite', threshold: 60, inverse: false }
+                ],
+                ministerFocus: { travail: 'moyenne', economie: 'faible', social: 'haute', education: 'haute' },
+                initialState: {
+                    chomage: 8, emploi: 69, activite: 75, budget: 110,
+                    croissance: 2.5, deficit: 2, dette: 80, inflation: 2,
+                    pauvrete: 13, inegalites: 38, entreprises: 70, salaries: 30, popularite: 40
+                },
+                eventProbability: 0.55,
+                targetChomage: 7,
+                color: '#6f42c1'
+            },
+            inflation: {
+                id: 'inflation',
+                name: '🔥 Crise Inflationniste',
+                emoji: '🔥',
+                description: 'L\'inflation dépasse 8%. Le pouvoir d\'achat s\'effondre, les ménages souffrent.',
+                context: 'La flambée des prix de l\'énergie et des matières premières a déclenché une spirale inflationniste. Les salaires n\'arrivent pas à suivre. Les conflits sociaux se multiplient. Maîtriser l\'inflation sans provoquer une récession exige un équilibre délicat entre les mesures de soutien et la rigueur budgétaire.',
+                difficulty: 'Difficile',
+                objectives: 'Ramener l\'inflation sous 2.5% sans déclencher une récession',
+                multiObjectives: [
+                    { label: 'Inflation', target: '< 2.5%', key: 'inflation', threshold: 2.5, inverse: true },
+                    { label: 'Croissance', target: '> 0.5%', key: 'croissance', threshold: 0.5, inverse: false },
+                    { label: 'Popularité', target: '> 45', key: 'popularite', threshold: 45, inverse: false }
+                ],
+                ministerFocus: { travail: 'faible', economie: 'haute', social: 'haute', education: 'faible' },
+                initialState: {
+                    chomage: 7, emploi: 70, activite: 75, budget: 95,
+                    croissance: 1.2, deficit: 4, dette: 88, inflation: 8.5,
+                    pauvrete: 12, inegalites: 32, entreprises: 45, salaries: 28, popularite: 32
+                },
+                eventProbability: 0.60,
+                targetChomage: 7,
+                color: '#fd7e14'
             }
         };
 
@@ -1252,6 +1825,8 @@
                 const saved = localStorage.getItem('ministre-travail-game');
                 return saved ? JSON.parse(saved) : INITIAL_STATE;
             });
+
+            const [showGlossary, setShowGlossary] = React.useState(false);
 
             useEffect(() => {
                 localStorage.setItem('ministre-travail-game', JSON.stringify(gameState));
@@ -1480,131 +2055,72 @@
 
             // Render different phases
             if (gameState.phase === 'scenario') {
+                const completed = gameState.completedScenarios || [];
+                const totalScenarios = Object.keys(SCENARIOS).length;
                 return (
                     <div className="game-container">
                         <div className="game-header">
-                            <h1>🏛️ Ministre du Travail</h1>
-                            <p>La Crise de l'Emploi - Mode Campagne</p>
+                            <h1>🏛️ Conseil des Ministres</h1>
+                            <p>Serious game — Thèmes 6.3, 6.4 & 7 — STMG Terminale</p>
                         </div>
-                        <div className="results-screen">
-                            <h2 className="results-title">Choisissez votre scénario</h2>
-                            <p style={{fontSize: '1.1em', color: '#666', marginBottom: '40px'}}>
-                                Chaque scénario présente des défis différents et une difficulté variable
-                            </p>
-                            
-                            <div className="policies-grid" style={{maxWidth: '1200px', margin: '0 auto'}}>
+                        <div style={{padding:'30px 40px'}}>
+                            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'10px',flexWrap:'wrap',gap:'10px'}}>
+                                <div>
+                                    <h2 style={{fontSize:'1.6em',color:'#2a5298',margin:0}}>Choisissez votre scénario</h2>
+                                    <p style={{color:'#666',marginTop:'6px',fontSize:'0.95em'}}>6 contextes économiques — du plus facile au plus exigeant</p>
+                                </div>
+                                {completed.length > 0 && (
+                                    <div style={{background:'#d4edda',border:'2px solid #28a745',borderRadius:'12px',padding:'10px 18px',textAlign:'center'}}>
+                                        <div style={{fontSize:'1.4em',fontWeight:800,color:'#28a745'}}>{completed.length}/{totalScenarios}</div>
+                                        <div style={{fontSize:'0.8em',color:'#155724'}}>scénarios terminés</div>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="scenario-grid-6" style={{marginTop:'24px'}}>
                                 {Object.values(SCENARIOS).map(scenario => {
-                                    const isCompleted = (gameState.completedScenarios || []).includes(scenario.id);
-                                    
+                                    const isDone = completed.includes(scenario.id);
+                                    const focus  = scenario.ministerFocus || {};
                                     return (
                                         <div
                                             key={scenario.id}
-                                            className="policy-card"
+                                            className="scenario-card"
+                                            style={{borderColor: scenario.color, opacity: 1}}
                                             onClick={() => selectScenario(scenario.id)}
-                                            style={{
-                                                cursor: 'pointer',
-                                                borderColor: scenario.color,
-                                                background: isCompleted ? '#f0f0f0' : 'white'
-                                            }}
                                         >
-                                            {isCompleted && (
-                                                <div style={{
-                                                    position: 'absolute',
-                                                    top: '10px',
-                                                    right: '10px',
-                                                    background: '#28a745',
-                                                    color: 'white',
-                                                    padding: '5px 10px',
-                                                    borderRadius: '20px',
-                                                    fontSize: '0.8em',
-                                                    fontWeight: 'bold'
-                                                }}>
-                                                    ✓ Terminé
-                                                </div>
-                                            )}
-                                            
-                                            <div style={{
-                                                fontSize: '2em',
-                                                marginBottom: '10px'
-                                            }}>
-                                                {scenario.name}
-                                            </div>
-                                            
-                                            <div style={{
-                                                display: 'inline-block',
-                                                padding: '5px 15px',
-                                                borderRadius: '20px',
-                                                fontSize: '0.85em',
-                                                fontWeight: 'bold',
-                                                marginBottom: '15px',
-                                                background: scenario.color,
-                                                color: 'white'
-                                            }}>
+                                            {isDone && <div className="sc-done-badge">✓ Terminé</div>}
+                                            <div style={{display:'inline-block',background:scenario.color,color:'white',padding:'3px 10px',borderRadius:'20px',fontSize:'0.75em',fontWeight:700,marginBottom:'8px'}}>
                                                 {scenario.difficulty}
                                             </div>
-                                            
-                                            <p style={{fontSize: '0.95em', color: '#666', lineHeight: '1.6', marginBottom: '15px'}}>
-                                                {scenario.description}
-                                            </p>
-                                            
-                                            <div style={{
-                                                background: '#f8f9fa',
-                                                padding: '15px',
-                                                borderRadius: '8px',
-                                                marginBottom: '15px'
-                                            }}>
-                                                <strong>🎯 Objectif :</strong><br/>
-                                                {scenario.objectives}
+                                            <div className="sc-name" style={{color:scenario.color}}>{scenario.name}</div>
+                                            <div className="sc-desc">{scenario.context || scenario.description}</div>
+                                            <div className="sc-obj"><strong>🎯</strong> {scenario.objectives}</div>
+                                            <div className="sc-stats">
+                                                <div className="sc-stat">Chômage<strong style={{color:'#dc3545'}}>{scenario.initialState.chomage}%</strong></div>
+                                                <div className="sc-stat">Croissance<strong style={{color:scenario.initialState.croissance >= 0 ? '#28a745':'#dc3545'}}>{scenario.initialState.croissance}%</strong></div>
+                                                <div className="sc-stat">Déficit<strong style={{color:'#fd7e14'}}>{scenario.initialState.deficit}%</strong></div>
+                                                <div className="sc-stat">Popularité<strong style={{color:'#6f42c1'}}>{scenario.initialState.popularite}/100</strong></div>
                                             </div>
-                                            
-                                            <div style={{
-                                                display: 'grid',
-                                                gridTemplateColumns: 'repeat(2, 1fr)',
-                                                gap: '8px',
-                                                fontSize: '0.85em'
-                                            }}>
-                                                <div>
-                                                    <strong>Chômage initial :</strong><br/>
-                                                    <span style={{fontSize: '1.3em', color: scenario.color}}>
-                                                        {scenario.initialState.chomage}%
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <strong>Budget initial :</strong><br/>
-                                                    <span style={{fontSize: '1.3em', color: scenario.color}}>
-                                                        {scenario.initialState.budget}%
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <strong>Croissance :</strong><br/>
-                                                    <span style={{fontSize: '1.3em', color: scenario.color}}>
-                                                        {scenario.initialState.croissance}%
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <strong>Durée :</strong><br/>
-                                                    <span style={{fontSize: '1.3em', color: scenario.color}}>
-                                                        8 trimestres
-                                                    </span>
-                                                </div>
+                                            <div className="focus-row">
+                                                {Object.entries(focus).map(([min, lvl]) => {
+                                                    const m = MINISTERS.find(x => x.id === min);
+                                                    return m ? (
+                                                        <span key={min} className={`focus-badge focus-${lvl}`}>
+                                                            {m.icon} {lvl}
+                                                        </span>
+                                                    ) : null;
+                                                })}
                                             </div>
                                         </div>
                                     );
                                 })}
                             </div>
-                            
-                            {gameState.completedScenarios && gameState.completedScenarios.length > 0 && (
-                                <div style={{
-                                    marginTop: '40px',
-                                    padding: '20px',
-                                    background: '#d4edda',
-                                    borderRadius: '12px',
-                                    border: '2px solid #28a745'
-                                }}>
-                                    <h3 style={{color: '#28a745', marginBottom: '10px'}}>
-                                        🏆 Scénarios terminés : {gameState.completedScenarios.length}/4
-                                    </h3>
-                                    <p>Continuez à relever tous les défis pour devenir un expert !</p>
+
+                            {completed.length === totalScenarios && (
+                                <div style={{background:'linear-gradient(135deg,#ffd700,#ffed4e)',border:'3px solid #ffd700',borderRadius:'16px',padding:'30px',marginTop:'30px',textAlign:'center'}}>
+                                    <div style={{fontSize:'2.5em',marginBottom:'10px'}}>🏆</div>
+                                    <h2 style={{margin:'0 0 10px'}}>Tous les scénarios terminés !</h2>
+                                    <p>Vous maîtrisez l'ensemble des politiques économiques, sociales et de l'emploi.</p>
                                 </div>
                             )}
                         </div>
@@ -1633,15 +2149,28 @@
                                 Difficulté : {gameState.scenario?.difficulty || 'Moyen'}
                             </div>
                             
-                            <h2 className="results-title">Bienvenue Ministre !</h2>
+                            <h2 className="results-title">Briefing — Conseil des ministres</h2>
                             <div className="diagnostic-content">
-                                <h3>Votre Mission</h3>
-                                <p style={{fontSize: '1.1em', lineHeight: '1.8', marginBottom: '30px'}}>
-                                    Vous venez d'être nommé(e) <strong>Ministre du Travail</strong>. 
-                                    {gameState.scenario?.description}
-                                    <br/><br/>
-                                    Vous disposez de <strong>8 trimestres (2 ans)</strong> pour améliorer la situation.
+                                <h3>📋 Contexte de la mission</h3>
+                                <p style={{fontSize: '1.05em', lineHeight: '1.8', marginBottom: '20px', background:'#f8f9ff', padding:'16px', borderRadius:'10px', borderLeft:`4px solid ${gameState.scenario?.color || '#2a5298'}`}}>
+                                    {gameState.scenario?.context || gameState.scenario?.description}
                                 </p>
+                                <p style={{fontSize: '0.95em', color: '#666', marginBottom: '20px'}}>
+                                    Vous disposez de <strong>8 trimestres (2 ans)</strong> pour atteindre vos objectifs. 
+                                    Chaque ministre dispose d'un quota de mesures dans son domaine de compétence.
+                                </p>
+                                <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))', gap:'10px', marginBottom:'20px'}}>
+                                    {MINISTERS.map(m => {
+                                        const focus = gameState.scenario?.ministerFocus?.[m.id] || 'moyenne';
+                                        return (
+                                            <div key={m.id} style={{background:'white', border:`2px solid ${m.color}`, borderRadius:'10px', padding:'12px', textAlign:'center'}}>
+                                                <div style={{fontSize:'1.6em'}}>{m.icon}</div>
+                                                <div style={{fontWeight:700, fontSize:'0.82em', color:m.color, marginBottom:'4px'}}>{m.name.replace('Ministre ','').replace("de l'","de l'")}</div>
+                                                <span className={`focus-badge focus-${focus}`}>Priorité : {focus}</span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
                                 <div style={{background: gameState.scenario?.color + '20' || '#f8f9fa', padding: '20px', borderRadius: '12px', marginBottom: '30px', border: `2px solid ${gameState.scenario?.color || '#2a5298'}`}}>
                                     <h4 style={{color: gameState.scenario?.color || '#2a5298', marginBottom: '15px'}}>🎯 Votre Objectif</h4>
                                     <p style={{fontSize: '1.2em', fontWeight: 'bold'}}>
@@ -1783,8 +2312,8 @@
                                 
                                 <div className="result-card">
                                     <h4>📊 Croissance</h4>
-                                    <div className="result-score" style={{color: current.croissance > 1.5 ? '#28a745' : '#ffc107'}}>
-                                        {current.croissance?.toFixed(1) || '1.5'}%
+                                    <div className="result-score" style={{color: (current.croissance != null ? current.croissance : 1.5) > 1.5 ? '#28a745' : '#ffc107'}}>
+                                        {(current.croissance != null ? current.croissance : 1.5).toFixed(1)}%
                                     </div>
                                     <p>Dynamique économique</p>
                                 </div>
@@ -2077,16 +2606,22 @@
             // Playing phase
             return (
                 <div className="game-container">
-                    <div className="game-header">
-                        <h1>🏛️ Ministre du Travail : La Crise de l'Emploi</h1>
-                        <p>Prenez vos décisions pour améliorer l'emploi</p>
+                    {showGlossary && <GlossaryModal onClose={() => setShowGlossary(false)} />}
+                    <button className="glossary-btn" onClick={() => setShowGlossary(true)}>
+                        📖 Glossaire
+                    </button>
+
+                    <div className="game-header" style={{background:`linear-gradient(135deg, ${gameState.scenario?.color || '#1e3c72'} 0%, #2a5298 100%)`}}>
+                        <h1>🏛️ {gameState.scenario?.name || 'Conseil des Ministres'}</h1>
+                        <p>Trimestre {gameState.quarter}/{gameState.totalQuarters || 8} — {gameState.quarter <= 4 ? 'Première année' : 'Seconde année'}</p>
                     </div>
-                    
-                    <div className="quarter-indicator">
-                        📅 Trimestre {gameState.quarter} / {gameState.totalQuarters || 8}
-                        {gameState.quarter <= 4 && <span style={{marginLeft: '20px', opacity: 0.8}}>Première année</span>}
-                        {gameState.quarter > 4 && <span style={{marginLeft: '20px', opacity: 0.8}}>Seconde année</span>}
-                    </div>
+
+                    <MultiObjectivesPanel
+                        scenario={gameState.scenario}
+                        indicators={gameState.indicators}
+                        quarter={gameState.quarter}
+                        totalQuarters={gameState.totalQuarters || 8}
+                    />
                     
                     {gameState.quarterlyRevenue && (
                         <div style={{
@@ -2109,58 +2644,594 @@
                     )}
                     
                     <Dashboard indicators={gameState.indicators} />
-                    
-                    <div className="game-phase">
-                        <h2 className="phase-title">
-                            Choisissez jusqu'à 3 mesures ({gameState.selectedPolicies.length}/3 sélectionnées)
-                        </h2>
-                        
-                        <div className="policies-grid">
-                            {POLICIES.map(policy => {
-                                const isSelected = gameState.selectedPolicies.includes(policy.id);
-                                const isDisabled = !isSelected && gameState.selectedPolicies.length >= 3;
-                                const canAfford = gameState.indicators.budget >= policy.cost;
+
+                    <div className="playing-layout">
+                        <div className="playing-main">
+                            <div className="game-phase">
+                                <h2 className="phase-title">
+                                    Choisissez jusqu'à 3 mesures ({gameState.selectedPolicies.length}/3 sélectionnées)
+                                </h2>
+
+                                <PolicyFiltersWrapper
+                                    indicators={gameState.indicators}
+                                    selectedPolicies={gameState.selectedPolicies}
+                                    togglePolicy={togglePolicy}
+                                />
                                 
+                                <div className="action-buttons">
+                                    <button 
+                                        className="btn btn-primary" 
+                                        onClick={executeQuarter}
+                                        disabled={gameState.selectedPolicies.length === 0}
+                                    >
+                                        Valider et passer au trimestre suivant
+                                    </button>
+                                    <button className="btn btn-secondary" onClick={resetGame}>
+                                        Recommencer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ActionJournal history={gameState.history} scenario={gameState.scenario} />
+                    </div>
+                </div>
+            );
+        }
+
+        /* ─────────────────────────────────────────────
+           GLOSSAIRE
+           ───────────────────────────────────────────── */
+        function GlossaryModal({ onClose }) {
+            const [search, setSearch] = React.useState('');
+            const [cat, setCat]       = React.useState('all');
+
+            const CATS = [
+                { key: 'all',      label: 'Tous' },
+                { key: 'emploi',   label: '💼 Emploi' },
+                { key: 'economie', label: '💰 Économie' },
+                { key: 'budget',   label: '📉 Budget' },
+                { key: 'social',   label: '🏥 Social' },
+                { key: 'europe',   label: '🇪🇺 Europe' },
+            ];
+
+            const filtered = GLOSSARY.filter(g => {
+                const matchCat  = cat === 'all' || g.category === cat;
+                const q = search.toLowerCase();
+                const matchSearch = !q || g.term.toLowerCase().includes(q) || g.definition.toLowerCase().includes(q);
+                return matchCat && matchSearch;
+            });
+
+            return (
+                <div className="glossary-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+                    <div className="glossary-modal">
+                        <div className="glossary-header">
+                            <h2>📖 Glossaire Économique</h2>
+                            <button className="glossary-close" onClick={onClose}>✕</button>
+                        </div>
+                        <div className="glossary-search">
+                            <input
+                                type="text"
+                                placeholder="Rechercher un terme..."
+                                value={search}
+                                onChange={e => setSearch(e.target.value)}
+                                autoFocus
+                            />
+                            {CATS.map(c => (
+                                <button key={c.key} className={`gloss-cat-btn ${cat === c.key ? 'active' : ''}`}
+                                    onClick={() => setCat(c.key)}>
+                                    {c.label}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="glossary-body">
+                            {filtered.length === 0 && (
+                                <div style={{textAlign:'center',color:'#999',padding:'40px'}}>
+                                    Aucun terme trouvé pour cette recherche.
+                                </div>
+                            )}
+                            {filtered.map(g => (
+                                <div key={g.term} className="gloss-entry">
+                                    <div className="gloss-entry-header">
+                                        <span className="gloss-term">{g.term}</span>
+                                        <span className="gloss-theme">{g.theme}</span>
+                                    </div>
+                                    <div className="gloss-def">{g.definition}</div>
+                                    <div className="gloss-example">{g.example}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        /* ─────────────────────────────────────────────
+           BARRE MINISTRES (filtrage des politiques)
+           ───────────────────────────────────────────── */
+        function MinistersBar({ activeMinister, onSelect, selectedPolicies, indicators }) {
+            return (
+                <div>
+                    <div className="ministers-bar">
+                        <button
+                            className={`minister-tab ${activeMinister === 'all' ? 'active' : ''}`}
+                            style={activeMinister === 'all' ? {backgroundColor:'#2a5298', borderBottomColor:'#2a5298'} : {}}
+                            onClick={() => onSelect('all')}
+                        >
+                            🏛️ Conseil des ministres
+                            <span className="minister-quota">{selectedPolicies.length}/3</span>
+                        </button>
+                        {MINISTERS.map(m => {
+                            const ministerPolicies = selectedPolicies.filter(id => {
+                                const p = POLICIES_BY_ID[id];
+                                return p && m.policyTypes.includes(p.type);
+                            });
+                            const isActive = activeMinister === m.id;
+                            return (
+                                <button
+                                    key={m.id}
+                                    className={`minister-tab ${isActive ? 'active' : ''}`}
+                                    style={isActive ? {backgroundColor: m.color, borderBottomColor: m.color} : {}}
+                                    onClick={() => onSelect(m.id)}
+                                >
+                                    {m.icon} {m.name.replace('Ministre ', '').replace('de l\'', 'de l\'')}
+                                    <span className="minister-quota">{ministerPolicies.length}/{m.maxPolicies}</span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                    {activeMinister !== 'all' && (() => {
+                        const m = MINISTERS.find(x => x.id === activeMinister);
+                        return m ? (
+                            <div className="minister-context">
+                                <span style={{fontSize:'1.2em'}}>{m.icon}</span>
+                                <span><strong>{m.name}</strong> — {m.description}</span>
+                                <span style={{marginLeft:'auto',color:'#2a5298',fontWeight:700}}>
+                                    Max {m.maxPolicies} mesure{m.maxPolicies > 1 ? 's' : ''} dans son portefeuille
+                                </span>
+                            </div>
+                        ) : null;
+                    })()}
+                </div>
+            );
+        }
+
+        /* ─────────────────────────────────────────────
+           MULTI-OBJECTIFS PANEL
+           ───────────────────────────────────────────── */
+        function MultiObjectivesPanel({ scenario, indicators, quarter, totalQuarters }) {
+            if (!scenario || !scenario.multiObjectives) return null;
+            const trimLeft = totalQuarters - quarter + 1;
+            return (
+                <div className="multi-obj-panel">
+                    <span style={{color:'rgba(255,255,255,0.7)',fontSize:'0.8em',fontWeight:700,whiteSpace:'nowrap'}}>
+                        🎯 OBJECTIFS · {trimLeft} trim. restants
+                    </span>
+                    {scenario.multiObjectives.map(obj => {
+                        const val = indicators[obj.key];
+                        const achieved = val != null && (obj.inverse ? val < obj.threshold : val > obj.threshold);
+                        const danger   = val != null && (obj.inverse ? val > obj.threshold * 1.15 : val < obj.threshold * 0.85);
+                        return (
+                            <div key={obj.key} className={`multi-obj-item ${achieved ? 'achieved' : danger ? 'danger' : ''}`}>
+                                {achieved ? '✅' : danger ? '🔴' : '⏳'}
+                                <strong>{obj.label}</strong>
+                                <span style={{opacity:0.8}}>{val != null ? (Number.isInteger(val) ? val : val.toFixed(1)) : '–'}</span>
+                                <span style={{opacity:0.6,fontSize:'0.85em'}}>→ {obj.target}</span>
+                            </div>
+                        );
+                    })}
+                </div>
+            );
+        }
+
+        /* ─────────────────────────────────────────────
+           POLICY FILTERS WRAPPER (owns filtered state)
+           ───────────────────────────────────────────── */
+        const POLICIES_BY_ID = {};
+        POLICIES.forEach(p => { POLICIES_BY_ID[p.id] = p; });
+
+        function PolicyFiltersWrapper({ indicators, selectedPolicies, togglePolicy }) {
+            const [filteredPolicies, setFilteredPolicies] = React.useState(POLICIES);
+            const [activeMinister, setActiveMinister]     = React.useState('all');
+
+            const IND_LABELS = {
+                chomage:'Chômage', emploi:'Emploi', budget:'Budget', croissance:'Croissance',
+                deficit:'Déficit', dette:'Dette', inflation:'Inflation', pauvrete:'Pauvreté',
+                inegalites:'Inégalités', popularite:'Popularité', entreprises:'Entreprises',
+                salaries:'Salariés', activite:'Activité'
+            };
+
+            const policiesForMinister = activeMinister === 'all'
+                ? POLICIES
+                : (() => {
+                    const m = MINISTERS.find(x => x.id === activeMinister);
+                    return m ? POLICIES.filter(p => m.policyTypes.includes(p.type)) : POLICIES;
+                })();
+
+            return (
+                <div>
+                    <MinistersBar
+                        activeMinister={activeMinister}
+                        onSelect={setActiveMinister}
+                        selectedPolicies={selectedPolicies}
+                        indicators={indicators}
+                    />
+
+                    <div style={{padding:'0'}}>
+                        <PolicyFilters
+                            policies={policiesForMinister}
+                            budget={indicators.budget}
+                            selectedPolicies={selectedPolicies}
+                            onFiltered={setFilteredPolicies}
+                            key={activeMinister}
+                        />
+
+                        {filteredPolicies.length === 0 && (
+                            <div style={{textAlign:'center', padding:'40px', color:'#888', fontSize:'1.05em'}}>
+                                Aucune politique ne correspond à ce filtre.
+                            </div>
+                        )}
+
+                        <div className="policies-grid">
+                            {filteredPolicies.map(policy => {
+                                const isSelected = selectedPolicies.includes(policy.id);
+                                const isDisabled = !isSelected && selectedPolicies.length >= 3;
+                                const canAfford  = indicators.budget >= policy.cost;
+                                const minister   = MINISTERS.find(m => m.policyTypes.includes(policy.type));
+                                const ministerCount = minister
+                                    ? selectedPolicies.filter(id => { const p = POLICIES_BY_ID[id]; return p && minister.policyTypes.includes(p.type); }).length
+                                    : 0;
+                                const overQuota = minister && !isSelected && ministerCount >= minister.maxPolicies;
+
                                 return (
                                     <div
                                         key={policy.id}
-                                        className={`policy-card ${isSelected ? 'selected' : ''} ${(isDisabled || !canAfford) ? 'disabled' : ''}`}
-                                        onClick={() => canAfford && !isDisabled ? togglePolicy(policy.id) : null}
+                                        className={`policy-card ${isSelected ? 'selected' : ''} ${(isDisabled || !canAfford || overQuota) ? 'disabled' : ''}`}
+                                        onClick={() => canAfford && !isDisabled && !overQuota ? togglePolicy(policy.id) : null}
                                     >
-                                        <span className={`policy-type type-${policy.type}`}>
-                                            {policy.type}
-                                        </span>
+                                        <span className={`policy-type type-${policy.type}`}>{policy.type}</span>
                                         <span className="policy-cost">💰 {policy.cost}%</span>
                                         <div className="policy-name">{policy.name}</div>
                                         <div className="policy-description">{policy.description}</div>
                                         <div className="policy-impacts">
                                             {Object.entries(policy.impacts).map(([key, value]) => (
-                                                <span 
-                                                    key={key} 
-                                                    className={`impact-badge ${value > 0 ? 'impact-positive' : 'impact-negative'}`}
-                                                >
-                                                    {key} {value > 0 ? '+' : ''}{value}
+                                                <span key={key} className={`impact-badge ${value > 0 ? 'impact-positive' : 'impact-negative'}`}>
+                                                    {IND_LABELS[key] || key} {value > 0 ? '+' : ''}{value}
                                                 </span>
                                             ))}
                                         </div>
-                                        {!canAfford && <div style={{color: '#dc3545', marginTop: '10px', fontWeight: 'bold'}}>Budget insuffisant</div>}
+                                        {!canAfford && <div style={{color:'#dc3545',marginTop:'10px',fontWeight:'bold'}}>Budget insuffisant</div>}
+                                        {overQuota && canAfford && (
+                                            <div style={{color:'#fd7e14',marginTop:'10px',fontWeight:'bold',fontSize:'0.85em'}}>
+                                                ⚠️ Quota {minister.icon} atteint ({minister.maxPolicies} max)
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}
                         </div>
-                        
-                        <div className="action-buttons">
-                            <button 
-                                className="btn btn-primary" 
-                                onClick={executeQuarter}
-                                disabled={gameState.selectedPolicies.length === 0}
+                    </div>
+                </div>
+            );
+        }
+
+        /* ─────────────────────────────────────────────
+           POLICY FILTERS & SORT
+           ───────────────────────────────────────────── */
+        function PolicyFilters({ policies, budget, selectedPolicies, onFiltered }) {
+            const [activeType, setActiveType]   = React.useState('all');
+            const [activeExtra, setActiveExtra] = React.useState(null); // 'affordable' | 'selected'
+            const [sortBy, setSortBy]           = React.useState('default');
+
+            const TYPE_FILTERS = [
+                { key: 'all',        label: 'Toutes',      cls: 'fb-all' },
+                { key: 'active',     label: '💼 Actives',   cls: 'fb-active' },
+                { key: 'passive',    label: '🛡️ Passives',  cls: 'fb-passive' },
+                { key: 'demande',    label: '📈 Demande',   cls: 'fb-demande' },
+                { key: 'offre',      label: '🏭 Offre',     cls: 'fb-offre' },
+                { key: 'economie',   label: '💰 Économie',  cls: 'fb-economie' },
+                { key: 'social',     label: '🏥 Social',    cls: 'fb-social' },
+                { key: 'education',  label: '🎓 Éducation', cls: 'fb-education' },
+            ];
+
+            const SORT_OPTIONS = [
+                { value: 'default',   label: 'Ordre par défaut' },
+                { value: 'cost-asc',  label: 'Coût croissant' },
+                { value: 'cost-desc', label: 'Coût décroissant' },
+                { value: 'impact',    label: 'Impact total ↑' },
+                { value: 'name',      label: 'Alphabétique' },
+            ];
+
+            // Indicator label map for tooltip-friendly display
+            const IND_LABELS = {
+                chomage:'Chômage', emploi:'Emploi', budget:'Budget', croissance:'Croissance',
+                deficit:'Déficit', dette:'Dette', inflation:'Inflation', pauvrete:'Pauvreté',
+                inegalites:'Inégalités', popularite:'Popularité', entreprises:'Entreprises',
+                salaries:'Salariés', activite:'Activité'
+            };
+
+            const impactTotal = p => Object.values(p.impacts).reduce((s, v) => s + Math.abs(v), 0);
+
+            React.useEffect(() => {
+                let result = [...policies];
+
+                // Type filter
+                if (activeType !== 'all') result = result.filter(p => p.type === activeType);
+
+                // Extra filters
+                if (activeExtra === 'affordable') result = result.filter(p => budget >= p.cost);
+                if (activeExtra === 'selected')   result = result.filter(p => selectedPolicies.includes(p.id));
+
+                // Sort
+                if (sortBy === 'cost-asc')  result.sort((a, b) => a.cost - b.cost);
+                if (sortBy === 'cost-desc') result.sort((a, b) => b.cost - a.cost);
+                if (sortBy === 'impact')    result.sort((a, b) => impactTotal(b) - impactTotal(a));
+                if (sortBy === 'name')      result.sort((a, b) => a.name.localeCompare(b.name));
+
+                onFiltered(result);
+            }, [activeType, activeExtra, sortBy, selectedPolicies.length, budget]);
+
+            const toggleExtra = key => setActiveExtra(prev => prev === key ? null : key);
+
+            return (
+                <div className="filters-bar">
+                    <span className="filter-label">Filtrer :</span>
+                    <div className="filter-group">
+                        {TYPE_FILTERS.map(f => (
+                            <button
+                                key={f.key}
+                                className={`filter-btn ${f.cls} ${activeType === f.key ? 'active' : ''}`}
+                                onClick={() => setActiveType(f.key)}
                             >
-                                Valider et passer au trimestre suivant
+                                {f.label}
                             </button>
-                            <button className="btn btn-secondary" onClick={resetGame}>
-                                Recommencer
-                            </button>
+                        ))}
+                    </div>
+
+                    <div className="filter-group" style={{borderLeft:'2px solid #d0d8ff', paddingLeft:'10px'}}>
+                        <button
+                            className={`filter-btn fb-affordable ${activeExtra === 'affordable' ? 'active' : ''}`}
+                            onClick={() => toggleExtra('affordable')}
+                            title="Afficher uniquement les politiques que vous pouvez financer"
+                        >
+                            💳 Finançables
+                        </button>
+                        <button
+                            className={`filter-btn fb-selected ${activeExtra === 'selected' ? 'active' : ''}`}
+                            onClick={() => toggleExtra('selected')}
+                            title="Afficher uniquement les politiques déjà sélectionnées"
+                        >
+                            ✅ Sélectionnées ({selectedPolicies.length})
+                        </button>
+                    </div>
+
+                    <div className="filter-group" style={{borderLeft:'2px solid #d0d8ff', paddingLeft:'10px'}}>
+                        <span className="filter-label">Trier :</span>
+                        <select className="sort-select" value={sortBy} onChange={e => setSortBy(e.target.value)}>
+                            {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                        </select>
+                    </div>
+                </div>
+            );
+        }
+
+        /* ─────────────────────────────────────────────
+           OBJECTIVES PANEL
+           ───────────────────────────────────────────── */
+        function ObjectivesPanel({ gameState }) {
+            const scenario = gameState.scenario;
+            if (!scenario) return null;
+            const ind = gameState.indicators;
+            const initial = scenario.initialState;
+
+            const objectives = [
+                {
+                    label: 'Chômage',
+                    icon: '🎯',
+                    current: ind.chomage.toFixed(1) + '%',
+                    target: '< ' + scenario.targetChomage + '%',
+                    achieved: ind.chomage < scenario.targetChomage,
+                    danger: ind.chomage > initial.chomage
+                },
+                {
+                    label: 'Emploi',
+                    icon: '💼',
+                    current: ind.emploi.toFixed(1) + '%',
+                    target: '> ' + initial.emploi + '%',
+                    achieved: ind.emploi > initial.emploi + 2,
+                    danger: ind.emploi < initial.emploi
+                },
+                {
+                    label: 'Budget',
+                    icon: '💰',
+                    current: ind.budget.toFixed(0) + '%',
+                    target: '> 30%',
+                    achieved: ind.budget > 60,
+                    danger: ind.budget < 30
+                },
+                {
+                    label: 'Déficit',
+                    icon: '📉',
+                    current: (ind.deficit || 3).toFixed(1) + '%',
+                    target: '< 3%',
+                    achieved: (ind.deficit || 3) < 3,
+                    danger: (ind.deficit || 3) > 5
+                }
+            ];
+
+            const trimLeft = gameState.totalQuarters - gameState.quarter + 1;
+
+            return (
+                <div className="objectives-panel">
+                    <div className="obj-title">🎯 OBJECTIFS<br/><span style={{fontWeight:400,fontSize:'0.85em'}}>{trimLeft > 0 ? trimLeft + ' trim. restants' : 'Dernier trim.'}</span></div>
+                    {objectives.map(obj => (
+                        <div key={obj.label} className={`obj-item ${obj.achieved ? 'achieved' : obj.danger ? 'danger' : ''}`}>
+                            <span>{obj.icon}</span>
+                            <span><strong>{obj.label}</strong><br/>{obj.current} <span style={{opacity:0.7}}>→ {obj.target}</span></span>
+                            <span>{obj.achieved ? '✅' : obj.danger ? '🔴' : '⏳'}</span>
                         </div>
+                    ))}
+                </div>
+            );
+        }
+
+        /* ─────────────────────────────────────────────
+           MINI CHART (SVG sparkline)
+           ───────────────────────────────────────────── */
+        function MiniChart({ history, selectedIndicator, scenario }) {
+            if (!history || history.length === 0) {
+                return <div style={{textAlign:'center',color:'#999',fontSize:'0.85em',padding:'20px 0'}}>Jouez un trimestre pour voir l'évolution</div>;
+            }
+
+            const CHART_INDICATORS = [
+                { key: 'chomage',  label: 'Chômage',  color: '#dc3545', inverse: true },
+                { key: 'emploi',   label: 'Emploi',   color: '#28a745', inverse: false },
+                { key: 'budget',   label: 'Budget',   color: '#2a5298', inverse: false },
+                { key: 'croissance', label: 'Croissance', color: '#17a2b8', inverse: false },
+                { key: 'deficit',  label: 'Déficit',  color: '#fd7e14', inverse: true },
+                { key: 'pauvrete', label: 'Pauvreté', color: '#6c757d', inverse: true },
+            ];
+
+            const ind = CHART_INDICATORS.find(i => i.key === selectedIndicator) || CHART_INDICATORS[0];
+
+            // Build data series: initial value + each quarter
+            const initial = scenario?.initialState?.[ind.key] ?? 0;
+            const points = [initial, ...history.map(h => h.indicators[ind.key] ?? initial)];
+
+            const W = 240, H = 90, PAD = 14;
+            const minV = Math.min(...points) - 1;
+            const maxV = Math.max(...points) + 1;
+            const range = maxV - minV || 1;
+
+            const toX = i => PAD + (i / (points.length - 1)) * (W - PAD * 2);
+            const toY = v => PAD + (1 - (v - minV) / range) * (H - PAD * 2);
+
+            const pathD = points.map((v, i) => `${i === 0 ? 'M' : 'L'} ${toX(i).toFixed(1)} ${toY(v).toFixed(1)}`).join(' ');
+            const areaD = `${pathD} L ${toX(points.length - 1).toFixed(1)} ${H - PAD} L ${toX(0).toFixed(1)} ${H - PAD} Z`;
+
+            const lastVal = points[points.length - 1];
+            const firstVal = points[0];
+            const delta = lastVal - firstVal;
+            const deltaStr = (delta >= 0 ? '+' : '') + delta.toFixed(1);
+            const goodDelta = ind.inverse ? delta < 0 : delta > 0;
+
+            return (
+                <div>
+                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'4px'}}>
+                        <span style={{fontSize:'0.8em',fontWeight:700,color:ind.color}}>{ind.label}</span>
+                        <span style={{fontSize:'0.8em',fontWeight:700,color: goodDelta ? '#28a745' : delta === 0 ? '#888' : '#dc3545'}}>
+                            {deltaStr}
+                        </span>
+                    </div>
+                    <svg viewBox={`0 0 ${W} ${H}`} style={{width:'100%',height:'80px'}}>
+                        <defs>
+                            <linearGradient id={`grad-${ind.key}`} x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor={ind.color} stopOpacity="0.3"/>
+                                <stop offset="100%" stopColor={ind.color} stopOpacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        <path d={areaD} fill={`url(#grad-${ind.key})`}/>
+                        <path d={pathD} fill="none" stroke={ind.color} strokeWidth="2" strokeLinejoin="round"/>
+                        {points.map((v, i) => (
+                            <circle key={i} cx={toX(i)} cy={toY(v)} r="3" fill={ind.color}/>
+                        ))}
+                        {/* Y labels */}
+                        <text x={PAD - 2} y={PAD + 4} fontSize="8" fill="#999" textAnchor="end">{maxV.toFixed(0)}</text>
+                        <text x={PAD - 2} y={H - PAD + 4} fontSize="8" fill="#999" textAnchor="end">{minV.toFixed(0)}</text>
+                        {/* X labels T1 T2... */}
+                        {points.map((_, i) => i > 0 && (
+                            <text key={i} x={toX(i)} y={H - 2} fontSize="8" fill="#999" textAnchor="middle">T{i}</text>
+                        ))}
+                    </svg>
+                </div>
+            );
+        }
+
+        /* ─────────────────────────────────────────────
+           ACTION JOURNAL (sidebar)
+           ───────────────────────────────────────────── */
+        function ActionJournal({ history, scenario }) {
+            const [activeChart, setActiveChart] = React.useState('chomage');
+
+            const CHART_TABS = [
+                {key:'chomage', label:'Chômage'},
+                {key:'emploi', label:'Emploi'},
+                {key:'budget', label:'Budget'},
+                {key:'croissance', label:'Croissance'},
+                {key:'deficit', label:'Déficit'},
+                {key:'pauvrete', label:'Pauvreté'},
+            ];
+
+            const LABEL = {
+                chomage:'Chômage', emploi:'Emploi', activite:'Activité', budget:'Budget',
+                croissance:'Croissance', deficit:'Déficit', dette:'Dette', inflation:'Inflation',
+                pauvrete:'Pauvreté', inegalites:'Inégalités', popularite:'Popularité',
+                entreprises:'Entreprises', salaries:'Salariés'
+            };
+
+            const getIndDelta = (entry, idx, allHistory) => {
+                if (idx === 0) return {};
+                const prev = allHistory[idx - 1].indicators;
+                const curr = entry.indicators;
+                const deltas = {};
+                Object.keys(curr).forEach(k => {
+                    const d = curr[k] - prev[k];
+                    if (Math.abs(d) >= 0.4) deltas[k] = d;
+                });
+                return deltas;
+            };
+
+            return (
+                <div className="playing-sidebar">
+                    <div className="chart-panel">
+                        <h3>📈 Évolution</h3>
+                        <div className="chart-tabs">
+                            {CHART_TABS.map(t => (
+                                <button key={t.key} className={`chart-tab ${activeChart === t.key ? 'active' : ''}`} onClick={() => setActiveChart(t.key)}>
+                                    {t.label}
+                                </button>
+                            ))}
+                        </div>
+                        <MiniChart history={history} selectedIndicator={activeChart} scenario={scenario}/>
+                    </div>
+
+                    <div className="journal-panel">
+                        <h3>📋 Journal des actions</h3>
+                        {history.length === 0 && (
+                            <div style={{color:'#999',fontSize:'0.85em',textAlign:'center',paddingTop:'10px'}}>
+                                Vos décisions apparaîtront ici après chaque trimestre.
+                            </div>
+                        )}
+                        {[...history].reverse().map((entry, revIdx) => {
+                            const idx = history.length - 1 - revIdx;
+                            const deltas = getIndDelta(entry, idx, history);
+                            return (
+                                <div key={entry.quarter} className={`journal-entry ${entry.event ? 'has-event' : ''}`}>
+                                    <div className="journal-quarter-label">Trimestre {entry.quarter}</div>
+                                    <div>
+                                        {entry.policies.map(p => (
+                                            <span key={p.id} className="journal-policy-tag">{p.name}</span>
+                                        ))}
+                                    </div>
+                                    {entry.event && (
+                                        <div>
+                                            <span className="journal-event-tag">{entry.event.icon} {entry.event.name}</span>
+                                        </div>
+                                    )}
+                                    {Object.keys(deltas).length > 0 && (
+                                        <div className="journal-indicators">
+                                            {Object.entries(deltas).slice(0,6).map(([k, d]) => (
+                                                <div key={k} className="journal-ind-item">
+                                                    <span className={d > 0 ? 'ind-up' : 'ind-down'}>
+                                                        {d > 0 ? '↑' : '↓'} {LABEL[k] || k}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             );
@@ -2181,6 +3252,9 @@
             };
 
             const initial = INITIAL_STATE.indicators;
+
+            // Safe accessor: returns the value even if 0 (fixes the || bug)
+            const v = (key, fallback) => indicators[key] != null ? indicators[key] : fallback;
 
             return (
                 <div className="dashboard">
@@ -2240,71 +3314,71 @@
 
                     <div className="indicator">
                         <div className="indicator-label">Croissance</div>
-                        <div className="indicator-value" style={{color: (indicators.croissance || 1.5) > 1.5 ? '#28a745' : '#ffc107'}}>
-                            {(indicators.croissance || 1.5).toFixed(1)}%
+                        <div className="indicator-value" style={{color: v('croissance', 1.5) > 1.5 ? '#28a745' : '#ffc107'}}>
+                            {v('croissance', 1.5).toFixed(1)}%
                         </div>
-                        <span className={`indicator-trend trend-${getTrend(indicators.croissance || 1.5, initial.croissance || 1.5)}`}>
-                            {getTrendText(indicators.croissance || 1.5, initial.croissance || 1.5)}
+                        <span className={`indicator-trend trend-${getTrend(v('croissance', 1.5), initial.croissance)}`}>
+                            {getTrendText(v('croissance', 1.5), initial.croissance)}
                         </span>
                     </div>
 
                     <div className="indicator">
                         <div className="indicator-label">Déficit Public</div>
-                        <div className="indicator-value" style={{color: (indicators.deficit || 3) < 3 ? '#28a745' : '#dc3545'}}>
-                            {(indicators.deficit || 3).toFixed(1)}%
+                        <div className="indicator-value" style={{color: v('deficit', 3) < 3 ? '#28a745' : '#dc3545'}}>
+                            {v('deficit', 3).toFixed(1)}%
                         </div>
-                        <span className={`indicator-trend trend-${getTrend(indicators.deficit || 3, initial.deficit || 3, true)}`}>
-                            {getTrendText(indicators.deficit || 3, initial.deficit || 3, true)}
+                        <span className={`indicator-trend trend-${getTrend(v('deficit', 3), initial.deficit, true)}`}>
+                            {getTrendText(v('deficit', 3), initial.deficit, true)}
                         </span>
                     </div>
 
                     <div className="indicator">
                         <div className="indicator-label">Dette Publique</div>
-                        <div className="indicator-value" style={{color: (indicators.dette || 85) < 90 ? '#28a745' : '#ffc107'}}>
-                            {(indicators.dette || 85).toFixed(0)}%
+                        <div className="indicator-value" style={{color: v('dette', 85) < 90 ? '#28a745' : '#ffc107'}}>
+                            {v('dette', 85).toFixed(0)}%
                         </div>
-                        <span className={`indicator-trend trend-${getTrend(indicators.dette || 85, initial.dette || 85, true)}`}>
-                            {getTrendText(indicators.dette || 85, initial.dette || 85, true)}
+                        <span className={`indicator-trend trend-${getTrend(v('dette', 85), initial.dette, true)}`}>
+                            {getTrendText(v('dette', 85), initial.dette, true)}
                         </span>
                     </div>
 
                     <div className="indicator">
                         <div className="indicator-label">Inflation</div>
-                        <div className="indicator-value" style={{color: (indicators.inflation || 1.5) < 2.5 ? '#28a745' : '#dc3545'}}>
-                            {(indicators.inflation || 1.5).toFixed(1)}%
+                        <div className="indicator-value" style={{color: v('inflation', 1.5) < 2.5 ? '#28a745' : '#dc3545'}}>
+                            {v('inflation', 1.5).toFixed(1)}%
                         </div>
-                        <span className={`indicator-trend trend-${getTrend(indicators.inflation || 1.5, initial.inflation || 1.5, true)}`}>
-                            {getTrendText(indicators.inflation || 1.5, initial.inflation || 1.5, true)}
+                        <span className={`indicator-trend trend-${getTrend(v('inflation', 1.5), initial.inflation, true)}`}>
+                            {getTrendText(v('inflation', 1.5), initial.inflation, true)}
                         </span>
                     </div>
 
                     <div className="indicator">
                         <div className="indicator-label">Taux de Pauvreté</div>
-                        <div className="indicator-value" style={{color: (indicators.pauvrete || 10) < 10 ? '#28a745' : '#dc3545'}}>
-                            {(indicators.pauvrete || 10).toFixed(1)}%
+                        <div className="indicator-value" style={{color: v('pauvrete', 10) < 10 ? '#28a745' : '#dc3545'}}>
+                            {v('pauvrete', 10).toFixed(1)}%
                         </div>
-                        <span className={`indicator-trend trend-${getTrend(indicators.pauvrete || 10, initial.pauvrete || 10, true)}`}>
-                            {getTrendText(indicators.pauvrete || 10, initial.pauvrete || 10, true)}
+                        <span className={`indicator-trend trend-${getTrend(v('pauvrete', 10), initial.pauvrete, true)}`}>
+                            {getTrendText(v('pauvrete', 10), initial.pauvrete, true)}
                         </span>
                     </div>
 
                     <div className="indicator">
                         <div className="indicator-label">Inégalités</div>
-                        <div className="indicator-value" style={{color: (indicators.inegalites || 30) < 30 ? '#28a745' : '#ffc107'}}>
-                            {(indicators.inegalites || 30).toFixed(0)}/100
+                        <div className="indicator-value" style={{color: v('inegalites', 30) < 30 ? '#28a745' : '#ffc107'}}>
+                            {v('inegalites', 30).toFixed(0)}/100
                         </div>
-                        <span className={`indicator-trend trend-${getTrend(indicators.inegalites || 30, initial.inegalites || 30, true)}`}>
-                            {getTrendText(indicators.inegalites || 30, initial.inegalites || 30, true)}
+                        <span className={`indicator-trend trend-${getTrend(v('inegalites', 30), initial.inegalites, true)}`}>
+                            {getTrendText(v('inegalites', 30), initial.inegalites, true)}
                         </span>
                     </div>
 
                     <div className="indicator">
                         <div className="indicator-label">Popularité</div>
-                        <div className="indicator-value" style={{color: (indicators.popularite || 50) > 50 ? '#28a745' : '#dc3545'}}>
-                            {(indicators.popularite || 50).toFixed(0)}/100
+                        <div className="indicator-value" style={{color: v('popularite', 50) > 50 ? '#28a745' : '#dc3545'}}>
+                            {v('popularite', 50).toFixed(0)}/100
                         </div>
-                        <span className={`indicator-trend trend-${getTrend(indicators.popularite || 50, initial.popularite || 50)}`}>
-                            {getTrendText(indicators.popularite || 50, initial.popularite || 50)}
+                        <span className={`indicator-trend trend-${getTrend(v('popularite', 50), initial.popularite)}`}>
+                            {getTrendText(v('popularite', 50), initial.popularite)}
                         </span>
                     </div>
                 </div>
