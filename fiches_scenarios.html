@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Fiches Scénarios — Conseil des Ministres</title>
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+    --text:   #1a1a2e;
+    --muted:  #5a5a72;
+    --light:  #f4f5f8;
+    --border: #d0d4e0;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    font-size: 9.5pt;
+    color: var(--text);
+    background: white;
+    line-height: 1.45;
+}
+
+@media print {
+    body { font-size: 8.5pt; }
+    .no-print { display: none !important; }
+    .scenario-page { page-break-after: always; }
+    .scenario-page:last-child { page-break-after: avoid; }
+}
+@page { size: A4; margin: 12mm 13mm 12mm 13mm; }
+
+/* ── Screen ── */
+.screen-wrapper { max-width: 210mm; margin: 0 auto; background: white; }
+
+.print-bar {
+    background: #1e3c72; color: white;
+    padding: 12px 20px; margin-bottom: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: sans-serif;
+}
+.print-bar h2 { font-size: 1em; font-weight: 600; }
+.print-btn {
+    background: #ffd700; color: #1a1a2e; border: none;
+    border-radius: 6px; padding: 8px 20px; font-size: 0.9em;
+    font-weight: 700; cursor: pointer;
+}
+.print-btn:hover { background: #ffe44d; }
+
+/* ── Scenario page ── */
+.scenario-page {
+    padding: 14mm 0 10mm;
+    min-height: 267mm; /* A4 - margins */
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Page header ── */
+.page-header {
+    color: white;
+    padding: 14px 20px 12px;
+    border-radius: 6px 6px 0 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 0;
+}
+.ph-left h1 {
+    font-size: 16pt;
+    font-family: sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+}
+.ph-left .tagline {
+    font-size: 9pt;
+    opacity: 0.85;
+    font-style: italic;
+}
+.ph-right {
+    text-align: right;
+    flex-shrink: 0;
+}
+.diff-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.25);
+    border: 1.5px solid rgba(255,255,255,0.5);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-family: sans-serif;
+    font-size: 8pt;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+.prob-badge {
+    font-size: 7.5pt;
+    opacity: 0.8;
+    display: block;
+}
+
+/* ── Meta bar ── */
+.meta-bar {
+    background: rgba(0,0,0,0.12);
+    padding: 8px 20px;
+    display: flex;
+    gap: 24px;
+    font-family: sans-serif;
+    font-size: 7.5pt;
+    color: white;
+    border-radius: 0 0 6px 6px;
+    flex-wrap: wrap;
+}
+.meta-item strong { font-size: 9pt; display: block; margin-bottom: 1px; }
+
+/* ── Content grid ── */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+    flex: 1;
+}
+
+/* ── Blocks ── */
+.block {
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+.block-full { grid-column: 1 / -1; }
+
+.block-title {
+    font-family: sans-serif;
+    font-size: 7.5pt;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 5px 12px;
+    color: white;
+}
+.block-body {
+    padding: 8px 12px;
+    font-size: 8.5pt;
+    line-height: 1.5;
+}
+.block-body p { margin-bottom: 4px; }
+.block-body p:last-child { margin-bottom: 0; }
+
+/* ── Indicators table ── */
+.ind-table { width: 100%; border-collapse: collapse; font-size: 8pt; }
+.ind-table th {
+    font-family: sans-serif;
+    font-size: 6.8pt;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    padding: 3px 8px;
+    border-bottom: 1.5px solid var(--border);
+    text-align: left;
+    background: var(--light);
+}
+.ind-table td {
+    padding: 4px 8px;
+    border-bottom: 1px dotted var(--border);
+    vertical-align: middle;
+}
+.ind-table tr:last-child td { border-bottom: none; }
+.ind-name { font-weight: 600; color: var(--text); }
+.ind-val {
+    font-family: sans-serif;
+    font-weight: 800;
+    font-size: 10pt;
+}
+.ind-alert { font-size: 7pt; color: var(--muted); }
+.val-red    { color: #c0392b; }
+.val-green  { color: #1a6b3c; }
+.val-orange { color: #b85e00; }
+.val-purple { color: #4b2d82; }
+.val-blue   { color: #1e3c72; }
+.val-teal   { color: #0e5a6e; }
+
+/* ── Objectives ── */
+.obj-list { list-style: none; }
+.obj-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px dotted var(--border);
+    font-size: 8.5pt;
+}
+.obj-list li:last-child { border-bottom: none; }
+.obj-num {
+    font-family: sans-serif;
+    font-weight: 800;
+    font-size: 10pt;
+    min-width: 22px;
+    line-height: 1.2;
+}
+.obj-text { flex: 1; }
+.obj-target {
+    font-family: sans-serif;
+    font-weight: 700;
+    font-size: 8.5pt;
+    white-space: nowrap;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--light);
+}
+
+/* ── Tips ── */
+.tip-list { list-style: none; }
+.tip-list li {
+    padding: 5px 0 5px 18px;
+    border-bottom: 1px dotted var(--border);
+    font-size: 8.2pt;
+    position: relative;
+    line-height: 1.45;
+}
+.tip-list li:last-child { border-bottom: none; }
+.tip-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+    color: var(--muted);
+}
+
+/* ── Minister focus ── */
+.minister-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+.minister-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--light);
+    border-radius: 4px;
+    padding: 5px 8px;
+    font-size: 8pt;
+}
+.minister-item .icon { font-size: 11pt; }
+.minister-item .mname { font-weight: 600; flex: 1; }
+.focus-pill {
+    font-family: sans-serif;
+    font-size: 6.5pt;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 10px;
+}
+.focus-haute   { background: #f8d7da; color: #721c24; }
+.focus-moyenne { background: #fff3cd; color: #856404; }
+.focus-faible  { background: #d4edda; color: #155724; }
+
+/* ── Warning box ── */
+.warn-box {
+    background: #fff8e1;
+    border: 1.5px solid #f9a825;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 8pt;
+    margin-top: 10px;
+    line-height: 1.5;
+}
+.warn-box strong { color: #b85e00; }
+
+/* ── Page footer ── */
+.page-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 7pt;
+    color: var(--muted);
+    font-family: sans-serif;
+    border-top: 1px solid var(--border);
+    padding-top: 5px;
+    margin-top: 10px;
+}
+
+/* ── Arbitrage box ── */
+.arb-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 5px;
+    font-size: 8pt;
+}
+.arb-row:last-child { margin-bottom: 0; }
+.arb-side {
+    flex: 1;
+    background: var(--light);
+    border-radius: 3px;
+    padding: 3px 7px;
+    text-align: center;
+    font-size: 7.8pt;
+}
+.arb-vs { color: var(--muted); font-weight: 700; font-size: 8.5pt; }
+</style>
+</head>
+<body>
+<div class="screen-wrapper">
+
+<div class="print-bar no-print">
+    <h2>🖨️ Fiches scénarios — 6 pages A4 à imprimer (1 par équipe)</h2>
+    <button class="print-btn" onclick="window.print()">Imprimer les 6 fiches</button>
+</div>
+
+<!-- ════════════════════════════════════
+     SCÉNARIO 1 — CRISE ÉCONOMIQUE
+════════════════════════════════════ -->
+<div class="scenario-page">
+    <div style="border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+        <div class="page-header" style="background:linear-gradient(135deg,#c0392b 0%,#922b21 100%);">
+            <div class="ph-left">
+                <h1>🔴 Crise Économique</h1>
+                <div class="tagline">La récession frappe — le chômage explose — les entreprises ferment</div>
+            </div>
+            <div class="ph-right">
+                <div class="diff-badge">⚠️ Très difficile</div>
+                <div class="prob-badge">Risque événement : 65% / trimestre</div>
+                <div class="prob-badge" style="margin-top:3px;">🏛️ Conseil des Ministres</div>
+            </div>
+        </div>
+        <div class="meta-bar">
+            <div class="meta-item"><strong>8 trimestres</strong>Durée du mandat</div>
+            <div class="meta-item"><strong>3 mesures max</strong>Par trimestre</div>
+            <div class="meta-item"><strong>4 ministres</strong>Travail · Économie · Social · Éducation</div>
+            <div class="meta-item"><strong>80% de budget</strong>Au départ</div>
+        </div>
+    </div>
+
+    <div class="content-grid">
+
+        <!-- CONTEXTE -->
+        <div class="block block-full">
+            <div class="block-title" style="background:#922b21;">📋 Contexte — Briefing du Premier Ministre</div>
+            <div class="block-body">
+                <p>La France vient de traverser une <strong>crise financière mondiale</strong>. Les banques sont fragilisées, les entreprises réduisent leurs effectifs, et les ménages restreignent leur consommation par peur du lendemain. Le crédit se tarit, l'investissement privé s'effondre. Nous sommes en <strong>récession</strong> (croissance négative).</p>
+                <p style="margin-top:5px;">Le gouvernement doit agir vite et fort pour <strong>briser la spirale récessive</strong> avant qu'elle ne s'auto-entretienne. Chaque trimestre d'inaction aggrave la situation.</p>
+            </div>
+        </div>
+
+        <!-- INDICATEURS DE DÉPART -->
+        <div class="block">
+            <div class="block-title" style="background:#1e3c72;">📊 Situation de départ</div>
+            <div class="block-body" style="padding:0;">
+                <table class="ind-table">
+                    <tr><th>Indicateur</th><th>Valeur</th><th>Niveau</th></tr>
+                    <tr><td class="ind-name">Taux de chômage</td><td><span class="ind-val val-red">14%</span></td><td class="ind-alert">🔴 Crise</td></tr>
+                    <tr><td class="ind-name">Taux d'emploi</td><td><span class="ind-val val-red">62%</span></td><td class="ind-alert">⚠️ Faible</td></tr>
+                    <tr><td class="ind-name">Croissance</td><td><span class="ind-val val-red">−0.5%</span></td><td class="ind-alert">🔴 Récession</td></tr>
+                    <tr><td class="ind-name">Déficit public</td><td><span class="ind-val val-red">6%</span></td><td class="ind-alert">🔴 > règle EU 3%</td></tr>
+                    <tr><td class="ind-name">Dette publique</td><td><span class="ind-val val-orange">95%</span></td><td class="ind-alert">⚠️ Élevée</td></tr>
+                    <tr><td class="ind-name">Inflation</td><td><span class="ind-val val-green">0.5%</span></td><td class="ind-alert">✅ Faible</td></tr>
+                    <tr><td class="ind-name">Taux de pauvreté</td><td><span class="ind-val val-red">14%</span></td><td class="ind-alert">🔴 Élevé</td></tr>
+                    <tr><td class="ind-name">Popularité</td><td><span class="ind-val val-red">35/100</span></td><td class="ind-alert">⚠️ Fragile</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- OBJECTIFS -->
+        <div class="block">
+            <div class="block-title" style="background:#922b21;">🎯 Vos 3 objectifs à atteindre</div>
+            <div class="block-body" style="padding:0 12px;">
+                <ul class="obj-list" style="margin-top:6px;">
+                    <li>
+                        <span class="obj-num val-red">①</span>
+                        <span class="obj-text"><strong>Chômage</strong><br/>Ramener sous la barre des 10% en 8 trimestres</span>
+                        <span class="obj-target" style="color:#c0392b;">< 10%</span>
+                    </li>
+                    <li>
+                        <span class="obj-num val-teal">②</span>
+                        <span class="obj-text"><strong>Croissance</strong><br/>Sortir de la récession et renouer avec une croissance positive</span>
+                        <span class="obj-target" style="color:#0e5a6e;">> 1%</span>
+                    </li>
+                    <li>
+                        <span class="obj-num val-purple">③</span>
+                        <span class="obj-text"><strong>Pauvreté</strong><br/>Limiter la dégradation sociale liée à la crise</span>
+                        <span class="obj-target" style="color:#4b2d82;">< 12%</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- MINISTRES -->
+        <div class="block">
+            <div class="block-title" style="background:#555;">🏛️ Priorités par ministre</div>
+            <div class="block-body">
+                <div class="minister-grid">
+                    <div class="minister-item"><span class="icon">💼</span><span class="mname">Travail</span><span class="focus-pill focus-haute">Priorité haute</span></div>
+                    <div class="minister-item"><span class="icon">💰</span><span class="mname">Économie</span><span class="focus-pill focus-haute">Priorité haute</span></div>
+                    <div class="minister-item"><span class="icon">🏥</span><span class="mname">Social</span><span class="focus-pill focus-moyenne">Priorité moyenne</span></div>
+                    <div class="minister-item"><span class="icon">🎓</span><span class="mname">Éducation</span><span class="focus-pill focus-faible">Priorité faible</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ARBITRAGE CLÉ -->
+        <div class="block">
+            <div class="block-title" style="background:#555;">⚖️ Arbitrage central de ce scénario</div>
+            <div class="block-body">
+                <div class="arb-row">
+                    <div class="arb-side">Politique de <strong>relance</strong><br/>Chômage ↓ · Croissance ↑</div>
+                    <div class="arb-vs">vs</div>
+                    <div class="arb-side">Politique d'<strong>austérité</strong><br/>Déficit ↓ · Chômage ↑</div>
+                </div>
+                <p style="font-size:7.5pt;color:var(--muted);margin-top:5px;font-style:italic;">En récession, l'austérité aggrave la crise (spirale récessive). La relance keynésienne est le levier prioritaire, quitte à creuser davantage le déficit à court terme.</p>
+            </div>
+        </div>
+
+        <!-- CONSEILS -->
+        <div class="block block-full">
+            <div class="block-title" style="background:#1a6b3c;">💡 Conseils stratégiques</div>
+            <div class="block-body">
+                <ul class="tip-list">
+                    <li><strong>Priorisez la demande dès le trimestre 1 :</strong> investissement public et aides à l'embauche sont les leviers les plus puissants en récession. L'effet multiplicateur joue en votre faveur.</li>
+                    <li><strong>Ne faites pas d'austérité maintenant :</strong> réduire les dépenses en récession aggrave le chômage et réduit les recettes fiscales — le déficit peut ne pas baisser malgré l'effort.</li>
+                    <li><strong>Protégez les salariés avec une politique passive :</strong> l'indemnisation chômage maintient la consommation des ménages et évite l'effondrement de la demande.</li>
+                    <li><strong>Anticipez les événements :</strong> avec 65% de probabilité par trimestre, gardez du budget en réserve pour absorber un choc (pandémie, crise bancaire…).</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="warn-box">
+        <strong>⚠️ Attention :</strong> Le budget se renouvelle chaque trimestre (+25% de base + bonus croissance). Plus vous relancez l'économie tôt, plus vos recettes fiscales futures augmentent. Investir maintenant, c'est vous donner plus de marges de manœuvre pour la suite.
+    </div>
+
+    <div class="page-footer">
+        <span>🏛️ Conseil des Ministres — Serious Game · Terminale STMG · Thèmes 6.3, 6.4, 7</span>
+        <span>Scénario 1/6 — 🔴 Crise Économique</span>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════
+     SCÉNARIO 2 — SITUATION STANDARD
+════════════════════════════════════ -->
+<div class="scenario-page">
+    <div style="border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+        <div class="page-header" style="background:linear-gradient(135deg,#b8860b 0%,#8a6500 100%);">
+            <div class="ph-left">
+                <h1>🟡 Situation Standard</h1>
+                <div class="tagline">Économie stable mais chômage persistant — il faut des réformes structurelles</div>
+            </div>
+            <div class="ph-right">
+                <div class="diff-badge">📊 Moyen</div>
+                <div class="prob-badge">Risque événement : 60% / trimestre</div>
+                <div class="prob-badge" style="margin-top:3px;">🏛️ Conseil des Ministres</div>
+            </div>
+        </div>
+        <div class="meta-bar">
+            <div class="meta-item"><strong>8 trimestres</strong>Durée du mandat</div>
+            <div class="meta-item"><strong>3 mesures max</strong>Par trimestre</div>
+            <div class="meta-item"><strong>4 ministres</strong>Travail · Économie · Social · Éducation</div>
+            <div class="meta-item"><strong>100% de budget</strong>Au départ</div>
+        </div>
+    </div>
+
+    <div class="content-grid">
+        <div class="block block-full">
+            <div class="block-title" style="background:#8a6500;">📋 Contexte — Briefing du Premier Ministre</div>
+            <div class="block-body">
+                <p>L'économie française est en phase de <strong>stabilisation</strong> après plusieurs années difficiles. Le chômage reste structurellement élevé au-dessus des normes européennes, les inégalités se creusent légèrement, mais les fondamentaux économiques tiennent. Le déficit est exactement à la limite européenne des 3%.</p>
+                <p style="margin-top:5px;">Il faut engager des <strong>réformes de fond</strong> (formation, emploi, politique industrielle) sans déstabiliser un équilibre fragile. Le défi est autant économique que politique : maintenir la popularité pour durer 2 ans.</p>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#1e3c72;">📊 Situation de départ</div>
+            <div class="block-body" style="padding:0;">
+                <table class="ind-table">
+                    <tr><th>Indicateur</th><th>Valeur</th><th>Niveau</th></tr>
+                    <tr><td class="ind-name">Taux de chômage</td><td><span class="ind-val val-red">12%</span></td><td class="ind-alert">🔴 Élevé</td></tr>
+                    <tr><td class="ind-name">Taux d'emploi</td><td><span class="ind-val val-orange">65%</span></td><td class="ind-alert">⚠️ Moyen</td></tr>
+                    <tr><td class="ind-name">Croissance</td><td><span class="ind-val val-orange">1.5%</span></td><td class="ind-alert">⚠️ Faible</td></tr>
+                    <tr><td class="ind-name">Déficit public</td><td><span class="ind-val val-orange">3%</span></td><td class="ind-alert">⚠️ Limite EU</td></tr>
+                    <tr><td class="ind-name">Dette publique</td><td><span class="ind-val val-orange">85%</span></td><td class="ind-alert">⚠️ Élevée</td></tr>
+                    <tr><td class="ind-name">Inflation</td><td><span class="ind-val val-green">1.5%</span></td><td class="ind-alert">✅ Stable</td></tr>
+                    <tr><td class="ind-name">Taux de pauvreté</td><td><span class="ind-val val-orange">10%</span></td><td class="ind-alert">⚠️ Seuil alerte</td></tr>
+                    <tr><td class="ind-name">Popularité</td><td><span class="ind-val val-orange">50/100</span></td><td class="ind-alert">⚠️ Fragile</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#8a6500;">🎯 Vos 3 objectifs à atteindre</div>
+            <div class="block-body" style="padding:0 12px;">
+                <ul class="obj-list" style="margin-top:6px;">
+                    <li>
+                        <span class="obj-num val-red">①</span>
+                        <span class="obj-text"><strong>Chômage</strong><br/>Ramener sous 8% grâce à des réformes structurelles</span>
+                        <span class="obj-target" style="color:#c0392b;">< 8%</span>
+                    </li>
+                    <li>
+                        <span class="obj-num val-orange">②</span>
+                        <span class="obj-text"><strong>Déficit</strong><br/>Rester dans les clous européens (règle des 3%)</span>
+                        <span class="obj-target" style="color:#b85e00;">< 3%</span>
+                    </li>
+                    <li>
+                        <span class="obj-num val-purple">③</span>
+                        <span class="obj-text"><strong>Popularité</strong><br/>Maintenir le soutien de la population sur la durée</span>
+                        <span class="obj-target" style="color:#4b2d82;">> 55/100</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#555;">🏛️ Priorités par ministre</div>
+            <div class="block-body">
+                <div class="minister-grid">
+                    <div class="minister-item"><span class="icon">💼</span><span class="mname">Travail</span><span class="focus-pill focus-haute">Priorité haute</span></div>
+                    <div class="minister-item"><span class="icon">💰</span><span class="mname">Économie</span><span class="focus-pill focus-moyenne">Priorité moyenne</span></div>
+                    <div class="minister-item"><span class="icon">🏥</span><span class="mname">Social</span><span class="focus-pill focus-moyenne">Priorité moyenne</span></div>
+                    <div class="minister-item"><span class="icon">🎓</span><span class="mname">Éducation</span><span class="focus-pill focus-haute">Priorité haute</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#555;">⚖️ Arbitrage central de ce scénario</div>
+            <div class="block-body">
+                <div class="arb-row">
+                    <div class="arb-side">Politiques <strong>actives</strong><br/>Emploi ↑ · Déficit ↓ à terme</div>
+                    <div class="arb-vs">vs</div>
+                    <div class="arb-side">Politiques <strong>sociales</strong><br/>Popularité ↑ · Déficit ↑</div>
+                </div>
+                <p style="font-size:7.5pt;color:var(--muted);margin-top:5px;font-style:italic;">Scénario d'équilibre : il faut gérer simultanément l'emploi, le déficit et la popularité. Aucune politique miracle — la cohérence de la stratégie sur 8 trimestres est décisive.</p>
+            </div>
+        </div>
+
+        <div class="block block-full">
+            <div class="block-title" style="background:#1a6b3c;">💡 Conseils stratégiques</div>
+            <div class="block-body">
+                <ul class="tip-list">
+                    <li><strong>Misez sur les politiques actives à long terme :</strong> formation et apprentissage ne font pas baisser le chômage immédiatement, mais construisent une économie plus compétitive sur 4-8 trimestres.</li>
+                    <li><strong>Surveillez le déficit :</strong> vous êtes exactement à 3% (limite EU). Chaque politique sociale creuse le déficit — compensez par des politiques qui stimulent les recettes (croissance, emploi).</li>
+                    <li><strong>La popularité est votre variable d'ajustement :</strong> une ou deux mesures sociales bien choisies par an suffisent à maintenir le soutien sans tout manger dans le budget.</li>
+                    <li><strong>Évitez l'austérité sauf urgence :</strong> le déficit est gérable, l'austérité aggraverait le chômage et ferait chuter la popularité.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="warn-box">
+        <strong>⚠️ Attention :</strong> Ce scénario demande de la patience. Les politiques actives (formation, apprentissage) ont un effet différé — commencez-les tôt pour les voir porter leurs fruits en 2e année.
+    </div>
+    <div class="page-footer">
+        <span>🏛️ Conseil des Ministres — Serious Game · Terminale STMG · Thèmes 6.3, 6.4, 7</span>
+        <span>Scénario 2/6 — 🟡 Situation Standard</span>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════
+     SCÉNARIO 3 — BOOM ÉCONOMIQUE
+════════════════════════════════════ -->
+<div class="scenario-page">
+    <div style="border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+        <div class="page-header" style="background:linear-gradient(135deg,#1a6b3c 0%,#0e4a28 100%);">
+            <div class="ph-left">
+                <h1>🟢 Boom Économique</h1>
+                <div class="tagline">Croissance forte — mais surchauffe inflationniste et inégalités qui se creusent</div>
+            </div>
+            <div class="ph-right">
+                <div class="diff-badge">✅ Facile</div>
+                <div class="prob-badge">Risque événement : 55% / trimestre</div>
+                <div class="prob-badge" style="margin-top:3px;">🏛️ Conseil des Ministres</div>
+            </div>
+        </div>
+        <div class="meta-bar">
+            <div class="meta-item"><strong>8 trimestres</strong>Durée du mandat</div>
+            <div class="meta-item"><strong>3 mesures max</strong>Par trimestre</div>
+            <div class="meta-item"><strong>4 ministres</strong>Travail · Économie · Social · Éducation</div>
+            <div class="meta-item"><strong>120% de budget</strong>Au départ</div>
+        </div>
+    </div>
+
+    <div class="content-grid">
+        <div class="block block-full">
+            <div class="block-title" style="background:#0e4a28;">📋 Contexte — Briefing du Premier Ministre</div>
+            <div class="block-body">
+                <p>La France profite d'un <strong>cycle de croissance exceptionnel</strong> dopé par le numérique et la transition écologique. Le chômage baisse, les entreprises investissent, le budget est excédentaire. La situation est favorable — mais trop de croissance trop vite crée des déséquilibres.</p>
+                <p style="margin-top:5px;">Le risque principal est la <strong>surchauffe inflationniste</strong> : si les prix s'emballent, le pouvoir d'achat chute et la croissance déraille. Autre danger : les inégalités — tout le monde ne profite pas du boom, les plus précaires restent à la traîne.</p>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#1e3c72;">📊 Situation de départ</div>
+            <div class="block-body" style="padding:0;">
+                <table class="ind-table">
+                    <tr><th>Indicateur</th><th>Valeur</th><th>Niveau</th></tr>
+                    <tr><td class="ind-name">Taux de chômage</td><td><span class="ind-val val-orange">9%</span></td><td class="ind-alert">⚠️ Encore élevé</td></tr>
+                    <tr><td class="ind-name">Taux d'emploi</td><td><span class="ind-val val-green">68%</span></td><td class="ind-alert">✅ Bon</td></tr>
+                    <tr><td class="ind-name">Croissance</td><td><span class="ind-val val-green">3.5%</span></td><td class="ind-alert">✅ Forte</td></tr>
+                    <tr><td class="ind-name">Déficit public</td><td><span class="ind-val val-green">1%</span></td><td class="ind-alert">✅ Maîtrisé</td></tr>
+                    <tr><td class="ind-name">Inflation</td><td><span class="ind-val val-orange">2.5%</span></td><td class="ind-alert">⚠️ Limite BCE</td></tr>
+                    <tr><td class="ind-name">Inégalités</td><td><span class="ind-val val-orange">25/100</span></td><td class="ind-alert">⚠️ À surveiller</td></tr>
+                    <tr><td class="ind-name">Taux de pauvreté</td><td><span class="ind-val val-green">7%</span></td><td class="ind-alert">✅ Faible</td></tr>
+                    <tr><td class="ind-name">Popularité</td><td><span class="ind-val val-green">62/100</span></td><td class="ind-alert">✅ Bonne</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#0e4a28;">🎯 Vos 3 objectifs à atteindre</div>
+            <div class="block-body" style="padding:0 12px;">
+                <ul class="obj-list" style="margin-top:6px;">
+                    <li>
+                        <span class="obj-num val-red">①</span>
+                        <span class="obj-text"><strong>Chômage</strong><br/>Profiter du boom pour atteindre le quasi plein emploi</span>
+                        <span class="obj-target" style="color:#c0392b;">< 6%</span>
+                    </li>
+                    <li>
+                        <span class="obj-num val-orange">②</span>
+                        <span class="obj-text"><strong>Inflation</strong><br/>Éviter la surchauffe — ne pas dépasser la cible BCE</span>
+                        <span class="obj-target" style="color:#b85e00;">< 2.5%</span>
+                    </li>
+                    <li>
+                        <span class="obj-num val-purple">③</span>
+                        <span class="obj-text"><strong>Inégalités</strong><br/>S'assurer que le boom profite à tous</span>
+                        <span class="obj-target" style="color:#4b2d82;">< 25</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#555;">🏛️ Priorités par ministre</div>
+            <div class="block-body">
+                <div class="minister-grid">
+                    <div class="minister-item"><span class="icon">💼</span><span class="mname">Travail</span><span class="focus-pill focus-moyenne">Priorité moyenne</span></div>
+                    <div class="minister-item"><span class="icon">💰</span><span class="mname">Économie</span><span class="focus-pill focus-haute">Priorité haute</span></div>
+                    <div class="minister-item"><span class="icon">🏥</span><span class="mname">Social</span><span class="focus-pill focus-haute">Priorité haute</span></div>
+                    <div class="minister-item"><span class="icon">🎓</span><span class="mname">Éducation</span><span class="focus-pill focus-moyenne">Priorité moyenne</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#555;">⚖️ Arbitrage central de ce scénario</div>
+            <div class="block-body">
+                <div class="arb-row">
+                    <div class="arb-side">Politiques de <strong>relance</strong><br/>Chômage ↓ · Inflation ↑ ⚠️</div>
+                    <div class="arb-vs">vs</div>
+                    <div class="arb-side">Politiques <strong>sociales</strong><br/>Inégalités ↓ · Budget ↓</div>
+                </div>
+                <p style="font-size:7.5pt;color:var(--muted);margin-top:5px;font-style:italic;">En période de boom, les politiques de relance (demande) aggravent l'inflation. Privilégiez les politiques sociales et d'offre qui réduisent les inégalités sans surchauffer davantage.</p>
+            </div>
+        </div>
+
+        <div class="block block-full">
+            <div class="block-title" style="background:#1a6b3c;">💡 Conseils stratégiques</div>
+            <div class="block-body">
+                <ul class="tip-list">
+                    <li><strong>N'abusez pas des politiques de relance :</strong> l'investissement public et la baisse de TVA stimulent une demande déjà forte → risque de faire monter l'inflation au-dessus de 2.5%.</li>
+                    <li><strong>Redistribuez les fruits de la croissance :</strong> RSA, logement social, réforme fiscale progressive — c'est le bon moment pour réduire les inégalités sans déséquilibrer le budget.</li>
+                    <li><strong>Lutte contre l'inflation si elle monte :</strong> la mesure "Lutte contre l'inflation" (Ministère de l'Économie) est votre levier principal, même si elle freine légèrement la croissance.</li>
+                    <li><strong>Profitez du budget excédentaire :</strong> avec 120% de budget et des recettes fiscales élevées grâce à la croissance, vous pouvez vous permettre des politiques sociales ambitieuses.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="warn-box">
+        <strong>⚠️ Piège classique :</strong> Beaucoup d'équipes continuent à faire de la relance keynésienne en période de boom. C'est contre-productif : l'économie n'a pas besoin d'être stimulée — elle a besoin d'être <em>équilibrée</em>.
+    </div>
+    <div class="page-footer">
+        <span>🏛️ Conseil des Ministres — Serious Game · Terminale STMG · Thèmes 6.3, 6.4, 7</span>
+        <span>Scénario 3/6 — 🟢 Boom Économique</span>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════
+     SCÉNARIO 4 — DÉSINDUSTRIALISATION
+════════════════════════════════════ -->
+<div class="scenario-page">
+    <div style="border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+        <div class="page-header" style="background:linear-gradient(135deg,#4a4a5a 0%,#2a2a3a 100%);">
+            <div class="ph-left">
+                <h1>🏭 Désindustrialisation</h1>
+                <div class="tagline">Les usines ferment — chômage structurel massif — reconversion urgente</div>
+            </div>
+            <div class="ph-right">
+                <div class="diff-badge">⚠️ Très difficile</div>
+                <div class="prob-badge">Risque événement : 70% / trimestre</div>
+                <div class="prob-badge" style="margin-top:3px;">🏛️ Conseil des Ministres</div>
+            </div>
+        </div>
+        <div class="meta-bar">
+            <div class="meta-item"><strong>8 trimestres</strong>Durée du mandat</div>
+            <div class="meta-item"><strong>3 mesures max</strong>Par trimestre</div>
+            <div class="meta-item"><strong>4 ministres</strong>Travail · Économie · Social · Éducation</div>
+            <div class="meta-item"><strong>90% de budget</strong>Au départ</div>
+        </div>
+    </div>
+
+    <div class="content-grid">
+        <div class="block block-full">
+            <div class="block-title" style="background:#2a2a3a;">📋 Contexte — Briefing du Premier Ministre</div>
+            <div class="block-body">
+                <p>Le tissu industriel régional <strong>s'effondre</strong> sous l'effet des délocalisations vers les pays à bas coûts et de l'automatisation. Des bassins entiers d'emplois disparaissent en quelques trimestres. Les travailleurs peu qualifiés sont en première ligne : leurs compétences ne correspondent plus aux besoins du marché — c'est du <strong>chômage structurel</strong>.</p>
+                <p style="margin-top:5px;">La réponse exige une stratégie <strong>coordonnée et de long terme</strong> : reconversion des salariés, réindustrialisation par les secteurs d'avenir, soutien social pour éviter la désintégration des territoires touchés.</p>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#1e3c72;">📊 Situation de départ</div>
+            <div class="block-body" style="padding:0;">
+                <table class="ind-table">
+                    <tr><th>Indicateur</th><th>Valeur</th><th>Niveau</th></tr>
+                    <tr><td class="ind-name">Taux de chômage</td><td><span class="ind-val val-red">15%</span></td><td class="ind-alert">🔴 Crise majeure</td></tr>
+                    <tr><td class="ind-name">Taux d'emploi</td><td><span class="ind-val val-red">60%</span></td><td class="ind-alert">🔴 Très faible</td></tr>
+                    <tr><td class="ind-name">Croissance</td><td><span class="ind-val val-orange">0.5%</span></td><td class="ind-alert">⚠️ Quasi-stagnation</td></tr>
+                    <tr><td class="ind-name">Déficit public</td><td><span class="ind-val val-red">5%</span></td><td class="ind-alert">🔴 > règle EU 3%</td></tr>
+                    <tr><td class="ind-name">Satisfaction entreprises</td><td><span class="ind-val val-red">40/100</span></td><td class="ind-alert">🔴 Faible</td></tr>
+                    <tr><td class="ind-name">Taux de pauvreté</td><td><span class="ind-val val-red">13%</span></td><td class="ind-alert">🔴 Élevé</td></tr>
+                    <tr><td class="ind-name">Inégalités</td><td><span class="ind-val val-red">36/100</span></td><td class="ind-alert">🔴 Fortes</td></tr>
+                    <tr><td class="ind-name">Popularité</td><td><span class="ind-val val-red">38/100</span></td><td class="ind-alert">⚠️ Fragile</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#2a2a3a;">🎯 Vos 3 objectifs à atteindre</div>
+            <div class="block-body" style="padding:0 12px;">
+                <ul class="obj-list" style="margin-top:6px;">
+                    <li>
+                        <span class="obj-num val-red">①</span>
+                        <span class="obj-text"><strong>Chômage</strong><br/>Reconvertir les chômeurs structurels vers de nouveaux secteurs</span>
+                        <span class="obj-target" style="color:#c0392b;">< 9%</span>
+                    </li>
+                    <li>
+                        <span class="obj-num val-green">②</span>
+                        <span class="obj-text"><strong>Emploi industriel</strong><br/>Reconstruire une base productive sur des secteurs d'avenir</span>
+                        <span class="obj-target" style="color:#1a6b3c;">> 62%</span>
+                    </li>
+                    <li>
+                        <span class="obj-num val-purple">③</span>
+                        <span class="obj-text"><strong>Pauvreté</strong><br/>Protéger les territoires sinistrés contre la désintégration sociale</span>
+                        <span class="obj-target" style="color:#4b2d82;">< 10%</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#555;">🏛️ Priorités par ministre</div>
+            <div class="block-body">
+                <div class="minister-grid">
+                    <div class="minister-item"><span class="icon">💼</span><span class="mname">Travail</span><span class="focus-pill focus-haute">Priorité haute</span></div>
+                    <div class="minister-item"><span class="icon">💰</span><span class="mname">Économie</span><span class="focus-pill focus-haute">Priorité haute</span></div>
+                    <div class="minister-item"><span class="icon">🏥</span><span class="mname">Social</span><span class="focus-pill focus-haute">Priorité haute</span></div>
+                    <div class="minister-item"><span class="icon">🎓</span><span class="mname">Éducation</span><span class="focus-pill focus-haute">Priorité haute</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#555;">⚖️ Arbitrage central de ce scénario</div>
+            <div class="block-body">
+                <div class="arb-row">
+                    <div class="arb-side">Pol. <strong>actives</strong> (formation)<br/>Effet long terme · Coût élevé</div>
+                    <div class="arb-vs">vs</div>
+                    <div class="arb-side">Pol. <strong>passives</strong> (indemnisation)<br/>Effet immédiat · Pas d'emploi créé</div>
+                </div>
+                <p style="font-size:7.5pt;color:var(--muted);margin-top:5px;font-style:italic;">Le chômage ici est <strong>structurel</strong> : la relance keynésienne ne suffit pas. Il faut reconvertir les compétences (actif) ET soutenir les revenus (passif) en parallèle — et attirer de nouvelles industries.</p>
+            </div>
+        </div>
+
+        <div class="block block-full">
+            <div class="block-title" style="background:#1a6b3c;">💡 Conseils stratégiques</div>
+            <div class="block-body">
+                <ul class="tip-list">
+                    <li><strong>Combinez formation + politique industrielle :</strong> former des salariés sans créer de nouveaux emplois ne sert à rien — la politique industrielle sectorielle crée les emplois que la formation viendra pourvoir.</li>
+                    <li><strong>Indemnisez pour éviter la fracture sociale :</strong> les politiques passives (indemnisation, aide alimentaire) maintiennent la cohésion dans les territoires sinistrés le temps que les réformes portent leurs fruits.</li>
+                    <li><strong>Soyez patients :</strong> ce scénario ne se redresse pas en 2-3 trimestres. Les effets de la formation et de la réindustrialisation se voient surtout en 2e année. Ne paniquez pas devant la lenteur initiale.</li>
+                    <li><strong>Avec 70% de chance d'événement</strong>, les délocalisations et fermetures d'usines vont continuer à frapper. Gardez du budget pour absorber les chocs et ne pariez pas tout sur un seul levier.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="warn-box">
+        <strong>⚠️ Erreur fréquente :</strong> Utiliser uniquement des politiques de relance (investissement public, baisse TVA) pour traiter un chômage structurel. Ces politiques stimulent la demande mais ne reconvertissent pas les compétences. Le chômage structurel demande des politiques actives, pas keynésiennes.
+    </div>
+    <div class="page-footer">
+        <span>🏛️ Conseil des Ministres — Serious Game · Terminale STMG · Thèmes 6.3, 6.4, 7</span>
+        <span>Scénario 4/6 — 🏭 Désindustrialisation</span>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════
+     SCÉNARIO 5 — FRACTURE SOCIALE
+════════════════════════════════════ -->
+<div class="scenario-page">
+    <div style="border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+        <div class="page-header" style="background:linear-gradient(135deg,#4b2d82 0%,#2d1a55 100%);">
+            <div class="ph-left">
+                <h1>⚖️ Fracture Sociale</h1>
+                <div class="tagline">Croissance forte mais inégalités records — cohésion sociale en danger</div>
+            </div>
+            <div class="ph-right">
+                <div class="diff-badge">📊 Difficile</div>
+                <div class="prob-badge">Risque événement : 55% / trimestre</div>
+                <div class="prob-badge" style="margin-top:3px;">🏛️ Conseil des Ministres</div>
+            </div>
+        </div>
+        <div class="meta-bar">
+            <div class="meta-item"><strong>8 trimestres</strong>Durée du mandat</div>
+            <div class="meta-item"><strong>3 mesures max</strong>Par trimestre</div>
+            <div class="meta-item"><strong>4 ministres</strong>Travail · Économie · Social · Éducation</div>
+            <div class="meta-item"><strong>110% de budget</strong>Au départ</div>
+        </div>
+    </div>
+
+    <div class="content-grid">
+        <div class="block block-full">
+            <div class="block-title" style="background:#2d1a55;">📋 Contexte — Briefing du Premier Ministre</div>
+            <div class="block-body">
+                <p>La France connaît une croissance solide, mais elle profite essentiellement aux plus aisés. Les <strong>10% les plus riches captent la quasi-totalité des gains</strong> de la croissance. Les banlieues s'appauvrissent, les déserts médicaux s'étendent, les jeunes des milieux populaires décrochent du système scolaire.</p>
+                <p style="margin-top:5px;">Le gouvernement doit <strong>redistribuer les richesses</strong> pour maintenir la cohésion sociale — sans pour autant tuer la compétitivité des entreprises qui font tourner l'économie.</p>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#1e3c72;">📊 Situation de départ</div>
+            <div class="block-body" style="padding:0;">
+                <table class="ind-table">
+                    <tr><th>Indicateur</th><th>Valeur</th><th>Niveau</th></tr>
+                    <tr><td class="ind-name">Taux de chômage</td><td><span class="ind-val val-green">8%</span></td><td class="ind-alert">⚠️ Encore élevé</td></tr>
+                    <tr><td class="ind-name">Croissance</td><td><span class="ind-val val-green">2.5%</span></td><td class="ind-alert">✅ Bonne</td></tr>
+                    <tr><td class="ind-name">Inégalités (Gini)</td><td><span class="ind-val val-red">38/100</span></td><td class="ind-alert">🔴 Très élevées</td></tr>
+                    <tr><td class="ind-name">Taux de pauvreté</td><td><span class="ind-val val-red">13%</span></td><td class="ind-alert">🔴 Élevé</td></tr>
+                    <tr><td class="ind-name">Satisfaction salariés</td><td><span class="ind-val val-red">30/100</span></td><td class="ind-alert">🔴 Très faible</td></tr>
+                    <tr><td class="ind-name">Satisfaction entreprises</td><td><span class="ind-val val-green">70/100</span></td><td class="ind-alert">✅ Forte</td></tr>
+                    <tr><td class="ind-name">Popularité</td><td><span class="ind-val val-red">40/100</span></td><td class="ind-alert">⚠️ Fragile</td></tr>
+                    <tr><td class="ind-name">Déficit public</td><td><span class="ind-val val-green">2%</span></td><td class="ind-alert">✅ Maîtrisé</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#2d1a55;">🎯 Vos 3 objectifs à atteindre</div>
+            <div class="block-body" style="padding:0 12px;">
+                <ul class="obj-list" style="margin-top:6px;">
+                    <li>
+                        <span class="obj-num val-purple">①</span>
+                        <span class="obj-text"><strong>Inégalités</strong><br/>Réduire l'indice de Gini par la redistribution</span>
+                        <span class="obj-target" style="color:#4b2d82;">< 22</span>
+                    </li>
+                    <li>
+                        <span class="obj-num val-red">②</span>
+                        <span class="obj-text"><strong>Pauvreté</strong><br/>Réduire significativement le nombre de personnes sous le seuil</span>
+                        <span class="obj-target" style="color:#c0392b;">< 8%</span>
+                    </li>
+                    <li>
+                        <span class="obj-num val-purple">③</span>
+                        <span class="obj-text"><strong>Popularité</strong><br/>Regagner la confiance des classes populaires</span>
+                        <span class="obj-target" style="color:#4b2d82;">> 60/100</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#555;">🏛️ Priorités par ministre</div>
+            <div class="block-body">
+                <div class="minister-grid">
+                    <div class="minister-item"><span class="icon">💼</span><span class="mname">Travail</span><span class="focus-pill focus-moyenne">Priorité moyenne</span></div>
+                    <div class="minister-item"><span class="icon">💰</span><span class="mname">Économie</span><span class="focus-pill focus-faible">Priorité faible</span></div>
+                    <div class="minister-item"><span class="icon">🏥</span><span class="mname">Social</span><span class="focus-pill focus-haute">Priorité haute</span></div>
+                    <div class="minister-item"><span class="icon">🎓</span><span class="mname">Éducation</span><span class="focus-pill focus-haute">Priorité haute</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#555;">⚖️ Arbitrage central de ce scénario</div>
+            <div class="block-body">
+                <div class="arb-row">
+                    <div class="arb-side"><strong>Redistribution</strong><br/>Inégalités ↓ · Entreprises ↓</div>
+                    <div class="arb-vs">vs</div>
+                    <div class="arb-side"><strong>Compétitivité</strong><br/>Croissance ↑ · Inégalités stables</div>
+                </div>
+                <p style="font-size:7.5pt;color:var(--muted);margin-top:5px;font-style:italic;">L'arbitrage efficacité/équité est au cœur du Thème 6.4. Redistribuer trop agressivement peut décourager les entreprises. Trouver le juste équilibre est l'enjeu central de ce scénario.</p>
+            </div>
+        </div>
+
+        <div class="block block-full">
+            <div class="block-title" style="background:#1a6b3c;">💡 Conseils stratégiques</div>
+            <div class="block-body">
+                <ul class="tip-list">
+                    <li><strong>Réforme fiscale progressive + RSA :</strong> la combinaison réforme fiscale (redistribution verticale) + RSA (redistribution horizontale) est la plus efficace pour réduire simultanément pauvreté et inégalités.</li>
+                    <li><strong>Éducation pour le long terme :</strong> l'investissement dans l'éducation réduit les inégalités à long terme en offrant aux enfants des milieux défavorisés une vraie mobilité sociale.</li>
+                    <li><strong>Ne cassez pas la croissance :</strong> la satisfaction des entreprises est à 70% — c'est votre moteur fiscal. Une réforme fiscale trop agressive les ferait chuter et tarirait vos recettes.</li>
+                    <li><strong>Logement social et santé :</strong> ces deux politiques améliorent directement les conditions de vie des plus précaires et font monter la popularité rapidement.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="warn-box">
+        <strong>⚠️ Notion clé du programme :</strong> Ce scénario illustre la distinction entre <strong>redistribution horizontale</strong> (protection contre les risques sociaux, Th.6.4) et <strong>redistribution verticale</strong> (réduction des inégalités par la fiscalité progressive, Th.6.4). Identifiez quelle logique correspond à chaque politique choisie.
+    </div>
+    <div class="page-footer">
+        <span>🏛️ Conseil des Ministres — Serious Game · Terminale STMG · Thèmes 6.3, 6.4, 7</span>
+        <span>Scénario 5/6 — ⚖️ Fracture Sociale</span>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════
+     SCÉNARIO 6 — CRISE INFLATIONNISTE
+════════════════════════════════════ -->
+<div class="scenario-page">
+    <div style="border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
+        <div class="page-header" style="background:linear-gradient(135deg,#b85e00 0%,#8a4300 100%);">
+            <div class="ph-left">
+                <h1>🔥 Crise Inflationniste</h1>
+                <div class="tagline">L'inflation dépasse 8% — le pouvoir d'achat s'effondre — les conflits sociaux explosent</div>
+            </div>
+            <div class="ph-right">
+                <div class="diff-badge">📊 Difficile</div>
+                <div class="prob-badge">Risque événement : 60% / trimestre</div>
+                <div class="prob-badge" style="margin-top:3px;">🏛️ Conseil des Ministres</div>
+            </div>
+        </div>
+        <div class="meta-bar">
+            <div class="meta-item"><strong>8 trimestres</strong>Durée du mandat</div>
+            <div class="meta-item"><strong>3 mesures max</strong>Par trimestre</div>
+            <div class="meta-item"><strong>4 ministres</strong>Travail · Économie · Social · Éducation</div>
+            <div class="meta-item"><strong>95% de budget</strong>Au départ</div>
+        </div>
+    </div>
+
+    <div class="content-grid">
+        <div class="block block-full">
+            <div class="block-title" style="background:#8a4300;">📋 Contexte — Briefing du Premier Ministre</div>
+            <div class="block-body">
+                <p>La flambée des prix de l'énergie et des matières premières a déclenché une <strong>spirale inflationniste</strong>. L'inflation atteint 8,5% — du jamais vu depuis les années 1980. Les salaires n'arrivent pas à suivre, le pouvoir d'achat des ménages s'effondre, les conflits sociaux se multiplient.</p>
+                <p style="margin-top:5px;">Maîtriser l'inflation sans provoquer une récession exige un <strong>équilibre extrêmement délicat</strong>. La BCE agit sur les taux d'intérêt (hors de votre contrôle direct), mais vous devez compléter par une politique budgétaire de stabilisation. <em>Chaque euro de relance supplémentaire aggrave le problème.</em></p>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#1e3c72;">📊 Situation de départ</div>
+            <div class="block-body" style="padding:0;">
+                <table class="ind-table">
+                    <tr><th>Indicateur</th><th>Valeur</th><th>Niveau</th></tr>
+                    <tr><td class="ind-name">Inflation</td><td><span class="ind-val val-red">8.5%</span></td><td class="ind-alert">🔴 Crise grave</td></tr>
+                    <tr><td class="ind-name">Taux de chômage</td><td><span class="ind-val val-green">7%</span></td><td class="ind-alert">✅ Acceptable</td></tr>
+                    <tr><td class="ind-name">Croissance</td><td><span class="ind-val val-orange">1.2%</span></td><td class="ind-alert">⚠️ Fragile</td></tr>
+                    <tr><td class="ind-name">Déficit public</td><td><span class="ind-val val-orange">4%</span></td><td class="ind-alert">⚠️ > règle EU 3%</td></tr>
+                    <tr><td class="ind-name">Satisfaction salariés</td><td><span class="ind-val val-red">28/100</span></td><td class="ind-alert">🔴 Très faible</td></tr>
+                    <tr><td class="ind-name">Satisfaction entreprises</td><td><span class="ind-val val-orange">45/100</span></td><td class="ind-alert">⚠️ Moyenne</td></tr>
+                    <tr><td class="ind-name">Popularité</td><td><span class="ind-val val-red">32/100</span></td><td class="ind-alert">🔴 Très basse</td></tr>
+                    <tr><td class="ind-name">Taux de pauvreté</td><td><span class="ind-val val-red">12%</span></td><td class="ind-alert">🔴 Élevé</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#8a4300;">🎯 Vos 3 objectifs à atteindre</div>
+            <div class="block-body" style="padding:0 12px;">
+                <ul class="obj-list" style="margin-top:6px;">
+                    <li>
+                        <span class="obj-num val-orange">①</span>
+                        <span class="obj-text"><strong>Inflation</strong><br/>Ramener l'inflation vers la cible BCE sans déclencher une récession</span>
+                        <span class="obj-target" style="color:#b85e00;">< 2.5%</span>
+                    </li>
+                    <li>
+                        <span class="obj-num val-teal">②</span>
+                        <span class="obj-text"><strong>Croissance</strong><br/>Ne pas briser l'activité économique en voulant freiner l'inflation</span>
+                        <span class="obj-target" style="color:#0e5a6e;">> 0.5%</span>
+                    </li>
+                    <li>
+                        <span class="obj-num val-purple">③</span>
+                        <span class="obj-text"><strong>Popularité</strong><br/>Regagner la confiance alors que le pouvoir d'achat chute</span>
+                        <span class="obj-target" style="color:#4b2d82;">> 45/100</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#555;">🏛️ Priorités par ministre</div>
+            <div class="block-body">
+                <div class="minister-grid">
+                    <div class="minister-item"><span class="icon">💼</span><span class="mname">Travail</span><span class="focus-pill focus-faible">Priorité faible</span></div>
+                    <div class="minister-item"><span class="icon">💰</span><span class="mname">Économie</span><span class="focus-pill focus-haute">Priorité haute</span></div>
+                    <div class="minister-item"><span class="icon">🏥</span><span class="mname">Social</span><span class="focus-pill focus-haute">Priorité haute</span></div>
+                    <div class="minister-item"><span class="icon">🎓</span><span class="mname">Éducation</span><span class="focus-pill focus-faible">Priorité faible</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="background:#555;">⚖️ Arbitrage central de ce scénario</div>
+            <div class="block-body">
+                <div class="arb-row">
+                    <div class="arb-side">Pol. <strong>stabilisation</strong><br/>Inflation ↓ · Croissance ↓ ⚠️</div>
+                    <div class="arb-vs">vs</div>
+                    <div class="arb-side">Pol. de <strong>relance</strong><br/>Popularité ↑ · Inflation ↑ 🔥</div>
+                </div>
+                <p style="font-size:7.5pt;color:var(--muted);margin-top:5px;font-style:italic;">C'est LE scénario de la politique contracyclique (Th.6.3). En surchauffe, toute relance aggrave l'inflation. Il faut freiner, même si c'est impopulaire. Le social vient <em>compenser</em> l'austérité, pas l'amplifier.</p>
+            </div>
+        </div>
+
+        <div class="block block-full">
+            <div class="block-title" style="background:#1a6b3c;">💡 Conseils stratégiques</div>
+            <div class="block-body">
+                <ul class="tip-list">
+                    <li><strong>Lutte contre l'inflation en priorité absolue :</strong> la mesure "Lutte contre l'inflation" (Ministère de l'Économie) est votre levier direct. Elle freine légèrement la croissance mais c'est le prix à payer.</li>
+                    <li><strong>INTERDITS en ce scénario :</strong> investissement public, baisse de TVA, prime à la consommation. Ces politiques de relance injectent de l'argent dans une économie déjà en surchauffe et aggravent l'inflation.</li>
+                    <li><strong>Compensez par le social ciblé :</strong> aide alimentaire d'urgence, RSA — ces mesures soutiennent les plus précaires sans créer de la demande inflationniste à grande échelle.</li>
+                    <li><strong>La popularité remontera quand l'inflation baissera :</strong> soyez patients. Les ménages verront d'abord leur pouvoir d'achat chuter avant de sentir les effets de la stabilisation. Communiquez sur la durée.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="warn-box">
+        <strong>⚠️ Notion clé du programme :</strong> Ce scénario illustre la <strong>politique contracyclique</strong> (Th.6.3) : quand l'économie est en surchauffe (cycle d'expansion), l'État doit <em>freiner</em> la demande, pas la stimuler. C'est l'inverse de ce qu'on fait en récession. La BCE fait pareil avec les taux d'intérêt.
+    </div>
+    <div class="page-footer">
+        <span>🏛️ Conseil des Ministres — Serious Game · Terminale STMG · Thèmes 6.3, 6.4, 7</span>
+        <span>Scénario 6/6 — 🔥 Crise Inflationniste</span>
+    </div>
+</div>
+
+</div><!-- screen-wrapper -->
+</body>
+</html>
