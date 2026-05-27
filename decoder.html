@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Décodeur — Conseil des Ministres · Espace Enseignant</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
+
+        :root {
+            --bg:        #0f1117;
+            --surface:   #1a1d27;
+            --surface2:  #22263a;
+            --border:    rgba(255,255,255,0.08);
+            --gold:      #ffd700;
+            --gold-dim:  rgba(255,215,0,0.15);
+            --accent:    #667eea;
+            --green:     #2dce89;
+            --red:       #f5365c;
+            --orange:    #fb6340;
+            --text:      #e8eaf0;
+            --muted:     #6b7280;
+            --mono:      'DM Mono', monospace;
+            --sans:      'DM Sans', sans-serif;
+            --display:   'Syne', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 0 0 60px;
+        }
+
+        /* ── Header ── */
+        .site-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 28px 40px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .site-header h1 {
+            font-family: var(--display);
+            font-size: 1.5em;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .site-header h1 span { color: var(--gold); }
+        .header-badge {
+            background: rgba(255,215,0,0.15);
+            border: 1.5px solid rgba(255,215,0,0.4);
+            color: var(--gold);
+            border-radius: 20px;
+            padding: 5px 16px;
+            font-size: 0.82em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Main layout ── */
+        .main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 36px 24px 0;
+        }
+
+        /* ── Input zone ── */
+        .input-zone {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 32px;
+        }
+        .input-zone h2 {
+            font-family: var(--display);
+            font-size: 1.1em;
+            margin-bottom: 6px;
+            color: var(--gold);
+        }
+        .input-zone p {
+            color: var(--muted);
+            font-size: 0.88em;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .input-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: stretch;
+        }
+        .student-name-input, .code-input {
+            background: var(--surface2);
+            border: 2px solid var(--border);
+            color: var(--text);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-family: var(--sans);
+            font-size: 1em;
+            transition: border-color 0.2s;
+        }
+        .student-name-input {
+            width: 200px;
+            flex-shrink: 0;
+        }
+        .code-input {
+            font-family: var(--mono);
+            font-size: 1.3em;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            width: 180px;
+            flex-shrink: 0;
+        }
+        .student-name-input:focus, .code-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .code-input.valid   { border-color: var(--green); }
+        .code-input.invalid { border-color: var(--red); }
+
+        .add-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 28px;
+            font-family: var(--sans);
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s;
+            white-space: nowrap;
+        }
+        .add-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,0.4); }
+        .add-btn:active { transform: translateY(0); }
+
+        .decode-preview {
+            margin-top: 16px;
+            min-height: 44px;
+            background: var(--surface2);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 0.88em;
+            color: var(--muted);
+            border: 1.5px solid transparent;
+            transition: all 0.2s;
+        }
+        .decode-preview.valid   { border-color: rgba(45,206,137,0.3); color: var(--text); }
+        .decode-preview.invalid { border-color: rgba(245,54,92,0.3); color: var(--red); }
+
+        /* ── Stats summary ── */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 18px;
+            text-align: center;
+        }
+        .stat-value {
+            font-family: var(--display);
+            font-size: 2em;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .stat-label { font-size: 0.78em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* ── Table ── */
+        .table-wrap {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
+        .table-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px 14px;
+            border-bottom: 1.5px solid var(--border);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .table-header h2 {
+            font-family: var(--display);
+            font-size: 1em;
+            font-weight: 800;
+        }
+        .table-actions { display: flex; gap: 8px; }
+        .action-btn {
+            background: var(--surface2);
+            border: 1.5px solid var(--border);
+            color: var(--text);
+            border-radius: 8px;
+            padding: 6px 14px;
+            font-size: 0.82em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .action-btn:hover { background: var(--accent); border-color: var(--accent); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            font-family: var(--display);
+            font-size: 0.72em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            padding: 10px 20px;
+            text-align: left;
+            border-bottom: 1.5px solid var(--border);
+            background: var(--surface2);
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+        }
+        th:hover { color: var(--text); }
+        th.sorted { color: var(--gold); }
+        th .sort-arrow { margin-left: 4px; opacity: 0.5; }
+        th.sorted .sort-arrow { opacity: 1; }
+
+        td {
+            padding: 13px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9em;
+            vertical-align: middle;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+
+        .td-name { font-weight: 600; }
+        .td-code {
+            font-family: var(--mono);
+            font-size: 0.85em;
+            letter-spacing: 3px;
+            color: var(--gold);
+        }
+        .td-scenario { font-size: 0.85em; }
+        .score-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px; height: 28px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.88em;
+        }
+        .score-A { background: rgba(45,206,137,0.2);  color: var(--green);  }
+        .score-B { background: rgba(102,126,234,0.2); color: var(--accent); }
+        .score-C { background: rgba(251,99,64,0.2);   color: var(--orange); }
+        .score-D { background: rgba(245,54,92,0.2);   color: var(--red);    }
+
+        .chomage-chip {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: var(--surface2); border-radius: 20px;
+            padding: 3px 10px; font-size: 0.85em; font-weight: 600;
+        }
+        .chomage-ok  { color: var(--green); }
+        .chomage-mid { color: var(--orange); }
+        .chomage-bad { color: var(--red); }
+
+        .obj-chip {
+            display: inline-block;
+            font-size: 0.78em;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+        .obj-yes { background: rgba(45,206,137,0.15); color: var(--green); }
+        .obj-no  { background: rgba(245,54,92,0.15);  color: var(--red); }
+
+        .del-btn {
+            background: none; border: none; cursor: pointer;
+            color: var(--muted); font-size: 1em; padding: 4px 8px;
+            border-radius: 6px; transition: all 0.15s;
+        }
+        .del-btn:hover { color: var(--red); background: rgba(245,54,92,0.1); }
+
+        /* ── Empty state ── */
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--muted);
+        }
+        .empty-state .big-icon { font-size: 3em; margin-bottom: 16px; }
+        .empty-state p { font-size: 0.95em; line-height: 1.7; }
+
+        /* ── Scenario legend ── */
+        .legend {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 28px;
+        }
+        .legend h3 { font-family: var(--display); font-size: 0.85em; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+        .legend-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+        .legend-item {
+            display: flex; align-items: center; gap: 7px;
+            background: var(--surface2); border-radius: 20px;
+            padding: 5px 12px; font-size: 0.82em;
+        }
+        .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+        /* ── Toast ── */
+        .toast {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            background: var(--surface); border: 1.5px solid var(--green);
+            color: var(--green); border-radius: 20px; padding: 10px 22px;
+            font-size: 0.9em; font-weight: 600;
+            opacity: 0; transition: opacity 0.2s;
+            pointer-events: none; z-index: 999;
+        }
+        .toast.show { opacity: 1; }
+
+        /* ── Score scale ── */
+        .scale-guide {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;
+            font-size: 0.78em; color: var(--muted);
+        }
+        .scale-guide span { display: flex; align-items: center; gap: 4px; }
+
+        @media (max-width: 700px) {
+            .site-header { padding: 20px; }
+            .main { padding: 20px 12px 0; }
+            .input-zone { padding: 20px; }
+            .student-name-input, .code-input { width: 100%; }
+            th, td { padding: 10px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>🏛️ Conseil des Ministres — <span>Espace Enseignant</span></h1>
+    <div class="header-badge">📋 Décodeur de codes de partie</div>
+</header>
+
+<div class="main">
+
+    <!-- Input -->
+    <div class="input-zone">
+        <h2>Saisir un code élève</h2>
+        <p>Le code affiché dans l'en-tête doré du jeu pendant la partie. Saisissez le nom de l'élève, puis son code (5 caractères).</p>
+        <div class="input-row">
+            <input class="student-name-input" id="nameInput" type="text" placeholder="Prénom Nom" maxlength="40" autocomplete="off"/>
+            <input class="code-input" id="codeInput" type="text" placeholder="XXXXX" maxlength="5" autocomplete="off" spellcheck="false"/>
+            <button class="add-btn" onclick="addEntry()">➕ Ajouter</button>
+        </div>
+        <div class="decode-preview" id="preview">Entrez un code pour voir un aperçu…</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar" id="statsBar" style="display:none">
+        <div class="stat-card">
+            <div class="stat-value" id="statCount" style="color:var(--accent)">0</div>
+            <div class="stat-label">Élèves</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="statAvgScore" style="color:var(--gold)">—</div>
+            <div class="stat-label">Score moyen</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="statAvgChomage" style="color:var(--green)">—</div>
+            <div class="stat-label">Chômage moyen final</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="statSuccess" style="color:var(--orange)">—</div>
+            <div class="stat-label">Objectifs atteints</div>
+        </div>
+    </div>
+
+    <!-- Légende scénarios -->
+    <div class="legend">
+        <h3>Scénarios</h3>
+        <div class="legend-grid" id="legendGrid"></div>
+        <div class="scale-guide">
+            <strong>Score :</strong>
+            <span><span class="score-pill score-A" style="width:auto;padding:2px 8px">A</span> ≥ 80</span>
+            <span><span class="score-pill score-B" style="width:auto;padding:2px 8px">B</span> 60–79</span>
+            <span><span class="score-pill score-C" style="width:auto;padding:2px 8px">C</span> 40–59</span>
+            <span><span class="score-pill score-D" style="width:auto;padding:2px 8px">D</span> &lt; 40</span>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+        <div class="table-header">
+            <h2>📊 Résultats de la classe</h2>
+            <div class="table-actions">
+                <button class="action-btn" onclick="exportCSV()">⬇️ Exporter CSV</button>
+                <button class="action-btn" onclick="clearAll()">🗑️ Tout effacer</button>
+            </div>
+        </div>
+        <div id="tableContainer">
+            <div class="empty-state">
+                <div class="big-icon">📋</div>
+                <p>Aucun code saisi pour l'instant.<br/>Commencez par saisir le nom et le code d'un élève ci-dessus.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    // ═══════════════════════════════════════════
+    // DONNÉES — doit correspondre exactement au jeu
+    // ═══════════════════════════════════════════
+    const SCENARIOS_ORDER = [
+        { id: 'crise',              name: '🔴 Crise Économique',     color: '#dc3545', target: 10, difficulty: 'Très difficile' },
+        { id: 'normale',            name: '🟡 Situation Standard',   color: '#ffc107', target: 8,  difficulty: 'Moyen' },
+        { id: 'croissance',         name: '🟢 Boom Économique',      color: '#28a745', target: 6,  difficulty: 'Facile' },
+        { id: 'desindustrialisation',name:'🏭 Désindustrialisation', color: '#6c757d', target: 9,  difficulty: 'Très difficile' },
+        { id: 'inegalites',         name: '⚖️ Fracture Sociale',     color: '#6f42c1', target: 7,  difficulty: 'Difficile' },
+        { id: 'inflation',          name: '🔥 Crise Inflationniste', color: '#fd7e14', target: 7,  difficulty: 'Difficile' },
+    ];
+
+    // ═══════════════════════════════════════════
+    // DÉCODAGE — miroir exact de generateScoreCode()
+    // val = (scenarioIdx * 10000) + (score * 100) + round(chomage * 10)
+    // raw = val.toString(36).toUpperCase().padStart(4,'0')
+    // checkChar = String.fromCharCode(65 + (val % 26))
+    // code = raw + checkChar  (5 chars)
+    // ═══════════════════════════════════════════
+    function decodeCode(code) {
+        code = code.trim().toUpperCase();
+        if (code.length !== 5) return null;
+
+        const raw       = code.slice(0, 4);
+        const checkChar = code[4];
+
+        let val;
+        try { val = parseInt(raw, 36); } catch(e) { return null; }
+        if (isNaN(val) || val < 0) return null;
+
+        // Verify checksum
+        const expectedCheck = String.fromCharCode(65 + (val % 26));
+        if (checkChar !== expectedCheck) return null;
+
+        const scenarioIdx = Math.floor(val / 10000);
+        const remainder   = val % 10000;
+        const score       = Math.floor(remainder / 100);
+        const chomage     = (remainder % 100) / 10;
+
+        if (scenarioIdx < 0 || scenarioIdx >= SCENARIOS_ORDER.length) return null;
+        if (score < 0 || score > 100) return null;
+
+        const scenario = SCENARIOS_ORDER[scenarioIdx];
+        const objectifAtteint = chomage < scenario.target;
+
+        return { scenario, score, chomage, objectifAtteint };
+    }
+
+    function scoreGrade(s) {
+        if (s >= 80) return 'A';
+        if (s >= 60) return 'B';
+        if (s >= 40) return 'C';
+        return 'D';
+    }
+
+    // ═══════════════════════════════════════════
+    // STATE
+    // ═══════════════════════════════════════════
+    let entries = JSON.parse(localStorage.getItem('decoder-entries') || '[]');
+    let sortKey = 'score';
+    let sortDir = -1; // -1 = desc
+
+    function save() {
+        localStorage.setItem('decoder-entries', JSON.stringify(entries));
+    }
+
+    // ═══════════════════════════════════════════
+    // LIVE PREVIEW
+    // ═══════════════════════════════════════════
+    const codeInput = document.getElementById('codeInput');
+    const preview   = document.getElementById('preview');
+
+    codeInput.addEventListener('input', () => {
+        const v = codeInput.value.trim().toUpperCase();
+        codeInput.value = v;
+        if (v.length === 0) {
+            codeInput.className = 'code-input';
+            preview.className = 'decode-preview';
+            preview.textContent = 'Entrez un code pour voir un aperçu…';
+            return;
+        }
+        if (v.length < 5) {
+            codeInput.className = 'code-input';
+            preview.className = 'decode-preview';
+            preview.textContent = `${v.length}/5 caractères…`;
+            return;
+        }
+        const r = decodeCode(v);
+        if (!r) {
+            codeInput.className = 'code-input invalid';
+            preview.className = 'decode-preview invalid';
+            preview.textContent = '❌ Code invalide — vérifiez la saisie (checksum incorrect ou scénario inconnu)';
+            return;
+        }
+        codeInput.className = 'code-input valid';
+        preview.className = 'decode-preview valid';
+        preview.innerHTML =
+            `✅ <strong>${r.scenario.name}</strong> · ` +
+            `Score <strong>${r.score}/100 (${scoreGrade(r.score)})</strong> · ` +
+            `Chômage final <strong>${r.chomage.toFixed(1)}%</strong> · ` +
+            `Objectif <strong>${r.objectifAtteint ? '✅ Atteint' : '❌ Non atteint'}</strong>`;
+    });
+
+    // Enter key support
+    codeInput.addEventListener('keydown', e => { if (e.key === 'Enter') addEntry(); });
+    document.getElementById('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') codeInput.focus(); });
+
+    // ═══════════════════════════════════════════
+    // ADD ENTRY
+    // ═══════════════════════════════════════════
+    function addEntry() {
+        const name = document.getElementById('nameInput').value.trim();
+        const code = codeInput.value.trim().toUpperCase();
+
+        if (!name) { showToast('⚠️ Entrez le nom de l\'élève'); return; }
+        if (code.length !== 5) { showToast('⚠️ Le code doit faire 5 caractères'); return; }
+
+        const r = decodeCode(code);
+        if (!r) { showToast('❌ Code invalide'); return; }
+
+        // Check duplicate code
+        if (entries.find(e => e.code === code)) {
+            showToast('⚠️ Ce code est déjà dans la liste');
+            return;
+        }
+
+        entries.push({
+            id:       Date.now(),
+            name,
+            code,
+            scenario: r.scenario,
+            score:    r.score,
+            chomage:  r.chomage,
+            objectifAtteint: r.objectifAtteint,
+            addedAt:  new Date().toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'})
+        });
+
+        save();
+        render();
+        document.getElementById('nameInput').value = '';
+        codeInput.value = '';
+        codeInput.className = 'code-input';
+        preview.className = 'decode-preview';
+        preview.textContent = 'Entrez un code pour voir un aperçu…';
+        document.getElementById('nameInput').focus();
+        showToast(`✅ ${name} ajouté·e`);
+    }
+
+    // ═══════════════════════════════════════════
+    // DELETE
+    // ═══════════════════════════════════════════
+    function deleteEntry(id) {
+        entries = entries.filter(e => e.id !== id);
+        save();
+        render();
+    }
+
+    function clearAll() {
+        if (!entries.length) return;
+        if (!confirm(`Effacer les ${entries.length} élève(s) ? Cette action est irréversible.`)) return;
+        entries = [];
+        save();
+        render();
+        showToast('🗑️ Liste effacée');
+    }
+
+    // ═══════════════════════════════════════════
+    // SORT
+    // ═══════════════════════════════════════════
+    function setSort(key) {
+        if (sortKey === key) sortDir *= -1;
+        else { sortKey = key; sortDir = -1; }
+        render();
+    }
+
+    function sorted(arr) {
+        return [...arr].sort((a, b) => {
+            let av = a[sortKey], bv = b[sortKey];
+            if (typeof av === 'string') return av.localeCompare(bv) * sortDir;
+            return (av - bv) * sortDir;
+        });
+    }
+
+    // ═══════════════════════════════════════════
+    // RENDER
+    // ═══════════════════════════════════════════
+    function render() {
+        renderStats();
+        renderLegend();
+        renderTable();
+    }
+
+    function renderStats() {
+        const bar = document.getElementById('statsBar');
+        if (!entries.length) { bar.style.display = 'none'; return; }
+        bar.style.display = 'grid';
+
+        const avgScore   = entries.reduce((s,e) => s + e.score, 0) / entries.length;
+        const avgChomage = entries.reduce((s,e) => s + e.chomage, 0) / entries.length;
+        const success    = entries.filter(e => e.objectifAtteint).length;
+
+        document.getElementById('statCount').textContent     = entries.length;
+        document.getElementById('statAvgScore').textContent  = avgScore.toFixed(0) + '/100';
+        document.getElementById('statAvgChomage').textContent= avgChomage.toFixed(1) + '%';
+        document.getElementById('statSuccess').textContent   = success + '/' + entries.length;
+    }
+
+    function renderLegend() {
+        const used = [...new Set(entries.map(e => e.scenario.id))];
+        const grid = document.getElementById('legendGrid');
+        grid.innerHTML = SCENARIOS_ORDER.map(s => `
+            <div class="legend-item" style="opacity:${used.length === 0 || used.includes(s.id) ? 1 : 0.35}">
+                <span class="legend-dot" style="background:${s.color}"></span>
+                <span>${s.name}</span>
+                <span style="color:var(--muted);font-size:0.85em">${s.difficulty}</span>
+                ${used.includes(s.id) ? `<span style="color:var(--gold);font-weight:700">${entries.filter(e=>e.scenario.id===s.id).length}</span>` : ''}
+            </div>
+        `).join('');
+    }
+
+    function renderTable() {
+        const container = document.getElementById('tableContainer');
+        if (!entries.length) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="big-icon">📋</div>
+                    <p>Aucun code saisi pour l'instant.<br/>Commencez par saisir le nom et le code d'un élève ci-dessus.</p>
+                </div>`;
+            return;
+        }
+
+        const cols = [
+            { key:'name',     label:'Élève' },
+            { key:'code',     label:'Code' },
+            { key:'scenario', label:'Scénario' },
+            { key:'score',    label:'Score' },
+            { key:'chomage',  label:'Chômage final' },
+            { key:'objectifAtteint', label:'Objectif' },
+            { key:'addedAt',  label:'Heure' },
+        ];
+
+        const arrow = key => {
+            if (sortKey !== key) return '<span class="sort-arrow">↕</span>';
+            return `<span class="sort-arrow">${sortDir === -1 ? '↓' : '↑'}</span>`;
+        };
+
+        const rows = sorted(entries).map(e => {
+            const grade = scoreGrade(e.score);
+            const chomCls = e.chomage < (e.scenario.target - 1) ? 'chomage-ok' : e.chomage < e.scenario.target + 2 ? 'chomage-mid' : 'chomage-bad';
+            return `
+            <tr>
+                <td class="td-name">${esc(e.name)}</td>
+                <td class="td-code">${esc(e.code)}</td>
+                <td class="td-scenario">
+                    <span style="display:inline-flex;align-items:center;gap:6px">
+                        <span style="width:8px;height:8px;border-radius:50%;background:${e.scenario.color};flex-shrink:0;display:inline-block"></span>
+                        ${esc(e.scenario.name)}
+                    </span>
+                </td>
+                <td><span class="score-pill score-${grade}">${e.score}</span></td>
+                <td><span class="chomage-chip ${chomCls}">${e.chomage.toFixed(1)}% <span style="opacity:0.5;font-size:0.85em">/ obj &lt;${e.scenario.target}%</span></span></td>
+                <td><span class="obj-chip ${e.objectifAtteint ? 'obj-yes':'obj-no'}">${e.objectifAtteint ? '✅ Atteint':'❌ Non atteint'}</span></td>
+                <td style="color:var(--muted);font-size:0.82em">${esc(e.addedAt)}</td>
+                <td><button class="del-btn" onclick="deleteEntry(${e.id})" title="Supprimer">✕</button></td>
+            </tr>`;
+        }).join('');
+
+        container.innerHTML = `
+            <table>
+                <thead>
+                    <tr>
+                        ${cols.map(c => `<th onclick="setSort('${c.key}')" class="${sortKey===c.key?'sorted':''}">${c.label}${arrow(c.key)}</th>`).join('')}
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+            </table>`;
+    }
+
+    // ═══════════════════════════════════════════
+    // EXPORT CSV
+    // ═══════════════════════════════════════════
+    function exportCSV() {
+        if (!entries.length) { showToast('⚠️ Aucune donnée à exporter'); return; }
+        const header = ['Élève','Code','Scénario','Difficulté','Score/100','Grade','Chômage final (%)','Objectif cible (%)','Objectif atteint','Heure'];
+        const rows = sorted(entries).map(e => [
+            e.name, e.code,
+            e.scenario.name.replace(/[🔴🟡🟢🏭⚖️🔥]/u,'').trim(),
+            e.scenario.difficulty,
+            e.score, scoreGrade(e.score),
+            e.chomage.toFixed(1), e.scenario.target,
+            e.objectifAtteint ? 'Oui' : 'Non',
+            e.addedAt
+        ].map(v => `"${v}"`).join(','));
+
+        const csv = [header.join(','), ...rows].join('\n');
+        const blob = new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `resultats_classe_${new Date().toISOString().slice(0,10)}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('✅ CSV exporté');
+    }
+
+    // ═══════════════════════════════════════════
+    // UTILS
+    // ═══════════════════════════════════════════
+    function esc(str) {
+        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(t._timer);
+        t._timer = setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ═══════════════════════════════════════════
+    // INIT
+    // ═══════════════════════════════════════════
+    render();
+    document.getElementById('nameInput').focus();
+</script>
+</body>
+</html>

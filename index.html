@@ -690,6 +690,152 @@
             .glossary-btn { bottom: 15px; right: 15px; padding: 10px 16px; font-size: 0.85em; }
         }
 
+        /* ══════════════════════════════════
+           FLASH QUIZ MODAL
+        ══════════════════════════════════ */
+        .quiz-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.65);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000;
+            animation: fadeInOverlay 0.3s ease;
+        }
+        @keyframes fadeInOverlay { from { opacity:0 } to { opacity:1 } }
+
+        .quiz-modal {
+            background: white;
+            border-radius: 20px;
+            padding: 36px 40px;
+            max-width: 560px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUpModal 0.35s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        @keyframes slideUpModal {
+            from { transform: translateY(60px); opacity:0; }
+            to   { transform: translateY(0);    opacity:1; }
+        }
+        .quiz-source {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #e8f0fe; color: #2a5298;
+            border-radius: 20px; padding: 5px 14px;
+            font-size: 0.82em; font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .quiz-question {
+            font-size: 1.15em; font-weight: 700;
+            color: #1a1a2e; line-height: 1.5;
+            margin-bottom: 22px;
+        }
+        .quiz-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+        .quiz-option {
+            border: 2px solid #e0e0e0; border-radius: 10px;
+            padding: 13px 18px; text-align: left;
+            font-size: 0.97em; cursor: pointer; background: white;
+            transition: all 0.18s; font-family: inherit;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .quiz-option:hover:not(:disabled) { border-color: #667eea; background: #f0f2ff; transform: translateX(3px); }
+        .quiz-option.correct  { border-color: #28a745; background: #d4edda; color: #155724; font-weight: 700; }
+        .quiz-option.wrong    { border-color: #dc3545; background: #f8d7da; color: #721c24; }
+        .quiz-option.revealed { border-color: #28a745; background: #d4edda; color: #155724; font-weight: 700; opacity: 0.75; }
+        .quiz-option:disabled { cursor: default; }
+        .quiz-option-letter {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 26px; height: 26px; border-radius: 50%;
+            background: #f0f2ff; color: #2a5298; font-weight: 800; font-size: 0.85em;
+            flex-shrink: 0;
+        }
+        .quiz-option.correct  .quiz-option-letter { background: #28a745; color: white; }
+        .quiz-option.wrong    .quiz-option-letter { background: #dc3545; color: white; }
+        .quiz-option.revealed .quiz-option-letter { background: #28a745; color: white; }
+        .quiz-feedback {
+            border-radius: 10px; padding: 14px 18px;
+            font-size: 0.95em; line-height: 1.55;
+            margin-bottom: 18px; display: flex; gap: 12px;
+        }
+        .quiz-feedback.good { background: #d4edda; color: #155724; border-left: 4px solid #28a745; }
+        .quiz-feedback.bad  { background: #fff3cd; color: #856404; border-left: 4px solid #ffc107; }
+        .quiz-bonus {
+            display: inline-block;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white; border-radius: 20px; padding: 4px 14px;
+            font-size: 0.85em; font-weight: 700; margin-left: 8px;
+        }
+        .quiz-skip {
+            background: none; border: none; color: #aaa; font-size: 0.85em;
+            cursor: pointer; text-decoration: underline; margin-top: 4px;
+        }
+        .quiz-skip:hover { color: #666; }
+        .quiz-continue {
+            width: 100%;
+            background: linear-gradient(135deg, #2a5298 0%, #667eea 100%);
+            color: white; border: none; border-radius: 12px;
+            padding: 14px; font-size: 1em; font-weight: 700;
+            cursor: pointer; transition: transform 0.15s;
+        }
+        .quiz-continue:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(42,82,152,0.35); }
+
+        /* ══════════════════════════════════
+           CODE DE PARTIE (résultats)
+        ══════════════════════════════════ */
+        .score-code-box {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 16px; padding: 28px 32px;
+            margin: 30px 0; text-align: center; color: white;
+        }
+        .score-code-title { font-size: 0.85em; opacity: 0.7; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; }
+        .score-code-value {
+            font-size: 2.4em; font-weight: 900; letter-spacing: 6px;
+            color: #ffd700; font-family: 'Courier New', monospace;
+            margin-bottom: 10px;
+        }
+        .score-code-sub { font-size: 0.82em; opacity: 0.6; margin-bottom: 18px; }
+        .score-code-copy {
+            background: #ffd700; color: #1a1a2e;
+            border: none; border-radius: 8px; padding: 9px 22px;
+            font-size: 0.9em; font-weight: 800; cursor: pointer; transition: all 0.15s;
+        }
+        .score-code-copy:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(255,215,0,0.4); }
+        .score-code-copied { background: #28a745; color: white; }
+        .score-code-how {
+            font-size: 0.82em; opacity: 0.55; margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        /* ══════════════════════════════════
+           DASHBOARD COLLAPSE (priorité 3)
+        ══════════════════════════════════ */
+        .dashboard-toggle-bar {
+            background: #f8f9fa; border-top: 2px solid #e0e0e0;
+            display: flex; align-items: center; justify-content: center;
+            padding: 8px; cursor: pointer; transition: background 0.2s;
+        }
+        .dashboard-toggle-bar:hover { background: #e8ecff; }
+        .dashboard-toggle-btn {
+            background: none; border: 1.5px solid #aab0d0; border-radius: 20px;
+            padding: 5px 18px; font-size: 0.82em; font-weight: 700;
+            color: #2a5298; cursor: pointer; display: flex; align-items: center; gap: 6px;
+        }
+        .dashboard-alert-dot {
+            display: inline-block; width: 8px; height: 8px;
+            background: #dc3545; border-radius: 50; animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        .indicator.critical { border: 2px solid #dc3545; background: #fff5f5; }
+        .indicator.warning  { border: 2px solid #ffc107; background: #fffbf0; }
+
+        /* ══════════════════════════════════
+           QUIZ STREAK counter (playing header)
+        ══════════════════════════════════ */
+        .quiz-streak {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: rgba(255,255,255,0.18);
+            border-radius: 20px; padding: 4px 12px;
+            font-size: 0.85em; font-weight: 700; color: white;
+            margin-left: 12px;
+        }
+
         /* ── Glossaire modal ── */
         .glossary-btn {
             position: fixed; bottom: 30px; right: 30px;
@@ -1441,6 +1587,166 @@
         ];
 
         /* ═══════════════════════════════════════
+           FLASH QUIZ — Banque de questions
+           Chaque question est liée à un type de politique (policyType)
+           ou à un événement (eventId). "correct" = index de la bonne réponse.
+           ═══════════════════════════════════════ */
+        const QUIZ_BANK = [
+            // ── Politiques actives
+            {
+                id: 'q_active_1', policyTypes: ['active'],
+                source: '📺 BFMTV — Question du journaliste',
+                question: 'Vous venez d\'investir dans la formation professionnelle. C\'est une politique active ou passive de l\'emploi ?',
+                options: ['Active : elle améliore l\'employabilité directement', 'Passive : elle indemnise les chômeurs', 'De demande : elle stimule la consommation', 'D\'offre : elle réduit les coûts des entreprises'],
+                correct: 0,
+                explanation: 'Bravo ! Une politique active agit sur les causes du chômage (compétences, accompagnement). La formation en est l\'exemple parfait selon le programme Thème 7.',
+                bonusKey: 'popularite', bonusValue: 1
+            },
+            {
+                id: 'q_active_2', policyTypes: ['active'],
+                source: '📺 LCI — Votre conseiller économique',
+                question: 'L\'aide à l\'embauche que vous venez de voter : quel type de chômage cible-t-elle principalement ?',
+                options: ['Le chômage frictionnel (entre deux emplois)', 'Le chômage structurel (inadéquation compétences)', 'Le chômage conjoncturel (lié à la récession)', 'Le sous-emploi (temps partiel subi)'],
+                correct: 2,
+                explanation: 'Les aides à l\'embauche stimulent les recrutements quand l\'activité est faible — elles agissent surtout sur le chômage conjoncturel.',
+                bonusKey: 'popularite', bonusValue: 1
+            },
+            // ── Politiques passives
+            {
+                id: 'q_passive_1', policyTypes: ['passive'],
+                source: '📺 France Info — La question qui fâche',
+                question: 'Vous renforcez l\'indemnisation chômage. Un économiste vous dit que c\'est une "trappe à inactivité". Que veut-il dire ?',
+                options: ['Des chômeurs pourraient préférer l\'allocation à un emploi mal rémunéré', 'L\'indemnisation emprisonne les chômeurs dans la pauvreté', 'Les entreprises licencient plus facilement car l\'État paie', 'Le chômage augmente mécaniquement dès qu\'on indemnise'],
+                correct: 0,
+                explanation: 'C\'est le débat central sur les politiques passives : elles protègent les revenus mais peuvent réduire l\'incitation à rechercher un emploi.',
+                bonusKey: 'popularite', bonusValue: 1
+            },
+            // ── Politiques de demande
+            {
+                id: 'q_demande_1', policyTypes: ['demande'],
+                source: '📺 BFM Business — L\'expert économiste',
+                question: 'Vous avez lancé un grand investissement public. L\'économiste cite "l\'effet multiplicateur de Keynes". Ça signifie quoi ?',
+                options: ['L\'investissement initial génère plus de richesse qu\'il ne coûte grâce aux dépenses en chaîne', 'L\'État multiplie artificiellement les emplois sans vraie valeur', 'On divise le budget entre plusieurs ministères', 'La TVA est multipliée sur chaque transaction'],
+                correct: 0,
+                explanation: 'L\'effet multiplicateur : 1€ dépensé par l\'État → revenus → consommation → revenus → ... = richesse créée supérieure à la mise initiale. C\'est la base du keynésianisme (Thème 6.3).',
+                bonusKey: 'popularite', bonusValue: 1
+            },
+            {
+                id: 'q_demande_2', policyTypes: ['demande'],
+                source: '📺 TF1 — Conseil des ministres',
+                question: 'Votre baisse de TVA stimule la consommation. Quel risque principal accompagne souvent ce type de relance ?',
+                options: ['Une hausse de l\'inflation si la production ne suit pas', 'Une baisse immédiate du taux d\'emploi', 'Un afflux de travailleurs étrangers', 'Une réduction automatique du déficit'],
+                correct: 0,
+                explanation: 'Trop de demande sans hausse de l\'offre = tension sur les prix = inflation. C\'est le principal arbitrage des politiques de relance keynésienne.',
+                bonusKey: 'popularite', bonusValue: 1
+            },
+            // ── Politiques d'offre
+            {
+                id: 'q_offre_1', policyTypes: ['offre'],
+                source: '📺 CNEWS — Débat patronat vs syndicats',
+                question: 'Vous baissez les charges patronales. Le MEDEF applaudit, la CGT proteste. Pourquoi ce désaccord ?',
+                options: ['Les entreprises y gagnent en compétitivité, mais les salariés peuvent y perdre en protections', 'Les syndicats veulent que l\'argent aille aux actionnaires', 'Le MEDEF voulait une baisse d\'impôts, pas de charges', 'Les charges patronales financent uniquement les retraites'],
+                correct: 0,
+                explanation: 'C\'est l\'arbitrage classique entre efficacité (compétitivité des entreprises) et équité (protection des salariés). Cœur du débat politique sur les politiques d\'offre.',
+                bonusKey: 'popularite', bonusValue: 1
+            },
+            {
+                id: 'q_offre_2', policyTypes: ['offre'],
+                source: '📺 LCI — Votre ministre de l\'Économie',
+                question: 'Votre politique d\'offre réduit le coût du travail. Quel chômage cherche-t-elle principalement à réduire ?',
+                options: ['Le chômage structurel lié au coût du travail trop élevé', 'Le chômage frictionnel entre deux postes', 'Le chômage conjoncturel lié à la crise', 'Le sous-emploi des travailleurs à temps partiel'],
+                correct: 0,
+                explanation: 'Si les entreprises n\'embauchent pas car le travail coûte trop cher, réduire ce coût traite une cause structurelle du chômage. C\'est le raisonnement libéral.',
+                bonusKey: 'popularite', bonusValue: 1
+            },
+            // ── Politiques économiques (6.3)
+            {
+                id: 'q_eco_1', policyTypes: ['economie'],
+                source: '📺 Bruxelles — Commissaire européen',
+                question: 'Votre déficit dépasse 3% du PIB. La Commission européenne vous avertit. Quel traité impose cette règle ?',
+                options: ['Le Pacte de stabilité et de croissance (Amsterdam 1997)', 'Le traité de Rome (1957)', 'Le traité de Lisbonne (2007)', 'La règle d\'or budgétaire française (2012)'],
+                correct: 0,
+                explanation: 'Le Pacte de stabilité impose déficit < 3% et dette < 60% du PIB. En cas de dépassement, la procédure de déficit excessif peut entraîner des amendes pour la France.',
+                bonusKey: 'popularite', bonusValue: 1
+            },
+            {
+                id: 'q_eco_2', policyTypes: ['economie'],
+                source: '📺 Europe 1 — L\'économiste en chef',
+                question: 'Vous avez voté une politique d\'austérité. Elle réduit le déficit, mais votre conseiller dit qu\'elle peut créer une "spirale récessive". Pourquoi ?',
+                options: ['Moins de dépenses publiques → moins de demande → moins de croissance → moins de recettes → déficit ne baisse pas vraiment', 'L\'austérité augmente toujours le chômage de 5% minimum', 'La BCE s\'oppose systématiquement à l\'austérité', 'Les marchés fuient les pays qui réduisent leurs dépenses'],
+                correct: 0,
+                explanation: 'C\'est le paradoxe de l\'austérité : en coupant les dépenses, on réduit l\'activité, ce qui fait baisser les recettes fiscales, ce qui peut annuler l\'effet sur le déficit. Krugman l\'a bien documenté.',
+                bonusKey: 'popularite', bonusValue: 1
+            },
+            // ── Politiques sociales (6.4)
+            {
+                id: 'q_social_1', policyTypes: ['social'],
+                source: '📺 France 2 — Journal de 20h',
+                question: 'Vous augmentez le RSA. Un élu d\'opposition parle d\'"assistanat". Comment défendre cette mesure avec un argument économique solide ?',
+                options: ['Le RSA est une politique de redistribution qui réduit les inégalités ET maintient la demande des plus pauvres', 'Le RSA est moins coûteux que les allocations chômage', 'Le RSA est une politique active car il oblige à chercher un emploi', 'Le RSA réduit l\'inflation en stabilisant les prix alimentaires'],
+                correct: 0,
+                explanation: 'Les minima sociaux ont un double effet : réduire la pauvreté (rôle redistributif de l\'État-providence) ET maintenir la consommation des ménages les plus pauvres (effet keynésien).',
+                bonusKey: 'popularite', bonusValue: 1
+            },
+            {
+                id: 'q_social_2', policyTypes: ['social'],
+                source: '📺 LCP — Commission sociale',
+                question: 'Votre programme de logement social coûte cher. Comment justifier cette dépense auprès d\'un ministre des Finances hostile ?',
+                options: ['Le logement social réduit la pauvreté ET crée des emplois dans le BTP — double effet économique', 'Le logement social se finance seul par les loyers perçus', 'C\'est une obligation européenne de Maastricht', 'Ça réduit l\'immigration en logeant d\'abord les résidents'],
+                correct: 0,
+                explanation: 'C\'est l\'argument des externalités positives : une dépense publique qui génère des retombées économiques (emplois BTP) et sociales (réduction pauvreté) dépasse son coût direct.',
+                bonusKey: 'popularite', bonusValue: 1
+            },
+            // ── Politiques éducation (6.4)
+            {
+                id: 'q_educ_1', policyTypes: ['education'],
+                source: '📺 Arte — Le magazine économique',
+                question: 'Vous investissez massivement dans l\'éducation. Quel mécanisme explique l\'impact à long terme sur l\'emploi ?',
+                options: ['Plus de qualification → meilleure adéquation avec les emplois disponibles → moins de chômage structurel', 'L\'éducation crée des emplois directs dans la fonction publique uniquement', 'Moins de jeunes au chômage car ils restent scolarisés plus longtemps', 'L\'éducation réduit la demande de travail des entreprises'],
+                correct: 0,
+                explanation: 'Investir en capital humain réduit le chômage structurel (inadéquation compétences/emplois). C\'est l\'argument central du Thème 6.4 sur l\'investissement éducatif.',
+                bonusKey: 'popularite', bonusValue: 1
+            },
+            // ── Questions liées à des événements
+            {
+                id: 'q_ev_crise', eventIds: [1, 9],
+                source: '🌍 Cellule de crise — Votre conseiller',
+                question: 'Une crise économique mondiale frappe. Quelle politique keynésienne est la plus adaptée en récession ?',
+                options: ['Relance budgétaire : augmenter les dépenses publiques pour compenser la baisse de demande privée', 'Austérité budgétaire : réduire les dépenses pour rassurer les marchés', 'Hausse des impôts pour financer les déficits immédiats', 'Ne rien faire : le marché se régule seul (libéralisme pur)'],
+                correct: 0,
+                explanation: 'En récession, la dépense privée s\'effondre. Keynes préconise de compenser par la dépense publique — c\'est l\'effet multiplicateur qui soutient l\'activité.',
+                bonusKey: 'popularite', bonusValue: 2
+            },
+            {
+                id: 'q_ev_inflation', eventIds: [16],
+                source: '⚡ Cellule énergie — Hausse des prix',
+                question: 'La hausse du prix de l\'énergie provoque de l\'inflation. Quelle institution européenne est en charge de la combattre ?',
+                options: ['La BCE (Banque Centrale Européenne) via les taux d\'intérêt', 'La Commission européenne via les directives budgétaires', 'Le FMI via les plans d\'ajustement structurel', 'L\'État seul via la fiscalité sur l\'énergie'],
+                correct: 0,
+                explanation: 'La BCE dispose de l\'outil monétaire (taux directeurs) pour maîtriser l\'inflation dans la zone euro. C\'est sa mission principale. L\'État peut agir en complément via les taxes.',
+                bonusKey: 'popularite', bonusValue: 2
+            },
+            {
+                id: 'q_ev_delo', eventIds: [4, 7],
+                source: '✈️ Cellule industrie — Délocalisation annoncée',
+                question: 'Une usine ferme, 3000 emplois perdus. Ce chômage est de quel type principalement ?',
+                options: ['Structurel : les compétences industrielles ne correspondent plus aux emplois disponibles', 'Frictionnel : les ouvriers vont vite retrouver du travail', 'Conjoncturel : la reprise économique va suffire à résorber', 'Technique : il disparaîtra avec la numérisation'],
+                correct: 0,
+                explanation: 'Les fermetures d\'usines créent du chômage structurel : les ouvriers ont des compétences qui ne correspondent plus aux emplois disponibles. Seules les politiques de reconversion peuvent y répondre.',
+                bonusKey: 'popularite', bonusValue: 2
+            },
+            {
+                id: 'q_ev_pauvrete', eventIds: [13, 12],
+                source: '🍞 Alerte sociale — Vague de pauvreté',
+                question: 'Le taux de pauvreté monte. L\'indicateur utilisé en France est relatif. Que mesure-t-il exactement ?',
+                options: ['La part de la population vivant sous 60% du revenu médian', 'La part de la population qui ne mange pas à sa faim', 'Le nombre de personnes sans logement fixe', 'La part de la population en dessous du SMIC'],
+                correct: 0,
+                explanation: 'Le seuil de pauvreté relatif (60% du revenu médian) est l\'indicateur officiel en France et en Europe. Il mesure les inégalités de revenus, pas la misère absolue.',
+                bonusKey: 'popularite', bonusValue: 2
+            }
+        ];
+
+        /* ═══════════════════════════════════════
            MINISTRES — Conseil des ministres
            ═══════════════════════════════════════ */
         const MINISTERS = [
@@ -1827,10 +2133,78 @@
             });
 
             const [showGlossary, setShowGlossary] = React.useState(false);
+            const [quizState, setQuizState] = React.useState(null); // {question, pendingFn, answered, selected}
+            const [quizStreak, setQuizStreak] = React.useState(0);
+            const [quizCorrectTotal, setQuizCorrectTotal] = React.useState(0);
+            const [dashExpanded, setDashExpanded] = React.useState(false);
+            const [codeCopied, setCodeCopied] = React.useState(false);
 
             useEffect(() => {
                 localStorage.setItem('ministre-travail-game', JSON.stringify(gameState));
             }, [gameState]);
+
+            /* ── Helpers quiz ── */
+            const pickQuizQuestion = (policies, event) => {
+                // Cherche d'abord une question liée à l'événement
+                if (event) {
+                    const evQ = QUIZ_BANK.filter(q => q.eventIds && q.eventIds.includes(event.id));
+                    if (evQ.length) return evQ[Math.floor(Math.random() * evQ.length)];
+                }
+                // Sinon cherche une question liée aux politiques jouées
+                const types = policies.map(p => p.type);
+                const candidates = QUIZ_BANK.filter(q => q.policyTypes && q.policyTypes.some(t => types.includes(t)));
+                if (candidates.length) return candidates[Math.floor(Math.random() * candidates.length)];
+                // Fallback aléatoire
+                return QUIZ_BANK[Math.floor(Math.random() * QUIZ_BANK.length)];
+            };
+
+            const showQuizBefore = (nextFn, policies, event) => {
+                // 70% de chance d'afficher un quiz (évite la lassitude)
+                if (Math.random() > 0.70) { nextFn(); return; }
+                const q = pickQuizQuestion(policies, event);
+                setQuizState({ question: q, pendingFn: nextFn, answered: false, selected: null, bonusApplied: false });
+            };
+
+            const answerQuiz = (idx) => {
+                if (!quizState || quizState.answered) return;
+                const isCorrect = idx === quizState.question.correct;
+                setQuizState(prev => ({ ...prev, answered: true, selected: idx }));
+                if (isCorrect) {
+                    setQuizStreak(s => s + 1);
+                    setQuizCorrectTotal(c => c + 1);
+                    // Applique le bonus indicateur
+                    const bk = quizState.question.bonusKey;
+                    const bv = quizState.question.bonusValue;
+                    if (bk && bv) {
+                        setGameState(prev => ({
+                            ...prev,
+                            indicators: { ...prev.indicators, [bk]: Math.min(100, (prev.indicators[bk] || 50) + bv) }
+                        }));
+                    }
+                } else {
+                    setQuizStreak(0);
+                }
+            };
+
+            const closeQuiz = () => {
+                const fn = quizState?.pendingFn;
+                setQuizState(null);
+                if (fn) fn();
+            };
+
+            /* ── Générateur de code de partie ── */
+            const generateScoreCode = () => {
+                const s = gameState;
+                const ind = s.indicators;
+                const sc = calculateScore();
+                // Encode scénario + score + chômage final en base36
+                const scenarioIdx = Object.keys(SCENARIOS).indexOf(s.scenario?.id || 'normale');
+                const val = (scenarioIdx * 10000) + (sc.total * 100) + Math.round(ind.chomage * 10);
+                const raw = val.toString(36).toUpperCase().padStart(4, '0');
+                // Checksum simple
+                const checkChar = String.fromCharCode(65 + (val % 26));
+                return raw + checkChar;
+            };
 
             const selectScenario = (scenarioId) => {
                 const scenario = SCENARIOS[scenarioId];
@@ -1944,13 +2318,16 @@
                         phase: 'event'
                     }));
                 } else if (isMidterm) {
-                    setGameState(prev => ({
-                        ...prev,
-                        indicators: newIndicators,
-                        history: newHistory,
-                        quarterlyRevenue: quarterlyRevenue,
-                        phase: 'midterm'
+                    // Quiz puis midterm
+                    const doMidterm = () => setGameState(prev => ({
+                        ...prev, indicators: newIndicators, history: newHistory,
+                        quarterlyRevenue: quarterlyRevenue, phase: 'midterm'
                     }));
+                    setGameState(prev => ({
+                        ...prev, indicators: newIndicators, history: newHistory,
+                        quarterlyRevenue: quarterlyRevenue
+                    }));
+                    showQuizBefore(doMidterm, selectedPoliciesData, null);
                 } else if (gameState.quarter >= gameState.totalQuarters) {
                     setGameState(prev => ({
                         ...prev,
@@ -1960,7 +2337,8 @@
                         completedScenarios: [...(prev.completedScenarios || []), prev.scenario?.id]
                     }));
                 } else {
-                    setGameState(prev => ({
+                    // Quiz puis trimestre suivant
+                    const doNext = () => setGameState(prev => ({
                         ...prev,
                         quarter: prev.quarter + 1,
                         indicators: newIndicators,
@@ -1969,6 +2347,11 @@
                         quarterlyRevenue: quarterlyRevenue,
                         phase: 'playing'
                     }));
+                    setGameState(prev => ({
+                        ...prev, indicators: newIndicators, history: newHistory,
+                        quarterlyRevenue: quarterlyRevenue
+                    }));
+                    showQuizBefore(doNext, selectedPoliciesData, null);
                 }
             };
 
@@ -1976,25 +2359,31 @@
                 const lastHistory = gameState.history[gameState.history.length - 1];
                 const quarterlyRevenue = lastHistory?.quarterlyRevenue || 0;
                 const isMidterm = gameState.quarter === 4;
-                
-                if (isMidterm) {
-                    setGameState(prev => ({...prev, phase: 'midterm'}));
-                } else if (gameState.quarter >= gameState.totalQuarters) {
-                    setGameState(prev => ({
-                        ...prev, 
-                        phase: 'results',
-                        completedScenarios: [...(prev.completedScenarios || []), prev.scenario?.id]
-                    }));
-                } else {
-                    setGameState(prev => ({
-                        ...prev,
-                        quarter: prev.quarter + 1,
-                        selectedPolicies: [],
-                        eventTriggered: null,
-                        phase: 'playing',
-                        showRevenueNotification: quarterlyRevenue
-                    }));
-                }
+                const policies = lastHistory?.policies || [];
+                const event    = lastHistory?.event || null;
+
+                const doTransition = () => {
+                    if (isMidterm) {
+                        setGameState(prev => ({...prev, phase: 'midterm'}));
+                    } else if (gameState.quarter >= gameState.totalQuarters) {
+                        setGameState(prev => ({
+                            ...prev,
+                            phase: 'results',
+                            completedScenarios: [...(prev.completedScenarios || []), prev.scenario?.id]
+                        }));
+                    } else {
+                        setGameState(prev => ({
+                            ...prev,
+                            quarter: prev.quarter + 1,
+                            selectedPolicies: [],
+                            eventTriggered: null,
+                            phase: 'playing',
+                            showRevenueNotification: quarterlyRevenue
+                        }));
+                    }
+                };
+
+                showQuizBefore(doTransition, policies, event);
             };
 
             const continueFromMidterm = () => {
@@ -2492,6 +2881,28 @@
                             
                             <h2 className="results-title">Score Global : {scores.total}/100</h2>
                             <h3 style={{color: '#666', marginBottom: '30px'}}>{getScoreText(scores.total)}</h3>
+
+                            {/* ── CODE DE PARTIE ── */}
+                            <div className="score-code-box">
+                                <div className="score-code-title">📋 Code de partie — À donner à votre enseignant</div>
+                                <div className="score-code-value">{generateScoreCode()}</div>
+                                <div className="score-code-sub">Scénario : {gameState.scenario?.name} · Score : {scores.total}/100 · Chômage final : {gameState.indicators.chomage.toFixed(1)}%</div>
+                                <button
+                                    className={`score-code-copy ${codeCopied ? 'score-code-copied' : ''}`}
+                                    onClick={() => {
+                                        const code = generateScoreCode();
+                                        const text = `Code partie : ${code} | Scénario : ${gameState.scenario?.name} | Score : ${scores.total}/100 | Chômage final : ${gameState.indicators.chomage.toFixed(1)}%`;
+                                        navigator.clipboard?.writeText(text).catch(()=>{});
+                                        setCodeCopied(true);
+                                        setTimeout(() => setCodeCopied(false), 2000);
+                                    }}
+                                >
+                                    {codeCopied ? '✅ Copié !' : '📋 Copier le code'}
+                                </button>
+                                <div className="score-code-how">
+                                    Dictez ce code à votre professeur ou notez-le. Il permet de comparer les résultats de la classe sans ordinateur.
+                                </div>
+                            </div>
                             
                             <div className="results-grid">
                                 <div className="result-card">
@@ -2606,6 +3017,14 @@
             // Playing phase
             return (
                 <div className="game-container">
+                    {quizState && (
+                        <FlashQuizModal
+                            quizState={quizState}
+                            onAnswer={answerQuiz}
+                            onContinue={closeQuiz}
+                            streak={quizStreak}
+                        />
+                    )}
                     {showGlossary && <GlossaryModal onClose={() => setShowGlossary(false)} />}
                     <button className="glossary-btn" onClick={() => setShowGlossary(true)}>
                         📖 Glossaire
@@ -2613,7 +3032,15 @@
 
                     <div className="game-header" style={{background:`linear-gradient(135deg, ${gameState.scenario?.color || '#1e3c72'} 0%, #2a5298 100%)`}}>
                         <h1>🏛️ {gameState.scenario?.name || 'Conseil des Ministres'}</h1>
-                        <p>Trimestre {gameState.quarter}/{gameState.totalQuarters || 8} — {gameState.quarter <= 4 ? 'Première année' : 'Seconde année'}</p>
+                        <p>
+                            Trimestre {gameState.quarter}/{gameState.totalQuarters || 8} — {gameState.quarter <= 4 ? 'Première année' : 'Seconde année'}
+                            {quizCorrectTotal > 0 && (
+                                <span className="quiz-streak">
+                                    🧠 {quizCorrectTotal} bonne{quizCorrectTotal > 1 ? 's' : ''} réponse{quizCorrectTotal > 1 ? 's' : ''}
+                                    {quizStreak >= 2 && ` 🔥×${quizStreak}`}
+                                </span>
+                            )}
+                        </p>
                     </div>
 
                     <MultiObjectivesPanel
@@ -2643,7 +3070,7 @@
                         </div>
                     )}
                     
-                    <Dashboard indicators={gameState.indicators} />
+                    <CollapsibleDashboard indicators={gameState.indicators} expanded={dashExpanded} setExpanded={setDashExpanded} />
 
                     <div className="playing-layout">
                         <div className="playing-main">
@@ -2674,6 +3101,233 @@
                         </div>
 
                         <ActionJournal history={gameState.history} scenario={gameState.scenario} />
+                    </div>
+                </div>
+            );
+        }
+
+        /* ─────────────────────────────────────────────
+           FLASH QUIZ MODAL
+           ───────────────────────────────────────────── */
+        function FlashQuizModal({ quizState, onAnswer, onContinue, streak }) {
+            const { question: q, answered, selected } = quizState;
+            const letters = ['A', 'B', 'C', 'D'];
+
+            return (
+                <div className="quiz-overlay">
+                    <div className="quiz-modal">
+                        <div className="quiz-source">{q.source}</div>
+                        <div className="quiz-question">{q.question}</div>
+
+                        <div className="quiz-options">
+                            {q.options.map((opt, idx) => {
+                                let cls = '';
+                                if (answered) {
+                                    if (idx === q.correct) cls = idx === selected ? 'correct' : 'revealed';
+                                    else if (idx === selected) cls = 'wrong';
+                                }
+                                return (
+                                    <button
+                                        key={idx}
+                                        className={`quiz-option ${cls}`}
+                                        onClick={() => onAnswer(idx)}
+                                        disabled={answered}
+                                    >
+                                        <span className="quiz-option-letter">{letters[idx]}</span>
+                                        {opt}
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        {answered && (
+                            <div className={`quiz-feedback ${selected === q.correct ? 'good' : 'bad'}`}>
+                                <span style={{fontSize:'1.4em'}}>{selected === q.correct ? '✅' : '💡'}</span>
+                                <div>
+                                    <strong>{selected === q.correct ? 'Bonne réponse !' : 'Pas tout à fait…'}</strong>
+                                    {selected === q.correct && q.bonusValue && (
+                                        <span className="quiz-bonus">+{q.bonusValue} popularité 🎉</span>
+                                    )}
+                                    {streak >= 3 && selected === q.correct && (
+                                        <span className="quiz-bonus" style={{marginLeft:'6px',background:'linear-gradient(135deg,#fd7e14,#ffc107)'}}>🔥 Série ×{streak}</span>
+                                    )}
+                                    <div style={{marginTop:'8px'}}>{q.explanation}</div>
+                                </div>
+                            </div>
+                        )}
+
+                        {answered ? (
+                            <button className="quiz-continue" onClick={onContinue}>
+                                Continuer → Trimestre suivant
+                            </button>
+                        ) : (
+                            <div style={{textAlign:'center'}}>
+                                <button className="quiz-skip" onClick={onContinue}>Passer cette question</button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        /* ─────────────────────────────────────────────
+           COLLAPSIBLE DASHBOARD (Priorité 3)
+           Affiche d'abord les indicateurs critiques,
+           bouton pour tout voir.
+           ───────────────────────────────────────────── */
+        function CollapsibleDashboard({ indicators, expanded, setExpanded }) {
+            const v = (key, fallback) => indicators[key] != null ? indicators[key] : fallback;
+
+            // Détecte les indicateurs en alerte
+            const alerts = {
+                chomage:   indicators.chomage > 12 ? 'critical' : indicators.chomage > 9 ? 'warning' : '',
+                deficit:   v('deficit',3) > 5      ? 'critical' : v('deficit',3) > 3 ? 'warning' : '',
+                budget:    indicators.budget < 30   ? 'critical' : indicators.budget < 50 ? 'warning' : '',
+                pauvrete:  v('pauvrete',10) > 14    ? 'critical' : v('pauvrete',10) > 10 ? 'warning' : '',
+                inflation: v('inflation',1.5) > 4   ? 'critical' : v('inflation',1.5) > 2.5 ? 'warning' : '',
+                popularite:v('popularite',50) < 25  ? 'critical' : v('popularite',50) < 40 ? 'warning' : '',
+            };
+            const hasAlerts = Object.values(alerts).some(a => a === 'critical');
+
+            const getTrend = (current, initial, inverse = false) => {
+                const diff = current - initial;
+                if (Math.abs(diff) < 0.5) return 'stable';
+                return inverse ? (diff > 0 ? 'down' : 'up') : (diff > 0 ? 'up' : 'down');
+            };
+            const getTrendText = (current, initial, inverse = false) => {
+                const diff = current - initial;
+                if (Math.abs(diff) < 0.5) return '→';
+                const symbol = inverse ? (diff > 0 ? '↓' : '↑') : (diff > 0 ? '↑' : '↓');
+                return `${symbol} ${Math.abs(diff).toFixed(1)}`;
+            };
+            const initial = INITIAL_STATE.indicators;
+
+            const priorityCards = (
+                <React.Fragment>
+                    <div className={`indicator ${alerts.chomage}`}>
+                        <div className="indicator-label">Taux de chômage</div>
+                        <div className="indicator-value" style={{color: indicators.chomage > 10 ? '#dc3545' : '#28a745'}}>
+                            {indicators.chomage.toFixed(1)}%
+                        </div>
+                        <span className={`indicator-trend trend-${getTrend(indicators.chomage, initial.chomage, true)}`}>
+                            {getTrendText(indicators.chomage, initial.chomage, true)}
+                        </span>
+                    </div>
+                    <div className="indicator">
+                        <div className="indicator-label">Taux d'emploi</div>
+                        <div className="indicator-value" style={{color: indicators.emploi > 70 ? '#28a745' : '#ffc107'}}>
+                            {indicators.emploi.toFixed(1)}%
+                        </div>
+                        <span className={`indicator-trend trend-${getTrend(indicators.emploi, initial.emploi)}`}>
+                            {getTrendText(indicators.emploi, initial.emploi)}
+                        </span>
+                    </div>
+                    <div className={`indicator ${alerts.budget}`}>
+                        <div className="indicator-label">Budget de l'État</div>
+                        <div className="indicator-value" style={{color: indicators.budget > 50 ? '#28a745' : '#dc3545'}}>
+                            {indicators.budget.toFixed(0)}%
+                        </div>
+                        <span className={`indicator-trend trend-${getTrend(indicators.budget, initial.budget)}`}>
+                            {getTrendText(indicators.budget, initial.budget)}
+                        </span>
+                    </div>
+                    <div className={`indicator ${alerts.deficit}`}>
+                        <div className="indicator-label">Déficit Public</div>
+                        <div className="indicator-value" style={{color: v('deficit',3) < 3 ? '#28a745' : '#dc3545'}}>
+                            {v('deficit',3).toFixed(1)}%
+                        </div>
+                        <span className={`indicator-trend trend-${getTrend(v('deficit',3), initial.deficit, true)}`}>
+                            {getTrendText(v('deficit',3), initial.deficit, true)}
+                        </span>
+                    </div>
+                    <div className={`indicator ${alerts.popularite}`}>
+                        <div className="indicator-label">Popularité</div>
+                        <div className="indicator-value" style={{color: v('popularite',50) > 50 ? '#28a745' : '#dc3545'}}>
+                            {v('popularite',50).toFixed(0)}/100
+                        </div>
+                        <span className={`indicator-trend trend-${getTrend(v('popularite',50), initial.popularite)}`}>
+                            {getTrendText(v('popularite',50), initial.popularite)}
+                        </span>
+                    </div>
+                </React.Fragment>
+            );
+
+            const extraCards = (
+                <React.Fragment>
+                    <div className="indicator">
+                        <div className="indicator-label">Taux d'activité</div>
+                        <div className="indicator-value" style={{color: '#17a2b8'}}>{indicators.activite.toFixed(1)}%</div>
+                        <span className={`indicator-trend trend-${getTrend(indicators.activite, initial.activite)}`}>
+                            {getTrendText(indicators.activite, initial.activite)}
+                        </span>
+                    </div>
+                    <div className="indicator">
+                        <div className="indicator-label">Satisfaction Entreprises</div>
+                        <div className="indicator-value" style={{color: '#6f42c1'}}>{indicators.entreprises}/100</div>
+                    </div>
+                    <div className="indicator">
+                        <div className="indicator-label">Satisfaction Salariés</div>
+                        <div className="indicator-value" style={{color: '#fd7e14'}}>{indicators.salaries}/100</div>
+                    </div>
+                    <div className="indicator">
+                        <div className="indicator-label">Croissance</div>
+                        <div className="indicator-value" style={{color: v('croissance',1.5) > 1.5 ? '#28a745' : '#ffc107'}}>
+                            {v('croissance',1.5).toFixed(1)}%
+                        </div>
+                        <span className={`indicator-trend trend-${getTrend(v('croissance',1.5), initial.croissance)}`}>
+                            {getTrendText(v('croissance',1.5), initial.croissance)}
+                        </span>
+                    </div>
+                    <div className="indicator">
+                        <div className="indicator-label">Dette Publique</div>
+                        <div className="indicator-value" style={{color: v('dette',85) < 90 ? '#28a745' : '#ffc107'}}>
+                            {v('dette',85).toFixed(0)}%
+                        </div>
+                        <span className={`indicator-trend trend-${getTrend(v('dette',85), initial.dette, true)}`}>
+                            {getTrendText(v('dette',85), initial.dette, true)}
+                        </span>
+                    </div>
+                    <div className={`indicator ${alerts.inflation}`}>
+                        <div className="indicator-label">Inflation</div>
+                        <div className="indicator-value" style={{color: v('inflation',1.5) < 2.5 ? '#28a745' : '#dc3545'}}>
+                            {v('inflation',1.5).toFixed(1)}%
+                        </div>
+                        <span className={`indicator-trend trend-${getTrend(v('inflation',1.5), initial.inflation, true)}`}>
+                            {getTrendText(v('inflation',1.5), initial.inflation, true)}
+                        </span>
+                    </div>
+                    <div className={`indicator ${alerts.pauvrete}`}>
+                        <div className="indicator-label">Taux de Pauvreté</div>
+                        <div className="indicator-value" style={{color: v('pauvrete',10) < 10 ? '#28a745' : '#dc3545'}}>
+                            {v('pauvrete',10).toFixed(1)}%
+                        </div>
+                        <span className={`indicator-trend trend-${getTrend(v('pauvrete',10), initial.pauvrete, true)}`}>
+                            {getTrendText(v('pauvrete',10), initial.pauvrete, true)}
+                        </span>
+                    </div>
+                    <div className="indicator">
+                        <div className="indicator-label">Inégalités</div>
+                        <div className="indicator-value" style={{color: v('inegalites',30) < 30 ? '#28a745' : '#ffc107'}}>
+                            {v('inegalites',30).toFixed(0)}/100
+                        </div>
+                        <span className={`indicator-trend trend-${getTrend(v('inegalites',30), initial.inegalites, true)}`}>
+                            {getTrendText(v('inegalites',30), initial.inegalites, true)}
+                        </span>
+                    </div>
+                </React.Fragment>
+            );
+
+            return (
+                <div>
+                    <div className="dashboard">
+                        {priorityCards}
+                        {expanded && extraCards}
+                    </div>
+                    <div className="dashboard-toggle-bar" onClick={() => setExpanded(e => !e)}>
+                        <button className="dashboard-toggle-btn">
+                            {hasAlerts && !expanded && <span className="dashboard-alert-dot"/>}
+                            {expanded ? '▲ Réduire le tableau de bord' : `▼ Voir les 8 autres indicateurs${hasAlerts ? ' ⚠️' : ''}`}
+                        </button>
                     </div>
                 </div>
             );

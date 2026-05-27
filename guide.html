@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Guide du joueur — Conseil des Ministres</title>
+<style>
+/* ── Reset & base ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+    --blue:    #1e3c72;
+    --accent:  #2a5298;
+    --gold:    #b8860b;
+    --green:   #1a6b3c;
+    --red:     #8b1a1a;
+    --orange:  #b85e00;
+    --purple:  #4b2d82;
+    --teal:    #0e5a6e;
+    --grey:    #4a4a5a;
+    --light:   #f4f5f8;
+    --border:  #d0d4e0;
+    --text:    #1a1a2e;
+    --muted:   #5a5a72;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    font-size: 9.5pt;
+    color: var(--text);
+    background: white;
+    line-height: 1.45;
+}
+
+/* ── Print setup ── */
+@media print {
+    body { font-size: 8.5pt; }
+    .no-print { display: none !important; }
+    .page-break { page-break-before: always; }
+    section { page-break-inside: avoid; }
+    .screen-hint { display: none; }
+}
+@page {
+    size: A4;
+    margin: 14mm 12mm 14mm 12mm;
+}
+
+/* ── Screen wrapper ── */
+.screen-wrapper {
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 10mm;
+    background: white;
+}
+
+/* ── Print button ── */
+.print-bar {
+    background: var(--blue);
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    font-family: sans-serif;
+}
+.print-bar h2 { font-size: 1em; font-weight: 600; }
+.print-btn {
+    background: #ffd700; color: #1a1a2e;
+    border: none; border-radius: 6px;
+    padding: 8px 20px; font-size: 0.9em;
+    font-weight: 700; cursor: pointer;
+}
+.print-btn:hover { background: #ffe44d; }
+
+/* ── Document header ── */
+.doc-header {
+    border: 3px solid var(--blue);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+.doc-header-top {
+    background: var(--blue);
+    color: white;
+    padding: 8px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+.doc-header-top h1 { font-size: 14pt; letter-spacing: -0.3px; }
+.doc-header-top .subtitle { font-size: 8pt; opacity: 0.8; font-style: italic; }
+.doc-header-meta {
+    background: var(--light);
+    padding: 5px 14px;
+    display: flex;
+    gap: 20px;
+    font-size: 7.5pt;
+    color: var(--muted);
+    font-family: sans-serif;
+    flex-wrap: wrap;
+}
+.doc-header-meta strong { color: var(--text); }
+
+/* ── Section titles ── */
+.section-title {
+    font-family: sans-serif;
+    font-size: 10pt;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+    background: var(--blue);
+    padding: 5px 10px;
+    margin: 10px 0 6px;
+    border-radius: 3px;
+}
+
+/* ── Intro box ── */
+.intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+.intro-card {
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    padding: 7px 10px;
+}
+.intro-card h3 {
+    font-family: sans-serif;
+    font-size: 8pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--accent);
+    margin-bottom: 4px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--border);
+}
+.intro-card ul { padding-left: 12px; }
+.intro-card li { margin-bottom: 2px; font-size: 8.5pt; }
+.intro-card li strong { color: var(--blue); }
+
+/* ── Budget rule box ── */
+.budget-box {
+    background: #e8f4e8;
+    border: 1.5px solid var(--green);
+    border-radius: 4px;
+    padding: 7px 10px;
+    margin-bottom: 8px;
+    font-size: 8.5pt;
+}
+.budget-box strong { color: var(--green); }
+
+/* ── Indicator → Policies matrix ── */
+.matrix-section { margin-bottom: 10px; }
+
+.ind-block {
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 7px;
+    overflow: hidden;
+}
+.ind-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    font-family: sans-serif;
+    font-weight: 700;
+    font-size: 9pt;
+    color: white;
+}
+.ind-header .ind-name { flex: 1; }
+.ind-header .ind-target {
+    font-size: 7.5pt;
+    font-weight: 400;
+    opacity: 0.85;
+    font-family: sans-serif;
+}
+.ind-body { padding: 6px 10px; }
+.ind-meca {
+    font-size: 7.8pt;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+
+/* Policy rows inside indicator */
+.pol-table { width: 100%; border-collapse: collapse; font-size: 7.8pt; }
+.pol-table th {
+    font-family: sans-serif;
+    font-size: 6.8pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    text-align: left;
+    padding: 2px 6px;
+    border-bottom: 1px solid var(--border);
+}
+.pol-table td {
+    padding: 3px 6px;
+    border-bottom: 1px dotted #e0e3ec;
+    vertical-align: top;
+}
+.pol-table tr:last-child td { border-bottom: none; }
+.pol-table tr:hover td { background: #f8f9ff; }
+
+.pol-name { font-weight: 600; color: var(--text); }
+.pol-type-badge {
+    display: inline-block;
+    font-family: sans-serif;
+    font-size: 6.5pt;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+.badge-active        { background: #d4edda; color: #155724; }      /* Pol. active emploi */
+.badge-passive       { background: #e2e3e5; color: #383d41; }      /* Pol. passive emploi */
+.badge-demande       { background: #cce5ff; color: #004085; }      /* Pol. de demande */
+.badge-relance       { background: #b8daff; color: #003580; border:1px solid #7fbfff; } /* Pol. de relance */
+.badge-offre         { background: #fff3cd; color: #856404; }      /* Pol. d'offre */
+.badge-stabilisation { background: #ffeaa0; color: #6b4c00; border:1px solid #e0c040; } /* Pol. de stabilisation/austérité */
+.badge-economie      { background: #d1ecf1; color: #0c5460; }      /* Pol. économique */
+.badge-social        { background: #f8d7da; color: #721c24; }      /* Pol. sociale (protection) */
+.badge-redistrib     { background: #e8d5f5; color: #4b2d82; }      /* Pol. sociale (redistribution) */
+
+.effect-pos { color: var(--green); font-weight: 700; }
+.effect-neg { color: var(--red);   font-weight: 700; }
+.effect-neutral { color: var(--muted); }
+.cost-badge {
+    font-family: sans-serif;
+    font-size: 7pt;
+    font-weight: 700;
+    color: var(--accent);
+}
+.warning-icon { color: #b85e00; font-size: 7pt; }
+
+/* ── Arbitrage section ── */
+.arbitrage-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-bottom: 8px;
+}
+.arb-card {
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 9px;
+    font-size: 8pt;
+}
+.arb-card h4 {
+    font-family: sans-serif;
+    font-size: 8pt;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 3px;
+}
+.arb-vs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 7.8pt;
+    margin-bottom: 3px;
+}
+.arb-side {
+    flex: 1;
+    background: var(--light);
+    border-radius: 3px;
+    padding: 3px 6px;
+    text-align: center;
+}
+.arb-middle { color: var(--muted); font-size: 8pt; font-weight: 700; }
+.arb-tip {
+    font-size: 7.5pt;
+    color: var(--muted);
+    font-style: italic;
+    border-top: 1px dotted var(--border);
+    padding-top: 3px;
+    margin-top: 3px;
+}
+
+/* ── Scenarios table ── */
+.scenarios-table { width: 100%; border-collapse: collapse; font-size: 8pt; margin-bottom: 8px; }
+.scenarios-table th {
+    background: var(--blue); color: white;
+    font-family: sans-serif; font-size: 7.5pt;
+    font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 8px; text-align: left;
+}
+.scenarios-table td { padding: 4px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.scenarios-table tr:nth-child(even) td { background: var(--light); }
+.diff-hard   { color: var(--red);    font-weight: 700; font-family: sans-serif; font-size: 7.5pt; }
+.diff-medium { color: var(--orange); font-weight: 700; font-family: sans-serif; font-size: 7.5pt; }
+.diff-easy   { color: var(--green);  font-weight: 700; font-family: sans-serif; font-size: 7.5pt; }
+
+/* ── Tips box ── */
+.tips-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 7px;
+    margin-bottom: 8px;
+}
+.tip-card {
+    border-left: 3px solid var(--accent);
+    padding: 5px 8px;
+    background: var(--light);
+    border-radius: 0 4px 4px 0;
+    font-size: 7.8pt;
+}
+.tip-card h4 {
+    font-family: sans-serif; font-size: 7.5pt;
+    font-weight: 700; color: var(--accent);
+    margin-bottom: 2px;
+}
+
+/* ── Footer ── */
+.doc-footer {
+    border-top: 2px solid var(--border);
+    padding-top: 5px;
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 7pt;
+    color: var(--muted);
+    font-family: sans-serif;
+}
+</style>
+</head>
+<body>
+<div class="screen-wrapper">
+
+<!-- Print bar (screen only) -->
+<div class="print-bar no-print">
+    <h2>🖨️ Guide élève — prêt à imprimer en A4 recto-verso</h2>
+    <button class="print-btn" onclick="window.print()">Imprimer</button>
+</div>
+
+<!-- ════════════════════════════════════════
+     PAGE 1
+════════════════════════════════════════ -->
+
+<!-- Header -->
+<div class="doc-header">
+    <div class="doc-header-top">
+        <h1>🏛️ Conseil des Ministres — Guide du joueur</h1>
+        <span class="subtitle">Thèmes 6.3 · 6.4 · 7 — Terminale STMG Économie</span>
+    </div>
+    <div class="doc-header-meta">
+        <span>Nom : <strong>_______________________________</strong></span>
+        <span>Classe : <strong>___________</strong></span>
+        <span>Scénario joué : <strong>___________________________</strong></span>
+        <span>Score final : <strong>_______ / 100</strong></span>
+    </div>
+</div>
+
+<!-- Intro -->
+<div class="section-title">🎮 Comment jouer</div>
+<div class="intro-grid">
+    <div class="intro-card">
+        <h3>Objectif général</h3>
+        <ul>
+            <li>Tu incarnes le <strong>Conseil des Ministres</strong> (4 ministres)</li>
+            <li>Tu disposes de <strong>8 trimestres (2 ans)</strong> pour atteindre les objectifs du scénario</li>
+            <li>Chaque trimestre : choisis <strong>jusqu'à 3 mesures</strong> parmi 25 politiques</li>
+            <li>Des <strong>événements aléatoires</strong> peuvent survenir et modifier les indicateurs</li>
+        </ul>
+    </div>
+    <div class="intro-card">
+        <h3>Les 4 ministres et leurs quotas</h3>
+        <ul>
+            <li>💼 <strong>Travail</strong> : politiques actives + passives (max 2/trimestre)</li>
+            <li>💰 <strong>Économie</strong> : demande + offre + économie (max 2/trimestre)</li>
+            <li>🏥 <strong>Affaires Sociales</strong> : politiques sociales (max 1/trimestre)</li>
+            <li>🎓 <strong>Éducation</strong> : politiques éducation (max 1/trimestre)</li>
+        </ul>
+    </div>
+</div>
+
+<div class="budget-box">
+    💰 <strong>Budget :</strong> Il se renouvelle chaque trimestre grâce aux recettes fiscales (+25% de base, +bonus si croissance élevée et emploi fort). Plus tu investis dans la croissance, plus tes recettes futures augmentent. Le budget est plafonné à 150%.
+</div>
+
+<!-- ── INDICATEURS → POLITIQUES ── -->
+<div class="section-title">📊 Comment agir sur chaque indicateur</div>
+
+<!-- Légende catégories programme -->
+<div style="background:#f4f5f8;border:1.5px solid #d0d4e0;border-radius:4px;padding:6px 10px;margin-bottom:7px;font-size:7.2pt;font-family:sans-serif;">
+    <strong style="color:#1e3c72;text-transform:uppercase;letter-spacing:0.5px;">Catégories du programme :</strong>
+    <span style="display:inline-flex;flex-wrap:wrap;gap:5px;margin-top:3px;">
+        <span class="pol-type-badge badge-active" style="font-size:6.8pt;">Pol. active (Th.7)</span> améliore l'employabilité ·
+        <span class="pol-type-badge badge-passive" style="font-size:6.8pt;">Pol. passive (Th.7)</span> réduit les effets du chômage ·
+        <span class="pol-type-badge badge-relance" style="font-size:6.8pt;">Pol. relance (Th.6.3)</span> stimule la demande globale ·
+        <span class="pol-type-badge badge-stabilisation" style="font-size:6.8pt;">Pol. stabilisation (Th.6.3)</span> réduit déficit/inflation ·
+        <span class="pol-type-badge badge-offre" style="font-size:6.8pt;">Pol. d'offre (Th.6.3/7)</span> réduit coûts des entreprises ·
+        <span class="pol-type-badge badge-economie" style="font-size:6.8pt;">Pol. économique (Th.6.3)</span> régulation concurrence/industrie ·
+        <span class="pol-type-badge badge-social" style="font-size:6.8pt;">Pol. sociale (Th.6.4)</span> protection sociale (assurance/assistance) ·
+        <span class="pol-type-badge badge-redistrib" style="font-size:6.8pt;">Redistribution verticale (Th.6.4)</span> réduit inégalités par la fiscalité
+    </span>
+</div>
+
+<p style="font-size:7.8pt;color:var(--muted);margin-bottom:6px;font-style:italic;">
+    Chaque indicateur peut être influencé par plusieurs politiques. Les effets sont cumulatifs sur le trimestre.
+    ⚠️ = effet secondaire important à connaître.
+</p>
+
+<!-- CHÔMAGE -->
+<div class="ind-block">
+    <div class="ind-header" style="background:#c0392b;">
+        <span class="ind-name">📉 Taux de chômage</span>
+        <span class="ind-target">Objectif : le faire baisser · Seuil d'alerte : &gt; 10%</span>
+    </div>
+    <div class="ind-body">
+        <div class="ind-meca">Mécanisme : le chômage <strong>structurel</strong> (inadéquation offre/demande de travail) se réduit par les politiques <strong>actives</strong> (formation, aides embauche) et les politiques d'<strong>offre</strong> (baisse du coût du travail). Le chômage <strong>conjoncturel</strong> (lié à la récession) se réduit par les politiques de <strong>relance de la demande</strong> (investissement public, baisse TVA). La politique d'<strong>austérité</strong> (stabilisation) réduit le déficit mais <em>aggrave</em> le chômage — c'est l'arbitrage central.</div>
+        <table class="pol-table">
+            <tr><th>Politique</th><th>Catégorie (programme)</th><th>Effet sur chômage</th><th>Coût budget</th><th>Effets secondaires</th></tr>
+            <tr><td class="pol-name">Formation professionnelle</td><td><span class="pol-type-badge badge-active">Pol. active (Th.7)</span></td><td class="effect-pos">−2</td><td class="cost-badge">−15%</td><td class="effect-neg">Budget</td></tr>
+            <tr><td class="pol-name">Aides à l'embauche</td><td><span class="pol-type-badge badge-active">Pol. active (Th.7)</span></td><td class="effect-pos">−3</td><td class="cost-badge">−20%</td><td class="effect-pos">Entreprises +3</td></tr>
+            <tr><td class="pol-name">Réduction du temps de travail</td><td><span class="pol-type-badge badge-active">Pol. active (Th.7)</span></td><td class="effect-pos">−1</td><td class="cost-badge">−10%</td><td><span class="warning-icon">⚠️</span> Entreprises −2</td></tr>
+            <tr><td class="pol-name">Soutien création d'entreprise</td><td><span class="pol-type-badge badge-active">Pol. active (Th.7)</span></td><td class="effect-pos">−1</td><td class="cost-badge">−12%</td><td class="effect-pos">Entreprises +3</td></tr>
+            <tr><td class="pol-name">Investissement public</td><td><span class="pol-type-badge badge-relance">Pol. relance (Th.6.3)</span></td><td class="effect-pos">−4 ⭐</td><td class="cost-badge">−35%</td><td class="effect-pos">Croissance +2, Salariés +3</td></tr>
+            <tr><td class="pol-name">Baisse de la TVA</td><td><span class="pol-type-badge badge-relance">Pol. relance (Th.6.3)</span></td><td class="effect-pos">−2</td><td class="cost-badge">−20%</td><td class="effect-pos">Croissance +1</td></tr>
+            <tr><td class="pol-name">Baisse charges patronales</td><td><span class="pol-type-badge badge-offre">Pol. d'offre (Th.6.3/7)</span></td><td class="effect-pos">−3</td><td class="cost-badge">−25%</td><td><span class="warning-icon">⚠️</span> Salariés −1</td></tr>
+            <tr><td class="pol-name">Assouplissement droit du travail</td><td><span class="pol-type-badge badge-offre">Pol. d'offre (Th.6.3/7)</span></td><td class="effect-pos">−2</td><td class="cost-badge">−5%</td><td><span class="warning-icon">⚠️</span> Salariés −3</td></tr>
+            <tr><td class="pol-name">Politique industrielle sectorielle</td><td><span class="pol-type-badge badge-economie">Pol. économique (Th.6.3)</span></td><td class="effect-pos">−2</td><td class="cost-badge">−25%</td><td class="effect-pos">Croissance +1.5</td></tr>
+            <tr><td class="pol-name">Développement de l'apprentissage</td><td><span class="pol-type-badge badge-active">Pol. active (Th.6.4/7)</span></td><td class="effect-pos">−2</td><td class="cost-badge">−20%</td><td class="effect-pos">Emploi +1.5, Entreprises +2</td></tr>
+            <tr><td class="pol-name">Prime à la consommation</td><td><span class="pol-type-badge badge-relance">Pol. relance (Th.6.3)</span></td><td class="effect-pos">−1</td><td class="cost-badge">−18%</td><td class="effect-pos">Salariés +3, Croissance +1</td></tr>
+            <tr><td class="pol-name">Indemnisation chômage renforcée</td><td><span class="pol-type-badge badge-passive">Pol. passive (Th.7)</span></td><td class="effect-neutral">0</td><td class="cost-badge">−25%</td><td><span class="warning-icon">⚠️</span> Ne réduit pas le chômage, protège les revenus</td></tr>
+            <tr><td class="pol-name">Préretraites</td><td><span class="pol-type-badge badge-passive">Pol. passive (Th.7)</span></td><td class="effect-pos">−1</td><td class="cost-badge">−30%</td><td class="effect-neutral">Libère des postes (coût élevé)</td></tr>
+            <tr><td class="pol-name">Investissement massif éducation</td><td><span class="pol-type-badge badge-active">Pol. active (Th.6.4/7)</span></td><td class="effect-pos">−1</td><td class="cost-badge">−30%</td><td class="effect-pos">Emploi +1, Salariés +2</td></tr>
+            <tr><td class="pol-name">Politique d'austérité</td><td><span class="pol-type-badge badge-stabilisation">Pol. stabilisation (Th.6.3)</span></td><td class="effect-neg">+2 ⚠️</td><td class="cost-badge">+30%</td><td class="effect-pos">Déficit −5, Dette −2</td></tr>
+        </table>
+    </div>
+</div>
+
+<!-- CROISSANCE -->
+<div class="ind-block">
+    <div class="ind-header" style="background:#1a6b3c;">
+        <span class="ind-name">📈 Croissance économique</span>
+        <span class="ind-target">Objectif : &gt; 1.5% · Zone verte : &gt; 2.5% · Récession : &lt; 0%</span>
+    </div>
+    <div class="ind-body">
+        <div class="ind-meca">Mécanisme : la croissance (hausse du PIB) est stimulée par les politiques de <strong>relance</strong> keynésiennes (hausse de la demande globale via dépenses publiques = <em>effet multiplicateur</em>) ou par les politiques d'<strong>offre</strong> (innovation, productivité). La politique de <strong>stabilisation</strong> (austérité) la freine. En zone euro, la <strong>BCE</strong> gère la politique monétaire — la France ne peut agir que sur la politique <strong>budgétaire</strong>.</div>
+        <table class="pol-table">
+            <tr><th>Politique</th><th>Catégorie (programme)</th><th>Effet croissance</th><th>Coût</th><th>Effets secondaires</th></tr>
+            <tr><td class="pol-name">Investissement public</td><td><span class="pol-type-badge badge-relance">Pol. relance (Th.6.3)</span></td><td class="effect-pos">+2 ⭐</td><td class="cost-badge">−35%</td><td class="effect-pos">Chômage −4</td></tr>
+            <tr><td class="pol-name">Subventions à l'innovation</td><td><span class="pol-type-badge badge-offre">Pol. d'offre (Th.6.3/7)</span></td><td class="effect-pos">+2</td><td class="cost-badge">−20%</td><td class="effect-pos">Entreprises +3</td></tr>
+            <tr><td class="pol-name">Politique industrielle</td><td><span class="pol-type-badge badge-economie">Pol. économique (Th.6.3)</span></td><td class="effect-pos">+1.5</td><td class="cost-badge">−25%</td><td class="effect-pos">Chômage −2</td></tr>
+            <tr><td class="pol-name">Soutien au crédit des entreprises</td><td><span class="pol-type-badge badge-economie">Pol. économique (Th.6.3)</span></td><td class="effect-pos">+1.5</td><td class="cost-badge">−15%</td><td class="effect-pos">Entreprises +3</td></tr>
+            <tr><td class="pol-name">Baisse de la TVA</td><td><span class="pol-type-badge badge-relance">Pol. relance (Th.6.3)</span></td><td class="effect-pos">+1</td><td class="cost-badge">−20%</td><td class="effect-pos">Chômage −2</td></tr>
+            <tr><td class="pol-name">Politique de la concurrence</td><td><span class="pol-type-badge badge-economie">Pol. économique (Th.6.3)</span></td><td class="effect-pos">+1</td><td class="cost-badge">−10%</td><td class="effect-pos">Entreprises +2</td></tr>
+            <tr><td class="pol-name">Lutte contre l'inflation</td><td><span class="pol-type-badge badge-economie">Pol. économique (Th.6.3)</span></td><td class="effect-neg">−0.5 ⚠️</td><td class="cost-badge">−10%</td><td class="effect-pos">Inflation −1</td></tr>
+            <tr><td class="pol-name">Prime à la consommation</td><td><span class="pol-type-badge badge-relance">Pol. relance (Th.6.3)</span></td><td class="effect-pos">+1</td><td class="cost-badge">−18%</td><td class="effect-pos">Chômage −1</td></tr>
+            <tr><td class="pol-name">Politique d'austérité</td><td><span class="pol-type-badge badge-stabilisation">Pol. stabilisation (Th.6.3)</span></td><td class="effect-neg">−1 ⚠️</td><td class="cost-badge">+30%</td><td class="effect-pos">Déficit −5</td></tr>
+        </table>
+    </div>
+</div>
+
+<!-- DÉFICIT & DETTE -->
+<div class="ind-block">
+    <div class="ind-header" style="background:#b85e00;">
+        <span class="ind-name">📉 Déficit public &amp; Dette</span>
+        <span class="ind-target">Règle EU : Déficit &lt; 3% du PIB · Dette &lt; 90% (objectif jeu)</span>
+    </div>
+    <div class="ind-body">
+        <div class="ind-meca">Mécanisme : le <strong>déficit public</strong> = dépenses publiques &gt; recettes fiscales. Il alimente la <strong>dette publique</strong> (cumul des déficits passés). La règle européenne du <strong>Pacte de stabilité</strong> impose : déficit &lt; 3% du PIB, dette &lt; 60% (objectif). La politique de <strong>stabilisation budgétaire</strong> (austérité) est le seul levier direct mais très coûteux socialement. Une croissance forte augmente les recettes fiscales et réduit le déficit <em>sans austérité</em>.</div>
+        <table class="pol-table">
+            <tr><th>Politique</th><th>Catégorie (programme)</th><th>Effet déficit</th><th>Effet dette</th><th>Attention</th></tr>
+            <tr><td class="pol-name">Politique d'austérité budgétaire</td><td><span class="pol-type-badge badge-stabilisation">Pol. stabilisation (Th.6.3)</span></td><td class="effect-pos">−5 ⭐</td><td class="effect-pos">−2</td><td><span class="warning-icon">⚠️</span> Chômage +2, Croissance −1, Popularité −3</td></tr>
+            <tr><td class="pol-name">Réforme fiscale progressive</td><td><span class="pol-type-badge badge-redistrib">Redistribution verticale (Th.6.4)</span></td><td class="effect-neutral">—</td><td class="effect-neutral">—</td><td class="effect-pos">Budget +5 (recettes fiscales)</td></tr>
+            <tr><td class="pol-name">Amélioration des retraites</td><td><span class="pol-type-badge badge-social">Pol. sociale (Th.6.4)</span></td><td class="effect-neg">+2 ⚠️</td><td class="effect-neutral">—</td><td class="effect-pos">Popularité +2</td></tr>
+            <tr><td class="pol-name">Renforcement couverture santé</td><td><span class="pol-type-badge badge-social">Pol. sociale (Th.6.4)</span></td><td class="effect-neg">+1 ⚠️</td><td class="effect-neutral">—</td><td class="effect-pos">Pauvreté −1</td></tr>
+            <tr><td class="pol-name">Augmentation RSA/minima sociaux</td><td><span class="pol-type-badge badge-social">Pol. sociale (Th.6.4)</span></td><td class="effect-neg">+2 ⚠️</td><td class="effect-neutral">—</td><td class="effect-pos">Pauvreté −3</td></tr>
+        </table>
+        <p style="font-size:7.5pt;color:var(--muted);margin-top:4px;font-style:italic;">💡 Stratégie : investir dans la croissance augmente les recettes fiscales futures, ce qui réduit mécaniquement le déficit à terme — même sans politique d'austérité.</p>
+    </div>
+</div>
+
+<!-- INFLATION -->
+<div class="ind-block">
+    <div class="ind-header" style="background:#8b1a1a;">
+        <span class="ind-name">🔥 Inflation</span>
+        <span class="ind-target">Objectif BCE : ~2% · Alerte : &gt; 4% · Critique : &gt; 8%</span>
+    </div>
+    <div class="ind-body">
+        <div class="ind-meca">Mécanisme : l'<strong>inflation</strong> = hausse générale et durable des prix. Elle monte quand la demande dépasse l'offre (<em>demande excédentaire</em>) ou quand les coûts augmentent (<em>inflation par les coûts</em>). La <strong>BCE</strong> vise ~2% via sa politique monétaire (taux d'intérêt). La politique de <strong>stabilisation</strong> réduit la demande pour freiner l'inflation. Attention : les politiques de <strong>relance</strong> (demande) <em>aggravent</em> l'inflation si l'offre ne suit pas — arbitrage fondamental du Th.6.3.</div>
+        <table class="pol-table">
+            <tr><th>Politique</th><th>Catégorie (programme)</th><th>Effet inflation</th><th>Coût</th><th>Effets secondaires</th></tr>
+            <tr><td class="pol-name">Lutte contre l'inflation</td><td><span class="pol-type-badge badge-economie">Pol. économique (Th.6.3)</span></td><td class="effect-pos">−1 ⭐</td><td class="cost-badge">−10%</td><td><span class="warning-icon">⚠️</span> Croissance −0.5</td></tr>
+            <tr><td class="pol-name">Politique d'austérité</td><td><span class="pol-type-badge badge-stabilisation">Pol. stabilisation (Th.6.3)</span></td><td class="effect-pos">Indirecte</td><td class="cost-badge">+30%</td><td><span class="warning-icon">⚠️</span> Chômage +2</td></tr>
+        </table>
+        <p style="font-size:7.5pt;color:var(--muted);margin-top:4px;font-style:italic;">⚠️ Les politiques de demande (investissement public, baisse TVA) peuvent aggraver l'inflation si l'offre ne suit pas. Dans le scénario "Crise inflationniste", éviter ces politiques.</p>
+    </div>
+</div>
+
+<!-- PAGE BREAK -->
+<div class="page-break"></div>
+
+<!-- PAGE 2 HEADER -->
+<div class="doc-header" style="margin-bottom:8px;">
+    <div class="doc-header-top" style="padding:5px 14px;">
+        <h1 style="font-size:11pt;">🏛️ Conseil des Ministres — Guide du joueur (suite)</h1>
+        <span class="subtitle">Page 2 / 2</span>
+    </div>
+</div>
+
+<!-- PAUVRETÉ & INÉGALITÉS -->
+<div class="ind-block">
+    <div class="ind-header" style="background:#4b2d82;">
+        <span class="ind-name">⚖️ Pauvreté &amp; Inégalités</span>
+        <span class="ind-target">Pauvreté : objectif &lt; 10% · Inégalités (Gini) : objectif &lt; 25</span>
+    </div>
+    <div class="ind-body">
+        <div class="ind-meca">Mécanisme : la <strong>protection sociale</strong> réduit la pauvreté par deux logiques (Th.6.4) : la <strong>logique d'assurance</strong> (cotisations → prestations : chômage, retraites, maladie) et la <strong>logique d'assistance</strong> (impôts → aides aux plus précaires : RSA, logement). La <strong>redistribution verticale</strong> (fiscalité progressive + minima sociaux) réduit les <strong>inégalités socio-économiques</strong> mesurées par l'indice de Gini. La <strong>redistribution horizontale</strong> protège tous les actifs contre les risques sociaux (maladie, chômage, vieillesse).</div>
+        <table class="pol-table">
+            <tr><th>Politique</th><th>Catégorie (programme)</th><th>Effet pauvreté</th><th>Effet inégalités</th><th>Coût</th></tr>
+            <tr><td class="pol-name">Augmentation RSA/minima sociaux</td><td><span class="pol-type-badge badge-social">Pol. sociale (Th.6.4)</span></td><td class="effect-pos">−3 ⭐</td><td class="effect-pos">−2</td><td class="cost-badge">−25%</td></tr>
+            <tr><td class="pol-name">Programme logement social</td><td><span class="pol-type-badge badge-social">Pol. sociale (Th.6.4)</span></td><td class="effect-pos">−2</td><td class="effect-pos">−1</td><td class="cost-badge">−30%</td></tr>
+            <tr><td class="pol-name">Aide alimentaire d'urgence</td><td><span class="pol-type-badge badge-social">Pol. sociale (Th.6.4)</span></td><td class="effect-pos">−2</td><td class="effect-neutral">—</td><td class="cost-badge">−15%</td></tr>
+            <tr><td class="pol-name">Réforme fiscale progressive</td><td><span class="pol-type-badge badge-redistrib">Redistribution verticale (Th.6.4)</span></td><td class="effect-pos">−2</td><td class="effect-pos">−2</td><td class="cost-badge">−5%</td></tr>
+            <tr><td class="pol-name">Renforcement couverture santé</td><td><span class="pol-type-badge badge-social">Pol. sociale (Th.6.4)</span></td><td class="effect-pos">−1</td><td class="effect-neutral">—</td><td class="cost-badge">−20%</td></tr>
+            <tr><td class="pol-name">Amélioration des retraites</td><td><span class="pol-type-badge badge-social">Pol. sociale (Th.6.4)</span></td><td class="effect-pos">−1</td><td class="effect-pos">−1</td><td class="cost-badge">−25%</td></tr>
+        </table>
+    </div>
+</div>
+
+<!-- POPULARITÉ -->
+<div class="ind-block">
+    <div class="ind-header" style="background:#2a5298;">
+        <span class="ind-name">👍 Popularité du gouvernement</span>
+        <span class="ind-target">Objectif : &gt; 50/100 · Alerte : &lt; 40 · Critique (chute du gouvernement) : &lt; 25</span>
+    </div>
+    <div class="ind-body">
+        <div class="ind-meca">Mécanisme : la popularité est sensible aux mesures perçues comme solidaires (social, santé) et chute fortement en cas d'austérité ou de scandales. Elle ne génère pas d'effet économique direct mais reflète la viabilité politique de ta stratégie.</div>
+        <table class="pol-table">
+            <tr><th>Politique</th><th>Effet popularité</th><th>Coût</th><th>Note</th></tr>
+            <tr><td class="pol-name">Amélioration des retraites</td><td class="effect-pos">+2</td><td class="cost-badge">−25%</td><td>Très bien reçu par tous</td></tr>
+            <tr><td class="pol-name">Renforcement couverture santé</td><td class="effect-pos">+2</td><td class="cost-badge">−20%</td><td></td></tr>
+            <tr><td class="pol-name">Lutte contre l'inflation</td><td class="effect-pos">+2</td><td class="cost-badge">−10%</td><td>Visible pour les ménages</td></tr>
+            <tr><td class="pol-name">Politique d'austérité</td><td class="effect-neg">−3 ⚠️</td><td class="cost-badge">+30%</td><td>Très impopulaire</td></tr>
+            <tr><td class="pol-name">Assouplissement droit du travail</td><td class="effect-neg">Indirecte</td><td class="cost-badge">−5%</td><td>Mécontente les salariés</td></tr>
+        </table>
+    </div>
+</div>
+
+<!-- ARBITRAGES -->
+<div class="section-title">⚖️ Les grands arbitrages — choisir c'est renoncer</div>
+<div class="arbitrage-grid">
+    <div class="arb-card">
+        <h4>Croissance vs Inflation</h4>
+        <div class="arb-vs">
+            <div class="arb-side">Politiques de demande<br/><strong>Croissance ↑</strong></div>
+            <div class="arb-middle">⚡</div>
+            <div class="arb-side">Lutte contre inflation<br/><strong>Croissance ↓</strong></div>
+        </div>
+        <div class="arb-tip">Dans le scénario "Crise inflationniste", relancer la demande aggrave les prix. Il faut d'abord maîtriser l'inflation, quitte à sacrifier la croissance.</div>
+    </div>
+    <div class="arb-card">
+        <h4>Déficit vs Emploi</h4>
+        <div class="arb-vs">
+            <div class="arb-side">Austérité<br/><strong>Déficit ↓</strong></div>
+            <div class="arb-middle">⚡</div>
+            <div class="arb-side">Investissement<br/><strong>Chômage ↓</strong></div>
+        </div>
+        <div class="arb-tip">L'austérité réduit le déficit mais augmente le chômage. L'investissement réduit le chômage mais creuse le déficit. À toi de doser selon le scénario.</div>
+    </div>
+    <div class="arb-card">
+        <h4>Compétitivité vs Équité</h4>
+        <div class="arb-vs">
+            <div class="arb-side">Offre (charges↓)<br/><strong>Entreprises ↑</strong></div>
+            <div class="arb-middle">⚡</div>
+            <div class="arb-side">Protection sociale<br/><strong>Salariés ↑</strong></div>
+        </div>
+        <div class="arb-tip">Baisser les charges profite aux entreprises mais peut pénaliser les salariés. La réforme fiscale progressive fait l'inverse. L'équilibre est clé.</div>
+    </div>
+    <div class="arb-card">
+        <h4>Court terme vs Long terme</h4>
+        <div class="arb-vs">
+            <div class="arb-side">Passive (indemnisation)<br/><strong>Effet immédiat</strong></div>
+            <div class="arb-middle">⚡</div>
+            <div class="arb-side">Active (formation)<br/><strong>Effet différé</strong></div>
+        </div>
+        <div class="arb-tip">Les politiques actives (formation, apprentissage) sont plus efficaces sur le long terme mais moins visibles au trimestre suivant. Plan à 8 trimestres = privilégier l'actif.</div>
+    </div>
+</div>
+
+<!-- SCÉNARIOS -->
+<div class="section-title">🗺️ Les 6 scénarios — points de départ et enjeux</div>
+<table class="scenarios-table">
+    <tr>
+        <th>Scénario</th>
+        <th>Difficulté</th>
+        <th>Chômage départ</th>
+        <th>Enjeu principal</th>
+        <th>Stratégie conseillée</th>
+    </tr>
+    <tr>
+        <td>🔴 Crise Économique</td>
+        <td class="diff-hard">Très difficile</td>
+        <td>14%</td>
+        <td>Récession + chômage élevé</td>
+        <td>Politiques de demande en priorité (investissement public)</td>
+    </tr>
+    <tr>
+        <td>🟡 Situation Standard</td>
+        <td class="diff-medium">Moyen</td>
+        <td>12%</td>
+        <td>Équilibre emploi / déficit</td>
+        <td>Mix actif/demande + contrôle du déficit</td>
+    </tr>
+    <tr>
+        <td>🟢 Boom Économique</td>
+        <td class="diff-easy">Facile</td>
+        <td>9%</td>
+        <td>Éviter la surchauffe inflationniste</td>
+        <td>Politiques sociales + maîtrise de l'inflation</td>
+    </tr>
+    <tr>
+        <td>🏭 Désindustrialisation</td>
+        <td class="diff-hard">Très difficile</td>
+        <td>15%</td>
+        <td>Chômage structurel massif</td>
+        <td>Formation + politique industrielle + soutien social</td>
+    </tr>
+    <tr>
+        <td>⚖️ Fracture Sociale</td>
+        <td class="diff-hard">Difficile</td>
+        <td>8%</td>
+        <td>Inégalités record malgré croissance</td>
+        <td>RSA + réforme fiscale + logement social</td>
+    </tr>
+    <tr>
+        <td>🔥 Crise Inflationniste</td>
+        <td class="diff-hard">Difficile</td>
+        <td>7%</td>
+        <td>Inflation à 8.5%</td>
+        <td>Lutte anti-inflation + pas de politique de demande</td>
+    </tr>
+</table>
+
+<!-- CONSEILS -->
+<div class="section-title">💡 Conseils stratégiques</div>
+<div class="tips-grid">
+    <div class="tip-card">
+        <h4>🎯 Lire les objectifs</h4>
+        Avant de choisir, regarde la barre d'objectifs en haut. Ce sont tes cibles prioritaires pour ce scénario — pas forcément le chômage à tout prix.
+    </div>
+    <div class="tip-card">
+        <h4>📋 Utiliser le journal</h4>
+        Le panneau de droite trace toutes tes décisions. Si un indicateur empire, remonte l'historique pour identifier quelle politique ou quel événement en est la cause.
+    </div>
+    <div class="tip-card">
+        <h4>💰 Surveiller le budget</h4>
+        Si ton budget tombe sous 30%, les politiques les plus efficaces deviennent inaccessibles. Investir tôt dans la croissance maintient tes recettes fiscales.
+    </div>
+    <div class="tip-card">
+        <h4>🎲 Anticiper les événements</h4>
+        60–70% de chance d'événement par trimestre selon le scénario. Garde toujours un peu de budget de réserve pour absorber un choc externe (pandémie, crise bancaire…).
+    </div>
+    <div class="tip-card">
+        <h4>🏛️ Penser en conseil</h4>
+        En équipe, chaque membre incarne un ministre. Négociez : le ministre de l'Économie ne peut pas prendre toutes les politiques, l'Éducation a 1 seule mesure par trimestre — choisissez ensemble.
+    </div>
+    <div class="tip-card">
+        <h4>📖 Utiliser le glossaire</h4>
+        Le bouton "Glossaire" en bas de l'écran explique chaque terme économique avec un exemple concret. En cas de doute sur un concept, consulte-le avant de valider.
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="doc-footer">
+    <span>🏛️ Conseil des Ministres — Serious Game · Terminale STMG Économie · Thèmes 6.3, 6.4, 7</span>
+    <span>Guide élève v3.0 · À conserver pendant toute la partie</span>
+</div>
+
+</div><!-- .screen-wrapper -->
+</body>
+</html>
