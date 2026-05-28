@@ -1,4 +1,4 @@
-# 🏛️ Conseil des Ministres — La Crise de l'Emploi
+# 🏛️ Conseil des Ministres
 ## Serious Game pédagogique · Terminale STMG Économie · Version 4.0
 
 > Un serious game interactif couvrant les **Thèmes 6.3, 6.4 et 7** du programme officiel d'économie STMG.
@@ -355,7 +355,7 @@ Projet sous licence **MIT** — libre d'utilisation, de modification et de distr
 
 ## 👥 Crédits
 
-Développé par **Katia Ribes** avec l'assistance de **Claude (Anthropic)**  
+Développé par **Katia** avec l'assistance de **Claude (Anthropic)**  
 Programme : **STMG Terminale — Économie-Droit**  
 Thèmes couverts : **6.3 · 6.4 · 7**  
 Version : **4.0** · Mai 2026
