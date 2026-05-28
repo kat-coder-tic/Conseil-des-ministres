@@ -340,6 +340,58 @@
         }
         .scale-guide span { display: flex; align-items: center; gap: 4px; }
 
+        /* ── Classement compétition ── */
+        .ranking-panel {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
+        .ranking-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .ranking-header h2 { font-family: var(--display); font-size: 1em; font-weight: 800; color: white; }
+        .ranking-subtitle { font-size: 0.8em; color: rgba(255,255,255,0.7); }
+        .ranking-list { padding: 8px 0; }
+        .rank-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 24px;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s;
+        }
+        .rank-row:last-child { border-bottom: none; }
+        .rank-row:hover { background: rgba(255,255,255,0.02); }
+        .rank-pos {
+            font-family: var(--display);
+            font-size: 1.3em;
+            font-weight: 800;
+            min-width: 32px;
+            text-align: center;
+        }
+        .rank-1 { color: #ffd700; }
+        .rank-2 { color: #c0c0c0; }
+        .rank-3 { color: #cd7f32; }
+        .rank-other { color: var(--muted); font-size: 1em; }
+        .rank-name { font-weight: 700; font-size: 0.95em; flex: 1; }
+        .rank-scenario { font-size: 0.78em; color: var(--muted); }
+        .rank-score-big {
+            font-family: var(--display);
+            font-size: 1.4em;
+            font-weight: 900;
+        }
+        .rank-bar-wrap { flex: 1; max-width: 120px; background: rgba(255,255,255,0.05); border-radius: 4px; height: 6px; }
+        .rank-bar { height: 6px; border-radius: 4px; background: linear-gradient(90deg, #667eea, #764ba2); }
+        .rank-empty { padding: 40px; text-align: center; color: var(--muted); font-size: 0.9em; }
+
         @media (max-width: 700px) {
             .site-header { padding: 20px; }
             .main { padding: 20px 12px 0; }
@@ -353,7 +405,10 @@
 
 <header class="site-header">
     <h1>🏛️ Conseil des Ministres — <span>Espace Enseignant</span></h1>
-    <div class="header-badge">📋 Décodeur de codes de partie</div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <div class="header-badge">📋 Décodeur de codes de partie</div>
+        <a href="index.html" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.3);color:white;border-radius:20px;padding:5px 14px;font-size:0.8em;font-weight:600;text-decoration:none;">← Retour au jeu</a>
+    </div>
 </header>
 
 <div class="main">
@@ -387,6 +442,19 @@
         <div class="stat-card">
             <div class="stat-value" id="statSuccess" style="color:var(--orange)">—</div>
             <div class="stat-label">Objectifs atteints</div>
+        </div>
+    </div>
+
+    <!-- Classement compétition -->
+    <div class="ranking-panel">
+        <div class="ranking-header">
+            <div>
+                <h2>🏆 Classement de la classe</h2>
+                <div class="ranking-subtitle">Mis à jour en temps réel — trié par score décroissant</div>
+            </div>
+        </div>
+        <div class="ranking-list" id="rankingList">
+            <div class="rank-empty">Ajoutez des élèves pour voir le classement apparaître.</div>
         </div>
     </div>
 
@@ -613,8 +681,39 @@
     // ═══════════════════════════════════════════
     function render() {
         renderStats();
+        renderRanking();
         renderLegend();
         renderTable();
+    }
+
+    function renderRanking() {
+        const list = document.getElementById('rankingList');
+        if (!entries.length) {
+            list.innerHTML = '<div class="rank-empty">Ajoutez des élèves pour voir le classement apparaître.</div>';
+            return;
+        }
+        const ranked = [...entries].sort((a, b) => b.score - a.score || a.chomage - b.chomage);
+        const maxScore = ranked[0]?.score || 100;
+        list.innerHTML = ranked.map((e, i) => {
+            const pos = i + 1;
+            const medal = pos === 1 ? '🥇' : pos === 2 ? '🥈' : pos === 3 ? '🥉' : pos;
+            const posClass = pos === 1 ? 'rank-1' : pos === 2 ? 'rank-2' : pos === 3 ? 'rank-3' : 'rank-other';
+            const grade = scoreGrade(e.score);
+            const pct = (e.score / maxScore * 100).toFixed(0);
+            return `
+            <div class="rank-row">
+                <div class="rank-pos ${posClass}">${medal}</div>
+                <div style="flex:1;min-width:0;">
+                    <div class="rank-name">${esc(e.name)}</div>
+                    <div class="rank-scenario">${esc(e.scenario.name.replace(/[🔴🟡🟢🏭⚖️🔥]/gu,'').trim())} · Chômage ${e.chomage.toFixed(1)}% · ${e.objectifAtteint ? '✅ Obj. atteint' : '❌ Obj. non atteint'}</div>
+                </div>
+                <div class="rank-bar-wrap"><div class="rank-bar" style="width:${pct}%"></div></div>
+                <div style="text-align:right;">
+                    <span class="rank-score-big score-${grade}" style="background:none;">${e.score}</span>
+                    <div style="font-size:0.7em;color:var(--muted);">/100</div>
+                </div>
+            </div>`;
+        }).join('');
     }
 
     function renderStats() {

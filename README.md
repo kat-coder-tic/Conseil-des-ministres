@@ -33,8 +33,9 @@ Chaque trimestre :
 | Fichier | Rôle | Public |
 |---------|------|--------|
 | `index.html` | Le jeu complet | Élèves |
-| `guide.html` | Fiche aide-mémoire A4 recto-verso à imprimer | Élèves |
-| `decoder.html` | Espace enseignant : décodage des codes de partie | Enseignant |
+| `guide.html` | Fiche aide-mémoire A4 recto-verso à imprimer (politiques, arbitrages, conseils) | Élèves |
+| `fiches_scenarios.html` | 6 fiches A4 à imprimer — une par scénario (contexte + objectifs + conseils) | Élèves |
+| `decoder.html` | Espace enseignant : décodage des codes + classement en direct | Enseignant |
 | `README.md` | Ce fichier | — |
 
 ---
@@ -139,14 +140,18 @@ Les questions couvrent tous les types de politiques et les notions clés des th�
 
 ---
 
-### 📋 Code de partie
+### 📋 Code de partie — mode compétition
 
-Un **code unique de 5 caractères** est généré en temps réel et affiché en permanence dans l'en-tête du jeu pendant toute la partie. Il encode :
+Un **code unique de 5 caractères** est généré en temps réel et affiché en permanence en **doré** dans l'en-tête du jeu. Il encode :
 - Le scénario joué
 - Le score en cours
 - Le taux de chômage final
 
-Les élèves dictent ou copient ce code à l'enseignant. Le fichier `decoder.html` permet de le déchiffrer instantanément.
+Les élèves **copient ou dictent** ce code à l'enseignant. Un bouton "📋 Copier" copie directement le code + le contexte complet dans le presse-papiers.
+
+Un lien **"Espace enseignant →"** dans la barre du code ouvre directement `decoder.html` dans un nouvel onglet.
+
+Dans `decoder.html`, un **classement en temps réel** s'affiche dès qu'il y a des élèves : podium 🥇🥈🥉, score, scénario joué, objectif atteint ou non — idéal pour projeter en fin de séance et animer le débriefing.
 
 ---
 
@@ -217,6 +222,22 @@ Interface dédiée à l'enseignant, thème sombre professionnel, aucune dépenda
 
 ---
 
+## 🖨️ Fiches scénarios — fiches_scenarios.html
+
+6 pages A4 à imprimer (1 par équipe selon le scénario choisi).
+
+**Contenu de chaque fiche :**
+- En-tête couleur avec nom du scénario et niveau de difficulté
+- Contexte narratif complet
+- Tableau des indicateurs de départ avec niveaux d'alerte
+- Les 3 objectifs à atteindre avec cibles chiffrées
+- Priorités par ministre (haute / moyenne / faible)
+- L'arbitrage économique central du scénario
+- 3-4 conseils stratégiques (sans donner les réponses)
+- Box d'avertissement : erreur classique ou notion clé du programme
+
+---
+
 ## 🖨️ Guide élève — guide.html
 
 Fiche **2 pages A4 recto-verso** à imprimer et distribuer avant la séance.
@@ -236,11 +257,14 @@ Fiche **2 pages A4 recto-verso** à imprimer et distribuer avant la séance.
 ### Sur GitHub Pages (recommandé)
 
 1. Créez un repository GitHub
-2. Uploadez les 4 fichiers : `index.html`, `decoder.html`, `guide.html`, `README.md`
+2. Uploadez les **5 fichiers** dans le même dossier : `index.html`, `decoder.html`, `guide.html`, `fiches_scenarios.html`, `README.md`
 3. **Settings → Pages → Branch : main → Folder : / (root) → Save**
 4. Le jeu est accessible à : `https://[username].github.io/[nom-repo]/`
 5. Le décodeur enseignant : `https://[username].github.io/[nom-repo]/decoder.html`
-6. Le guide imprimable : `https://[username].github.io/[nom-repo]/guide.html`
+6. Le guide élève imprimable : `https://[username].github.io/[nom-repo]/guide.html`
+7. Les fiches scénarios : `https://[username].github.io/[nom-repo]/fiches_scenarios.html`
+
+> ⚠️ Tous les fichiers doivent être dans le **même dossier** — le lien "Espace enseignant" dans le jeu pointe vers `decoder.html` en chemin relatif.
 
 ### En local (sans internet)
 
@@ -331,7 +355,7 @@ Projet sous licence **MIT** — libre d'utilisation, de modification et de distr
 
 ## 👥 Crédits
 
-Développé par **Katia** avec l'assistance de **Claude (Anthropic)**  
+Développé par **Katia Ribes** avec l'assistance de **Claude (Anthropic)**  
 Programme : **STMG Terminale — Économie-Droit**  
 Thèmes couverts : **6.3 · 6.4 · 7**  
 Version : **4.0** · Mai 2026

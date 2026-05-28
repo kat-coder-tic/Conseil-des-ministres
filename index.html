@@ -828,6 +828,55 @@
         /* ══════════════════════════════════
            QUIZ STREAK counter (playing header)
         ══════════════════════════════════ */
+        /* ── Code de partie dans l'en-tête ── */
+        .header-code-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 8px 20px;
+            background: rgba(0,0,0,0.28);
+            border-top: 1px solid rgba(255,255,255,0.12);
+            flex-wrap: wrap;
+        }
+        .header-code-label {
+            font-size: 0.75em;
+            opacity: 0.75;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+        }
+        .header-code-value {
+            font-family: 'Courier New', monospace;
+            font-size: 1.5em;
+            font-weight: 900;
+            letter-spacing: 6px;
+            color: #ffd700;
+            text-shadow: 0 0 12px rgba(255,215,0,0.4);
+        }
+        .header-code-copy {
+            background: rgba(255,215,0,0.18);
+            border: 1.5px solid rgba(255,215,0,0.5);
+            color: #ffd700;
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 0.78em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .header-code-copy:hover { background: rgba(255,215,0,0.35); }
+        .header-code-copy.copied { background: rgba(40,167,69,0.4); color: #90ee90; border-color: #90ee90; }
+        .header-code-prof-link {
+            margin-left: auto;
+            font-size: 0.72em;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            border-bottom: 1px dashed rgba(255,255,255,0.3);
+            transition: color 0.15s;
+        }
+        .header-code-prof-link:hover { color: rgba(255,255,255,0.85); }
+
         .quiz-streak {
             display: inline-flex; align-items: center; gap: 5px;
             background: rgba(255,255,255,0.18);
@@ -2138,6 +2187,7 @@
             const [quizCorrectTotal, setQuizCorrectTotal] = React.useState(0);
             const [dashExpanded, setDashExpanded] = React.useState(false);
             const [codeCopied, setCodeCopied] = React.useState(false);
+            const [codeCopiedHeader, setCodeCopiedHeader] = React.useState(false);
 
             useEffect(() => {
                 localStorage.setItem('ministre-travail-game', JSON.stringify(gameState));
@@ -2950,7 +3000,7 @@
                                 </ul>
                             </div>
                             
-                            {gameState.completedScenarios && gameState.completedScenarios.length < 4 && (
+                            {gameState.completedScenarios && gameState.completedScenarios.length < Object.keys(SCENARIOS).length && (
                                 <div style={{
                                     background: '#cfe2ff',
                                     padding: '30px',
@@ -2962,7 +3012,7 @@
                                         🎯 Défi suivant !
                                     </h3>
                                     <p style={{fontSize: '1.1em', marginBottom: '20px'}}>
-                                        Vous avez terminé {gameState.completedScenarios.length} scénario(s) sur 4.
+                                        Vous avez terminé {gameState.completedScenarios.length} scénario(s) sur {Object.keys(SCENARIOS).length}.
                                         Relevez d'autres défis pour maîtriser toutes les situations économiques !
                                     </p>
                                     <div style={{display: 'flex', gap: '10px', flexWrap: 'wrap'}}>
@@ -2980,7 +3030,7 @@
                                 </div>
                             )}
                             
-                            {gameState.completedScenarios && gameState.completedScenarios.length === 4 && (
+                            {gameState.completedScenarios && gameState.completedScenarios.length === Object.keys(SCENARIOS).length && (
                                 <div style={{
                                     background: 'linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)',
                                     padding: '40px',
@@ -3041,6 +3091,26 @@
                                 </span>
                             )}
                         </p>
+                        <div className="header-code-bar">
+                            <span className="header-code-label">🏆 Code équipe :</span>
+                            <span className="header-code-value">{generateScoreCode()}</span>
+                            <button
+                                className={`header-code-copy ${codeCopiedHeader ? 'copied' : ''}`}
+                                onClick={() => {
+                                    const code = generateScoreCode();
+                                    const scenarioName = gameState.scenario?.name?.replace(/[🔴🟡🟢🏭⚖️🔥]/gu, '').trim() || '';
+                                    const text = `Code : ${code} | ${scenarioName} | T${gameState.quarter}/8 | Chômage : ${gameState.indicators.chomage?.toFixed(1)}%`;
+                                    navigator.clipboard?.writeText(text).catch(()=>{});
+                                    setCodeCopiedHeader(true);
+                                    setTimeout(() => setCodeCopiedHeader(false), 2200);
+                                }}
+                            >
+                                {codeCopiedHeader ? '✅ Copié !' : '📋 Copier'}
+                            </button>
+                            <a className="header-code-prof-link" href="decoder.html" target="_blank" rel="noopener">
+                                Espace enseignant →
+                            </a>
+                        </div>
                     </div>
 
                     <MultiObjectivesPanel

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Fiche de Débriefing — Conseil des Ministres</title>
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+    --blue:   #1e3c72;
+    --accent: #2a5298;
+    --green:  #1a6b3c;
+    --red:    #8b1a1a;
+    --orange: #b85e00;
+    --purple: #4b2d82;
+    --teal:   #0e5a6e;
+    --grey:   #4a4a5a;
+    --light:  #f4f5f8;
+    --border: #d0d4e0;
+    --text:   #1a1a2e;
+    --muted:  #5a5a72;
+    --write:  #fafafa;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    font-size: 9.5pt;
+    color: var(--text);
+    background: white;
+    line-height: 1.45;
+}
+
+@media print {
+    body { font-size: 8.5pt; }
+    .no-print { display:none !important; }
+    .page-break { page-break-before: always; }
+}
+@page { size: A4; margin: 12mm 13mm 12mm 13mm; }
+
+.screen-wrapper { max-width: 210mm; margin: 0 auto; background: white; }
+
+/* ── Print bar ── */
+.print-bar {
+    background: var(--blue); color: white;
+    padding: 12px 20px; margin-bottom: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: sans-serif;
+}
+.print-bar h2 { font-size: 1em; font-weight: 600; }
+.print-btn {
+    background: #ffd700; color: #1a1a2e; border: none;
+    border-radius: 6px; padding: 8px 20px; font-size: 0.9em;
+    font-weight: 700; cursor: pointer;
+}
+.print-btn:hover { background: #ffe44d; }
+
+/* ── Page ── */
+.debrief-page {
+    padding: 10mm 0 8mm;
+    min-height: 267mm;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+/* ── Header ── */
+.doc-header {
+    border-radius: 6px; overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+.doc-header-top {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white; padding: 10px 16px;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.doc-header-top h1 { font-size: 13pt; font-family: sans-serif; font-weight: 800; }
+.doc-header-top .sub { font-size: 8pt; opacity: 0.8; font-style: italic; }
+.doc-header-meta {
+    background: var(--light); padding: 5px 16px;
+    display: flex; gap: 18px; flex-wrap: wrap;
+    font-size: 7.5pt; color: var(--muted); font-family: sans-serif;
+}
+.doc-header-meta .field {
+    display: flex; align-items: center; gap: 5px;
+}
+.doc-header-meta .field-label { color: var(--muted); }
+.write-short {
+    display: inline-block;
+    border-bottom: 1.5px solid var(--border);
+    min-width: 90px; height: 13px;
+    background: var(--write);
+}
+.write-short.lg { min-width: 140px; }
+
+/* ── Grid layout ── */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    flex: 1;
+}
+.full { grid-column: 1 / -1; }
+
+/* ── Block ── */
+.block {
+    border: 1.5px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.block-title {
+    font-family: sans-serif;
+    font-size: 7.5pt;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 4px 10px;
+    color: white;
+    display: flex; align-items: center; gap: 5px;
+    flex-shrink: 0;
+}
+.block-body {
+    padding: 7px 10px;
+    font-size: 8.5pt;
+    flex: 1;
+}
+.hint {
+    font-size: 7.5pt;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 5px;
+    font-family: sans-serif;
+}
+
+/* ── Write lines ── */
+.write-line {
+    border-bottom: 1px solid var(--border);
+    min-height: 14px;
+    margin-bottom: 5px;
+    background: var(--write);
+}
+.write-line:last-child { margin-bottom: 0; }
+.write-line.tall { min-height: 20px; }
+.write-label {
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: sans-serif;
+    margin-bottom: 2px;
+    margin-top: 4px;
+}
+.write-label:first-child { margin-top: 0; }
+
+/* ── Chiffres de la partie ── */
+.chiffres-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+}
+.chiffre-cell {
+    background: var(--light);
+    border-radius: 4px;
+    padding: 5px 7px;
+    text-align: center;
+}
+.chiffre-label {
+    font-size: 6.8pt;
+    color: var(--muted);
+    font-family: sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 3px;
+}
+.chiffre-val {
+    border-bottom: 2px solid var(--accent);
+    min-height: 16px;
+    background: white;
+}
+.chiffre-arrow {
+    font-size: 8pt; color: var(--muted);
+    font-family: sans-serif; font-weight: 700;
+    padding: 2px 0;
+}
+
+/* ── Décisions tableau ── */
+.decisions-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7.8pt;
+}
+.decisions-table th {
+    font-family: sans-serif;
+    font-size: 6.8pt;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--muted);
+    padding: 3px 6px;
+    border-bottom: 1.5px solid var(--border);
+    background: var(--light);
+    text-align: left;
+}
+.decisions-table td {
+    padding: 4px 6px;
+    border-bottom: 1px dotted var(--border);
+    vertical-align: top;
+}
+.decisions-table tr:last-child td { border-bottom: none; }
+.td-write {
+    border-bottom: 1px solid #c0c8e0 !important;
+    background: var(--write);
+    min-height: 13px;
+}
+
+/* ── Dilemme ── */
+.dilemme-box {
+    background: #fff8e1;
+    border: 1.5px solid #f9a825;
+    border-radius: 5px;
+    padding: 6px 10px;
+    font-size: 8.5pt;
+    line-height: 1.7;
+}
+.dilemme-fill {
+    display: inline-block;
+    border-bottom: 2px solid var(--orange);
+    min-width: 120px;
+    height: 14px;
+    vertical-align: bottom;
+    background: #fff8e1;
+}
+.dilemme-fill.wide { min-width: 200px; }
+
+/* ── Notions tableau ── */
+.notions-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7.8pt;
+}
+.notions-table th {
+    font-family: sans-serif;
+    font-size: 6.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 3px 6px;
+    border-bottom: 1.5px solid var(--border);
+    background: var(--light);
+    color: var(--muted);
+    text-align: left;
+}
+.notions-table td {
+    padding: 3px 6px;
+    border-bottom: 1px dotted var(--border);
+    vertical-align: middle;
+}
+.notions-table tr:last-child td { border-bottom: none; }
+.notion-name { font-weight: 600; }
+.notion-theme {
+    font-size: 6.5pt;
+    font-family: sans-serif;
+    color: var(--muted);
+}
+.check-box {
+    display: inline-block;
+    width: 11px; height: 11px;
+    border: 1.5px solid var(--border);
+    border-radius: 2px;
+    margin-right: 3px;
+    vertical-align: middle;
+    background: white;
+}
+
+/* ── Post-it "et si" ── */
+.et-si-box {
+    background: #fffde7;
+    border-left: 4px solid #ffd700;
+    border-radius: 0 5px 5px 0;
+    padding: 6px 10px;
+}
+
+/* ── Footer ── */
+.page-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 6.8pt;
+    color: var(--muted);
+    font-family: sans-serif;
+    border-top: 1px solid var(--border);
+    padding-top: 4px;
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+/* ── Recto / Verso label ── */
+.face-label {
+    display: inline-block;
+    background: var(--blue);
+    color: white;
+    font-family: sans-serif;
+    font-size: 7pt;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+</style>
+</head>
+<body>
+<div class="screen-wrapper">
+
+<div class="print-bar no-print">
+    <h2>🖨️ Fiche de Débriefing — 1 fiche par binôme (recto-verso A4)</h2>
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimer</button>
+</div>
+
+<!-- ════════════════════════════════
+     RECTO
+════════════════════════════════ -->
+<div class="debrief-page">
+
+    <!-- En-tête -->
+    <div class="doc-header">
+        <div class="doc-header-top">
+            <div>
+                <h1>📋 Fiche de Débriefing — Conseil des Ministres</h1>
+                <div class="sub">Serious Game · Thèmes 6.3, 6.4 &amp; 7 · Terminale STMG · À compléter immédiatement après la partie</div>
+            </div>
+            <span class="face-label">RECTO</span>
+        </div>
+        <div class="doc-header-meta">
+            <div class="field">
+                <span class="field-label">Équipe :</span>
+                <span class="write-short lg"></span>
+            </div>
+            <div class="field">
+                <span class="field-label">Scénario joué :</span>
+                <span class="write-short lg"></span>
+            </div>
+            <div class="field">
+                <span class="field-label">Code de partie :</span>
+                <span class="write-short"></span>
+            </div>
+            <div class="field">
+                <span class="field-label">Date :</span>
+                <span class="write-short"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-2">
+
+        <!-- BLOC 1 — Ma partie en chiffres -->
+        <div class="block full">
+            <div class="block-title" style="background:#1e3c72;">📊 1 — Ma partie en chiffres</div>
+            <div class="block-body">
+                <p class="hint">Notez les valeurs affichées sur votre écran de résultats avant de fermer le jeu.</p>
+                <div class="chiffres-grid">
+                    <div class="chiffre-cell">
+                        <div class="chiffre-label">Chômage départ</div>
+                        <div class="chiffre-val"></div>
+                        <div class="chiffre-arrow">↓</div>
+                        <div class="chiffre-label">Chômage final</div>
+                        <div class="chiffre-val"></div>
+                    </div>
+                    <div class="chiffre-cell">
+                        <div class="chiffre-label">Emploi départ</div>
+                        <div class="chiffre-val"></div>
+                        <div class="chiffre-arrow">↓</div>
+                        <div class="chiffre-label">Emploi final</div>
+                        <div class="chiffre-val"></div>
+                    </div>
+                    <div class="chiffre-cell">
+                        <div class="chiffre-label">Déficit final</div>
+                        <div class="chiffre-val"></div>
+                        <div class="chiffre-arrow"> </div>
+                        <div class="chiffre-label">Score global</div>
+                        <div class="chiffre-val"></div>
+                    </div>
+                    <div class="chiffre-cell">
+                        <div class="chiffre-label">Objectif atteint ?</div>
+                        <div class="chiffre-val" style="min-height:22px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:11pt;">
+                            <span>☐ OUI</span><span>☐ NON</span>
+                        </div>
+                        <div class="chiffre-arrow"> </div>
+                        <div class="chiffre-label">Quiz : bonnes réponses</div>
+                        <div class="chiffre-val"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOC 2 — Nos 3 décisions clés -->
+        <div class="block full">
+            <div class="block-title" style="background:#2a5298;">🎯 2 — Nos 3 décisions les plus importantes</div>
+            <div class="block-body" style="padding:0;">
+                <table class="decisions-table">
+                    <tr>
+                        <th style="width:6%">#</th>
+                        <th style="width:22%">Politique choisie</th>
+                        <th style="width:28%">Pourquoi ce choix ?</th>
+                        <th style="width:26%">Effet observé sur les indicateurs</th>
+                        <th style="width:18%">Notion du programme</th>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;font-weight:800;color:#2a5298;">1</td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;font-weight:800;color:#2a5298;">2</td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;font-weight:800;color:#2a5298;">3</td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                    </tr>
+                </table>
+                <div style="padding:4px 10px;background:#f0f4ff;font-size:7.5pt;color:#555;font-style:italic;font-family:sans-serif;">
+                    💡 Exemples de notions : politique active/passive · politique de demande/offre · effet multiplicateur · déficit public · protection sociale · arbitrage
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOC 3 — L'événement qui a tout changé -->
+        <div class="block">
+            <div class="block-title" style="background:#6c757d;">⚡ 3 — L'événement qui nous a le plus impactés</div>
+            <div class="block-body">
+                <p class="hint">Si plusieurs événements ont eu lieu, choisissez le plus marquant.</p>
+                <div class="write-label">Nom de l'événement :</div>
+                <div class="write-line"></div>
+                <div class="write-label">Effets immédiats sur nos indicateurs :</div>
+                <div class="write-line tall"></div>
+                <div class="write-label">Comment avons-nous réagi le trimestre suivant ?</div>
+                <div class="write-line tall"></div>
+                <div class="write-label">Quel type d'instabilité économique cela illustre-t-il ?</div>
+                <div class="write-line tall"></div>
+            </div>
+        </div>
+
+        <!-- BLOC 4 — Notre dilemme principal -->
+        <div class="block">
+            <div class="block-title" style="background:#b85e00;">⚖️ 4 — Notre dilemme principal</div>
+            <div class="block-body">
+                <p class="hint">Un dilemme = deux objectifs qui s'opposent. Identifiez le vôtre.</p>
+                <div class="dilemme-box" style="margin-bottom:7px;">
+                    Nous avons dû choisir entre
+                    <span class="dilemme-fill"></span>
+                    et <span class="dilemme-fill"></span>
+                    parce que
+                    <span class="dilemme-fill wide"></span>
+                </div>
+                <div class="write-label">Quelle décision avons-nous prise finalement ?</div>
+                <div class="write-line tall"></div>
+                <div class="write-label">Était-ce le bon choix ? Pourquoi ?</div>
+                <div class="write-line tall"></div>
+                <div style="background:#e8f4e8;border:1px solid #1a6b3c;border-radius:4px;padding:5px 8px;margin-top:6px;font-size:7.5pt;">
+                    <strong style="color:#1a6b3c;">Les arbitrages classiques du programme :</strong><br/>
+                    Relance ↔ Déficit · Croissance ↔ Inflation · Protection sociale ↔ Budget · Court terme ↔ Long terme · Compétitivité ↔ Égalité
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /grid-2 -->
+
+    <div class="page-footer">
+        <span>🏛️ Conseil des Ministres — Serious Game STMG · Thèmes 6.3, 6.4 &amp; 7</span>
+        <span>Compléter en binôme · À remettre à l'enseignant · Recto</span>
+    </div>
+
+</div><!-- /recto -->
+
+
+<!-- ════════════════════════════════
+     VERSO
+════════════════════════════════ -->
+<div class="debrief-page page-break">
+
+    <!-- En-tête verso -->
+    <div class="doc-header">
+        <div class="doc-header-top">
+            <div>
+                <h1>📋 Fiche de Débriefing — Suite &amp; Synthèse des notions</h1>
+                <div class="sub">Équipe : <span style="border-bottom:1px solid rgba(255,255,255,0.5);display:inline-block;min-width:120px;">&nbsp;</span> &nbsp;&nbsp; Scénario : <span style="border-bottom:1px solid rgba(255,255,255,0.5);display:inline-block;min-width:120px;">&nbsp;</span></div>
+            </div>
+            <span class="face-label">VERSO</span>
+        </div>
+    </div>
+
+    <div class="grid-2">
+
+        <!-- BLOC 5 — Ce que le jeu nous a enseigné -->
+        <div class="block">
+            <div class="block-title" style="background:#1a6b3c;">💡 5 — Ce que la partie nous a appris</div>
+            <div class="block-body">
+                <p class="hint">Répondez honnêtement — il n'y a pas de mauvaise réponse.</p>
+                <div class="write-label">La surprise de la partie (ce qu'on n'avait pas prévu) :</div>
+                <div class="write-line tall"></div>
+                <div class="write-line tall"></div>
+                <div class="write-label">Le mécanisme économique qu'on a mieux compris grâce au jeu :</div>
+                <div class="write-line tall"></div>
+                <div class="write-line tall"></div>
+                <div class="write-label">Notre plus grande erreur stratégique :</div>
+                <div class="write-line tall"></div>
+            </div>
+        </div>
+
+        <!-- BLOC 6 — Si on rejouait -->
+        <div class="block">
+            <div class="block-title" style="background:#4b2d82;">🔄 6 — Si on rejouait ce scénario…</div>
+            <div class="block-body">
+                <div class="et-si-box" style="margin-bottom:7px;">
+                    <strong>Dès le Trimestre 1, on changerait :</strong>
+                </div>
+                <div class="write-line tall"></div>
+                <div class="write-line tall"></div>
+                <div class="write-label" style="margin-top:7px;">On éviterait de refaire :</div>
+                <div class="write-line tall"></div>
+                <div class="write-label">La combinaison de politiques qu'on essaierait :</div>
+                <div class="write-line tall"></div>
+                <div class="write-line tall"></div>
+                <div style="background:#f0f4ff;border:1px solid var(--accent);border-radius:4px;padding:5px 8px;margin-top:6px;font-size:7.5pt;">
+                    <strong style="color:#2a5298;">Rappel :</strong> les politiques actives agissent sur les causes, les passives protègent les revenus. Les politiques de demande relancent l'activité, celles d'offre améliorent la compétitivité.
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOC 7 — Notions du programme -->
+        <div class="block full">
+            <div class="block-title" style="background:#0e5a6e;">📚 7 — Notions du programme rencontrées dans la partie</div>
+            <div class="block-body" style="padding:0;">
+                <table class="notions-table">
+                    <tr>
+                        <th style="width:4%"></th>
+                        <th style="width:24%">Notion</th>
+                        <th style="width:8%">Thème</th>
+                        <th style="width:35%">Comment s'est-elle manifestée dans notre partie ?</th>
+                        <th style="width:29%">Exemple concret vécu</th>
+                    </tr>
+                    <tr>
+                        <td><span class="check-box"></span></td>
+                        <td class="notion-name">Politique active de l'emploi</td>
+                        <td class="notion-theme">T7</td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="check-box"></span></td>
+                        <td class="notion-name">Politique passive de l'emploi</td>
+                        <td class="notion-theme">T7</td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="check-box"></span></td>
+                        <td class="notion-name">Politique de demande (keynésienne)</td>
+                        <td class="notion-theme">T6.3/7</td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="check-box"></span></td>
+                        <td class="notion-name">Politique d'offre</td>
+                        <td class="notion-theme">T6.3/7</td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="check-box"></span></td>
+                        <td class="notion-name">Effet multiplicateur</td>
+                        <td class="notion-theme">T6.3</td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="check-box"></span></td>
+                        <td class="notion-name">Déficit public / règle des 3%</td>
+                        <td class="notion-theme">T6.3</td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="check-box"></span></td>
+                        <td class="notion-name">Chômage structurel / conjoncturel</td>
+                        <td class="notion-theme">T7</td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="check-box"></span></td>
+                        <td class="notion-name">Protection sociale / État-providence</td>
+                        <td class="notion-theme">T6.4</td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="check-box"></span></td>
+                        <td class="notion-name">Lutte contre la pauvreté / inégalités</td>
+                        <td class="notion-theme">T6.4</td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="check-box"></span></td>
+                        <td class="notion-name">Rôle de la BCE / contraintes européennes</td>
+                        <td class="notion-theme">T6.3</td>
+                        <td class="td-write"></td>
+                        <td class="td-write"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- BLOC 8 — Préparation au débriefing collectif -->
+        <div class="block full">
+            <div class="block-title" style="background:#922b21;">🗣️ 8 — Notre contribution au débriefing collectif</div>
+            <div class="block-body">
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+                    <div>
+                        <div class="write-label">Notre stratégie en 3 mots-clés du cours :</div>
+                        <div style="display:flex;gap:4px;margin-top:4px;">
+                            <div style="flex:1;border-bottom:2px solid #2a5298;height:16px;background:var(--write);border-radius:2px 2px 0 0;"></div>
+                            <div style="flex:1;border-bottom:2px solid #2a5298;height:16px;background:var(--write);border-radius:2px 2px 0 0;"></div>
+                            <div style="flex:1;border-bottom:2px solid #2a5298;height:16px;background:var(--write);border-radius:2px 2px 0 0;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="write-label">Notre conseil à une autre équipe qui rejouerait :</div>
+                        <div class="write-line tall"></div>
+                        <div class="write-line"></div>
+                    </div>
+                    <div>
+                        <div class="write-label">Notre question pour le débriefing collectif :</div>
+                        <div class="write-line tall"></div>
+                        <div class="write-line"></div>
+                    </div>
+                </div>
+                <div style="margin-top:7px;background:#fff8e1;border:1.5px solid #f9a825;border-radius:4px;padding:6px 10px;font-size:7.5pt;">
+                    <strong style="color:#b85e00;">📣 Pour le débriefing :</strong> Chaque équipe présente son code de partie, son dilemme principal (Bloc 4) et sa stratégie en 3 mots-clés (ci-dessus). Ensuite on compare : qui a réussi et pourquoi ? Quelles politiques ont le mieux marché selon le scénario ?
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /grid-2 -->
+
+    <div class="page-footer">
+        <span>🏛️ Conseil des Ministres — Serious Game STMG · Thèmes 6.3, 6.4 &amp; 7</span>
+        <span>Compléter en binôme · À remettre à l'enseignant · Verso</span>
+    </div>
+
+</div><!-- /verso -->
+
+</div><!-- /screen-wrapper -->
+</body>
+</html>
