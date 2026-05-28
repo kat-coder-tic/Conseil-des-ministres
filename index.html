@@ -830,51 +830,18 @@
         ══════════════════════════════════ */
         /* ── Code de partie dans l'en-tête ── */
         .header-code-bar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-            padding: 8px 20px;
+            display: flex; align-items: center; justify-content: center;
+            gap: 14px; padding: 8px 20px;
             background: rgba(0,0,0,0.28);
             border-top: 1px solid rgba(255,255,255,0.12);
             flex-wrap: wrap;
         }
-        .header-code-label {
-            font-size: 0.75em;
-            opacity: 0.75;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: white;
-        }
-        .header-code-value {
-            font-family: 'Courier New', monospace;
-            font-size: 1.5em;
-            font-weight: 900;
-            letter-spacing: 6px;
-            color: #ffd700;
-            text-shadow: 0 0 12px rgba(255,215,0,0.4);
-        }
-        .header-code-copy {
-            background: rgba(255,215,0,0.18);
-            border: 1.5px solid rgba(255,215,0,0.5);
-            color: #ffd700;
-            border-radius: 20px;
-            padding: 4px 14px;
-            font-size: 0.78em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
+        .header-code-label { font-size: 0.75em; opacity: 0.75; text-transform: uppercase; letter-spacing: 1px; color: white; }
+        .header-code-value { font-family: 'Courier New', monospace; font-size: 1.5em; font-weight: 900; letter-spacing: 6px; color: #ffd700; text-shadow: 0 0 12px rgba(255,215,0,0.4); }
+        .header-code-copy { background: rgba(255,215,0,0.18); border: 1.5px solid rgba(255,215,0,0.5); color: #ffd700; border-radius: 20px; padding: 4px 14px; font-size: 0.78em; font-weight: 700; cursor: pointer; transition: all 0.15s; }
         .header-code-copy:hover { background: rgba(255,215,0,0.35); }
         .header-code-copy.copied { background: rgba(40,167,69,0.4); color: #90ee90; border-color: #90ee90; }
-        .header-code-prof-link {
-            margin-left: auto;
-            font-size: 0.72em;
-            color: rgba(255,255,255,0.5);
-            text-decoration: none;
-            border-bottom: 1px dashed rgba(255,255,255,0.3);
-            transition: color 0.15s;
-        }
+        .header-code-prof-link { margin-left: auto; font-size: 0.72em; color: rgba(255,255,255,0.5); text-decoration: none; border-bottom: 1px dashed rgba(255,255,255,0.3); transition: color 0.15s; }
         .header-code-prof-link:hover { color: rgba(255,255,255,0.85); }
 
         .quiz-streak {
@@ -2249,9 +2216,12 @@
                 const sc = calculateScore();
                 // Encode scénario + score + chômage final en base36
                 const scenarioIdx = Object.keys(SCENARIOS).indexOf(s.scenario?.id || 'normale');
-                const val = (scenarioIdx * 10000) + (sc.total * 100) + Math.round(ind.chomage * 10);
+                // Encoding: idx*100000 + score*1000 + round(chomage*10)
+                // Max val = 5*100000 + 99*1000 + 150 = 599150 < 36^4 = 1679615 (fits in 4 chars)
+                const scoreVal = Math.min(Math.round(sc.total), 99);
+                const chomageVal = Math.round(ind.chomage * 10);
+                const val = (scenarioIdx * 100000) + (scoreVal * 1000) + chomageVal;
                 const raw = val.toString(36).toUpperCase().padStart(4, '0');
-                // Checksum simple
                 const checkChar = String.fromCharCode(65 + (val % 26));
                 return raw + checkChar;
             };
@@ -3098,9 +3068,8 @@
                                 className={`header-code-copy ${codeCopiedHeader ? 'copied' : ''}`}
                                 onClick={() => {
                                     const code = generateScoreCode();
-                                    const scenarioName = gameState.scenario?.name?.replace(/[🔴🟡🟢🏭⚖️🔥]/gu, '').trim() || '';
-                                    const text = `Code : ${code} | ${scenarioName} | T${gameState.quarter}/8 | Chômage : ${gameState.indicators.chomage?.toFixed(1)}%`;
-                                    navigator.clipboard?.writeText(text).catch(()=>{});
+                                    const name = gameState.scenario?.name?.replace(/[🔴🟡🟢🏭⚖️🔥]/gu,'').trim() || '';
+                                    navigator.clipboard?.writeText(`Code : ${code} | ${name} | T${gameState.quarter}/8 | Chômage : ${gameState.indicators.chomage?.toFixed(1)}%`).catch(()=>{});
                                     setCodeCopiedHeader(true);
                                     setTimeout(() => setCodeCopiedHeader(false), 2200);
                                 }}
